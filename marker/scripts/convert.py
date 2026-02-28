@@ -1,7 +1,23 @@
-import atexit
 import os
 import signal
+
+# In worker processes, ignore SIGINT before heavy imports like torch.
+# On Windows, CTRL_C_EVENT goes to all processes in the console group.
+# With spawn start method, this module is imported before worker_init()
+# runs, so workers would crash during import torch if not suppressed here.
+# Note: multiprocessing.parent_process() can't be used here — it returns
+# None during module import in spawned workers because _bootstrap() hasn't
+# run yet. The env var is set by convert_cli() before creating the pool.
+if os.environ.get("_MARKER_WORKER"):
+  signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+import atexit
 import time
+
+# Prevent Intel Fortran runtime (MKL/NumPy) from installing its own Ctrl+C
+# handler, which produces "forrtl: error (200): program aborting due to
+# control-C event".
+os.environ["FOR_DISABLE_CONSOLE_CTRL_HANDLER"] = "1"
 
 import psutil
 import torch
@@ -42,12 +58,6 @@ logger = get_logger()
 
 
 def worker_init():
-  # Workers ignore SIGINT so only the main process handles Ctrl+C.
-  # Without this, Windows sends CTRL_C_EVENT to all processes in the console
-  # group, causing workers to crash mid-GPU-operation and leaving the pool
-  # in an inconsistent state.
-  signal.signal(signal.SIGINT, signal.SIG_IGN)
-
   model_dict = create_model_dict()
 
   global model_refs
@@ -192,6 +202,7 @@ def convert_cli(in_folder: str, **kwargs):
     task_args = [(f, kwargs) for f in files_to_convert]
 
     start_time = time.time()
+    os.environ["_MARKER_WORKER"] = "1"
     pool = mp.Pool(
       processes=total_processes,
       initializer=worker_init,
