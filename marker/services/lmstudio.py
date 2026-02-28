@@ -42,26 +42,16 @@ class LMStudioService(BaseService):
       for img in images
     ]
 
-  def _build_system_prompt(self, response_schema: type[BaseModel]) -> str:
+  def _build_response_format(self, response_schema: type[BaseModel]) -> dict:
     schema = response_schema.model_json_schema()
-    return (
-      "You must respond with valid JSON matching this schema:\n\n"
-      f"{json.dumps(schema, indent=2)}\n\n"
-      "Respond only with JSON, no other text."
-    )
-
-  def _validate_response(self, response_text: str, response_schema: type[BaseModel]) -> dict:
-    response_text = response_text.strip()
-    if response_text.startswith("```json"):
-      response_text = response_text[7:]
-    if response_text.startswith("```"):
-      response_text = response_text[3:]
-    if response_text.endswith("```"):
-      response_text = response_text[:-3]
-
-    parsed = json.loads(response_text)
-    response_schema.model_validate(parsed)
-    return parsed
+    name = schema.get("title", response_schema.__name__)
+    return {
+      "type": "json_schema",
+      "json_schema": {
+        "name": name,
+        "schema": schema,
+      },
+    }
 
   def __call__(
     self,
@@ -80,20 +70,16 @@ class LMStudioService(BaseService):
 
     client = self.get_client()
     image_data = self.format_image_for_llm(image)
-    system_prompt = self._build_system_prompt(response_schema)
+    response_format = self._build_response_format(response_schema)
 
     messages = [
-      {
-        "role": "system",
-        "content": system_prompt,
-      },
       {
         "role": "user",
         "content": [
           *image_data,
           {"type": "text", "text": prompt},
         ],
-      },
+      }
     ]
 
     total_tries = max_retries + 1
@@ -103,13 +89,13 @@ class LMStudioService(BaseService):
           model=self.lmstudio_model,
           messages=messages,
           timeout=timeout,
-          response_format={"type": "json_object"},
+          response_format=response_format,
         )
         response_text = response.choices[0].message.content
         total_tokens = response.usage.total_tokens
         if block:
           block.update_metadata(llm_tokens_used=total_tokens, llm_request_count=1)
-        return self._validate_response(response_text, response_schema)
+        return json.loads(response_text)
       except (APITimeoutError, RateLimitError) as e:
         if tries == total_tries:
           logger.error(
