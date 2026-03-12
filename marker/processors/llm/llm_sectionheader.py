@@ -15,7 +15,7 @@ logger = get_logger()
 
 
 class LLMSectionHeaderProcessor(BaseLLMComplexBlockProcessor):
-    page_prompt = """You're a text correction expert specializing in accurately analyzing complex PDF documents. You will be given a list of all of the section headers from a document, along with their page number and approximate dimensions.  The headers will be formatted like below, and will be presented in order.
+  page_prompt = """You're a text correction expert specializing in accurately analyzing complex PDF documents. You will be given a list of all of the section headers from a document, along with their page number and approximate dimensions.  The headers will be formatted like below, and will be presented in order.
 
 ```json
 [
@@ -96,80 +96,71 @@ Section Headers
 ```
 """
 
-    def get_selected_blocks(
-        self,
-        document: Document,
-        page: PageGroup,
-    ) -> List[dict]:
-        selected_blocks = page.structure_blocks(document)
-        json_blocks = [
-            self.normalize_block_json(block, document, page, i)
-            for i, block in enumerate(selected_blocks)
-        ]
-        return json_blocks
+  def get_selected_blocks(
+    self,
+    document: Document,
+    page: PageGroup,
+  ) -> List[dict]:
+    selected_blocks = page.structure_blocks(document)
+    json_blocks = [self.normalize_block_json(block, document, page, i) for i, block in enumerate(selected_blocks)]
+    return json_blocks
 
-    def process_rewriting(
-        self, document: Document, section_headers: List[Tuple[Block, dict]]
-    ):
-        section_header_json = [sh[1] for sh in section_headers]
-        for item in section_header_json:
-            _, _, page_id, block_type, block_id = item["id"].split("/")
-            item["page"] = page_id
-            item["width"] = item["bbox"][2] - item["bbox"][0]
-            item["height"] = item["bbox"][3] - item["bbox"][1]
-            del item["block_type"]  # Not needed, since they're all section headers
+  def process_rewriting(self, document: Document, section_headers: List[Tuple[Block, dict]]):
+    section_header_json = [sh[1] for sh in section_headers]
+    for item in section_header_json:
+      _, _, page_id, block_type, block_id = item["id"].split("/")
+      item["page"] = page_id
+      item["width"] = item["bbox"][2] - item["bbox"][0]
+      item["height"] = item["bbox"][3] - item["bbox"][1]
+      del item["block_type"]  # Not needed, since they're all section headers
 
-        prompt = self.page_prompt.replace(
-            "{{section_header_json}}", json.dumps(section_header_json)
-        )
-        response = self.llm_service(
-            prompt, None, document.pages[0], SectionHeaderSchema
-        )
-        logger.debug(f"Got section header reponse from LLM: {response}")
+    prompt = self.page_prompt.replace("{{section_header_json}}", json.dumps(section_header_json))
+    response = self.llm_service(prompt, None, document.pages[0], SectionHeaderSchema)
+    logger.debug(f"Got section header reponse from LLM: {response}")
 
-        if not response or "correction_type" not in response:
-            logger.warning("LLM did not return a valid response")
-            return
+    if not response or "correction_type" not in response:
+      logger.warning("LLM did not return a valid response")
+      return
 
-        correction_type = response["correction_type"]
-        if correction_type == "no_corrections":
-            return
+    correction_type = response["correction_type"]
+    if correction_type == "no_corrections":
+      return
 
-        self.load_blocks(response)
-        self.handle_rewrites(response["blocks"], document)
+    self.load_blocks(response)
+    self.handle_rewrites(response["blocks"], document)
 
-    def load_blocks(self, response):
-        if isinstance(response["blocks"], str):
-            response["blocks"] = json.loads(response["blocks"])
+  def load_blocks(self, response):
+    if isinstance(response["blocks"], str):
+      response["blocks"] = json.loads(response["blocks"])
 
-    def rewrite_blocks(self, document: Document):
-        # Don't show progress if there are no blocks to process
-        section_headers = [
-            (block, self.normalize_block_json(block, document, page))
-            for page in document.pages
-            for block in page.structure_blocks(document)
-            if block.block_type == BlockTypes.SectionHeader
-        ]
-        if len(section_headers) == 0:
-            return
+  def rewrite_blocks(self, document: Document):
+    # Don't show progress if there are no blocks to process
+    section_headers = [
+      (block, self.normalize_block_json(block, document, page))
+      for page in document.pages
+      for block in page.structure_blocks(document)
+      if block.block_type == BlockTypes.SectionHeader
+    ]
+    if len(section_headers) == 0:
+      return
 
-        pbar = tqdm(
-            total=1,
-            desc=f"Running {self.__class__.__name__}",
-            disable=self.disable_tqdm,
-        )
+    pbar = tqdm(
+      total=1,
+      desc=f"Running {self.__class__.__name__}",
+      disable=self.disable_tqdm,
+    )
 
-        self.process_rewriting(document, section_headers)
-        pbar.update(1)
-        pbar.close()
+    self.process_rewriting(document, section_headers)
+    pbar.update(1)
+    pbar.close()
 
 
 class BlockSchema(BaseModel):
-    id: str
-    html: str
+  id: str
+  html: str
 
 
 class SectionHeaderSchema(BaseModel):
-    analysis: str
-    correction_type: str
-    blocks: List[BlockSchema]
+  analysis: str
+  correction_type: str
+  blocks: List[BlockSchema]

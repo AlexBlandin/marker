@@ -13,25 +13,23 @@ logger = get_logger()
 
 
 class PageExtractionSchema(BaseModel):
-    description: str
-    detailed_notes: str
+  description: str
+  detailed_notes: str
 
 
 class PageExtractor(BaseExtractor):
-    """
-    An extractor that pulls data from a single page.
-    """
+  """
+  An extractor that pulls data from a single page.
+  """
 
-    extraction_page_chunk_size: Annotated[
-        int, "The number of pages to chunk together for extraction."
-    ] = 3
+  extraction_page_chunk_size: Annotated[int, "The number of pages to chunk together for extraction."] = 3
 
-    page_schema: Annotated[
-        str,
-        "The JSON schema to be extracted from the page.",
-    ] = ""
+  page_schema: Annotated[
+    str,
+    "The JSON schema to be extracted from the page.",
+  ] = ""
 
-    page_extraction_prompt = """You are an expert document analyst who reads documents and pulls data out in JSON format. You will receive the markdown representation of a document page, and a JSON schema that we want to extract from the document. Your task is to write detailed notes on this page, so that when you look at all your notes from across the document, you can fill in the schema.
+  page_extraction_prompt = """You are an expert document analyst who reads documents and pulls data out in JSON format. You will receive the markdown representation of a document page, and a JSON schema that we want to extract from the document. Your task is to write detailed notes on this page, so that when you look at all your notes from across the document, you can fill in the schema.
     
 Some notes:
 - The schema may contain a single object to extract from the entire document, or an array of objects. 
@@ -98,67 +96,61 @@ Schema
 ```
 """
 
-    def chunk_page_markdown(self, page_markdown: List[str]) -> List[str]:
-        """
-        Chunk the page markdown into smaller pieces for processing.
-        """
+  def chunk_page_markdown(self, page_markdown: List[str]) -> List[str]:
+    """
+    Chunk the page markdown into smaller pieces for processing.
+    """
 
-        chunks = []
-        for i in range(0, len(page_markdown), self.extraction_page_chunk_size):
-            chunk = page_markdown[i : i + self.extraction_page_chunk_size]
-            chunks.append("\n\n".join(chunk))
+    chunks = []
+    for i in range(0, len(page_markdown), self.extraction_page_chunk_size):
+      chunk = page_markdown[i : i + self.extraction_page_chunk_size]
+      chunks.append("\n\n".join(chunk))
 
-        return chunks
+    return chunks
 
-    def inference_single_chunk(
-        self, page_markdown: str
-    ) -> Optional[PageExtractionSchema]:
-        prompt = self.page_extraction_prompt.replace(
-            "{{page_md}}", page_markdown
-        ).replace("{{schema}}", json.dumps(self.page_schema))
-        response = self.llm_service(prompt, None, None, PageExtractionSchema)
-        logger.debug(f"Page extraction response: {response}")
+  def inference_single_chunk(self, page_markdown: str) -> Optional[PageExtractionSchema]:
+    prompt = self.page_extraction_prompt.replace("{{page_md}}", page_markdown).replace(
+      "{{schema}}", json.dumps(self.page_schema)
+    )
+    response = self.llm_service(prompt, None, None, PageExtractionSchema)
+    logger.debug(f"Page extraction response: {response}")
 
-        if not response or any(
-            [
-                key not in response
-                for key in [
-                    "description",
-                    "detailed_notes",
-                ]
-            ]
-        ):
-            return None
+    if not response or any(
+      [
+        key not in response
+        for key in [
+          "description",
+          "detailed_notes",
+        ]
+      ]
+    ):
+      return None
 
-        return PageExtractionSchema(
-            description=response["description"],
-            detailed_notes=response["detailed_notes"],
-        )
+    return PageExtractionSchema(
+      description=response["description"],
+      detailed_notes=response["detailed_notes"],
+    )
 
-    def __call__(
-        self,
-        page_markdown: List[str],
-        **kwargs,
-    ) -> List[PageExtractionSchema]:
-        if not self.page_schema:
-            raise ValueError(
-                "Page schema must be defined for structured extraction to work."
-            )
+  def __call__(
+    self,
+    page_markdown: List[str],
+    **kwargs,
+  ) -> List[PageExtractionSchema]:
+    if not self.page_schema:
+      raise ValueError("Page schema must be defined for structured extraction to work.")
 
-        chunks = self.chunk_page_markdown(page_markdown)
-        results = []
-        pbar = tqdm(
-            desc="Running page extraction",
-            disable=self.disable_tqdm,
-            total=len(chunks),
-        )
+    chunks = self.chunk_page_markdown(page_markdown)
+    results = []
+    pbar = tqdm(
+      desc="Running page extraction",
+      disable=self.disable_tqdm,
+      total=len(chunks),
+    )
 
-        with ThreadPoolExecutor(max_workers=self.max_concurrency) as executor:
-            for future in [
-                executor.submit(self.inference_single_chunk, chunk) for chunk in chunks
-            ]:
-                results.append(future.result())  # Raise exceptions if any occurred
-                pbar.update(1)
+    with ThreadPoolExecutor(max_workers=self.max_concurrency) as executor:
+      for future in [executor.submit(self.inference_single_chunk, chunk) for chunk in chunks]:
+        results.append(future.result())  # Raise exceptions if any occurred
+        pbar.update(1)
 
-        pbar.close()
-        return results
+    pbar.close()
+    return results

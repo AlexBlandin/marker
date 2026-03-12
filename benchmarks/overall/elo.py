@@ -90,86 +90,84 @@ Version B
 **Output**
 """
 
+
 class ComparerSchema(BaseModel):
-    image_description: str
-    version_a_description: str
-    version_b_description: str
-    comparison: str
-    winner: Literal["version_a", "version_b"]
+  image_description: str
+  version_a_description: str
+  version_b_description: str
+  comparison: str
+  winner: Literal["version_a", "version_b"]
 
 
 class Comparer:
-    def __init__(self):
-        pass
+  def __init__(self):
+    pass
 
-    def __call__(
-        self,
-        img: Image.Image,
-        version_a: str,
-        version_b: str
-    ) -> str | None:
-        if version_a is None and version_b is not None:
-            return "version_b"
-        elif version_b is None and version_a is not None:
-            return "version_a"
+  def __call__(self, img: Image.Image, version_a: str, version_b: str) -> str | None:
+    if version_a is None and version_b is not None:
+      return "version_b"
+    elif version_b is None and version_a is not None:
+      return "version_a"
 
-        hydrated_prompt = rating_prompt.replace("{{version_a}}", version_a).replace("{{version_b}}", version_b)
-        try:
-            rating = self.llm_rater(img, hydrated_prompt)
-        except Exception as e:
-            print(f"Error: {e}")
-            return
-        return rating
+    hydrated_prompt = rating_prompt.replace("{{version_a}}", version_a).replace("{{version_b}}", version_b)
+    try:
+      rating = self.llm_rater(img, hydrated_prompt)
+    except Exception as e:
+      print(f"Error: {e}")
+      return
+    return rating
 
+  def llm_rater(self, img: Image.Image, prompt: str):
+    response = self.llm_response_wrapper([img, prompt], ComparerSchema)
+    assert "winner" in response, f"Response missing 'winner' key: {response}"
+    return response["winner"]
 
-    def llm_rater(self, img: Image.Image, prompt: str):
-        response = self.llm_response_wrapper(
-            [img, prompt],
-            ComparerSchema
-        )
-        assert "winner" in response, f"Response missing 'winner' key: {response}"
-        return response["winner"]
-
-    def llm_response_wrapper(
-        self,
-        prompt,
-        response_schema,
-    ):
-        client = genai.Client(
-            http_options={"timeout": 60000},
-            vertexai=True,
-            project=os.getenv("VERTEX_PROJECT_ID"),
-            location=os.getenv("VERTEX_LOCATION"),
-        )
-        try:
-            responses = client.models.generate_content(
-                model="gemini-2.0-flash-001",
-                contents=prompt,
-                config={
-                    "temperature": 0,
-                    "response_schema": response_schema,
-                    "response_mime_type": "application/json",
-                },
-            )
-            output = responses.candidates[0].content.parts[0].text
-            return json.loads(output)
-        except APIError as e:
-            print(f"Hit Gemini rate limit")
-            return
-        except Exception as e:
-            print(f"Error: {e}")
-            return
+  def llm_response_wrapper(
+    self,
+    prompt,
+    response_schema,
+  ):
+    client = genai.Client(
+      http_options={"timeout": 60000},
+      vertexai=True,
+      project=os.getenv("VERTEX_PROJECT_ID"),
+      location=os.getenv("VERTEX_LOCATION"),
+    )
+    try:
+      responses = client.models.generate_content(
+        model="gemini-2.0-flash-001",
+        contents=prompt,
+        config={
+          "temperature": 0,
+          "response_schema": response_schema,
+          "response_mime_type": "application/json",
+        },
+      )
+      output = responses.candidates[0].content.parts[0].text
+      return json.loads(output)
+    except APIError as e:
+      print(f"Hit Gemini rate limit")
+      return
+    except Exception as e:
+      print(f"Error: {e}")
+      return
 
 
 def display_win_rates_table(win_rates: dict):
-    table = []
-    headers = ["Method A", "Method B", "Wins", "Losses", "Win %"]
-    for method_a, method_b_dict in win_rates.items():
-        row = [method_a]
-        for method_b, results in method_b_dict.items():
-            row = [method_a, method_b, results["win"], results["loss"], (results["win"] / (results["win"] + results["loss"])) * 100]
-            table.append(row)
-    print(tabulate.tabulate(table, headers=headers, tablefmt="pretty"))
+  table = []
+  headers = ["Method A", "Method B", "Wins", "Losses", "Win %"]
+  for method_a, method_b_dict in win_rates.items():
+    row = [method_a]
+    for method_b, results in method_b_dict.items():
+      row = [
+        method_a,
+        method_b,
+        results["win"],
+        results["loss"],
+        (results["win"] / (results["win"] + results["loss"])) * 100,
+      ]
+      table.append(row)
+  print(tabulate.tabulate(table, headers=headers, tablefmt="pretty"))
 
 
 @click.command("Calculate win rates for document conversion methods")
@@ -177,45 +175,40 @@ def display_win_rates_table(win_rates: dict):
 @click.option("--methods", type=str, help="List of methods to compare: comma separated like marker,mathpix")
 @click.option("--row_samples", type=int, default=2, help="Number of samples per row")
 @click.option("--max_rows", type=int, default=None, help="Maximum number of rows to process")
-def main(
-    dataset: str,
-    methods: str,
-    row_samples: int,
-    max_rows: int
-):
-    ds = datasets.load_dataset(dataset, split="train")
-    method_lst = methods.split(",")
-    win_rates = {m: defaultdict(lambda: defaultdict(int)) for m in method_lst}
-    comparer = Comparer()
-    max_rows = max_rows or len(ds)
+def main(dataset: str, methods: str, row_samples: int, max_rows: int):
+  ds = datasets.load_dataset(dataset, split="train")
+  method_lst = methods.split(",")
+  win_rates = {m: defaultdict(lambda: defaultdict(int)) for m in method_lst}
+  comparer = Comparer()
+  max_rows = max_rows or len(ds)
 
-    for i in tqdm(range(max_rows), desc="Calculating win rates..."):
-        row = ds[i]
-        # Avoid any bias in ordering
-        random.shuffle(method_lst)
+  for i in tqdm(range(max_rows), desc="Calculating win rates..."):
+    row = ds[i]
+    # Avoid any bias in ordering
+    random.shuffle(method_lst)
 
-        for j, method_a in enumerate(method_lst[:-1]):
-            for z, method_b in enumerate(method_lst[j:]):
-                if method_a == method_b:
-                    continue
+    for j, method_a in enumerate(method_lst[:-1]):
+      for z, method_b in enumerate(method_lst[j:]):
+        if method_a == method_b:
+          continue
 
-                method_a_md = row[f"{method_a}_md"]
-                method_b_md = row[f"{method_b}_md"]
-                winner = comparer(row["img"], method_a_md, method_b_md)
-                if not winner:
-                    continue
+        method_a_md = row[f"{method_a}_md"]
+        method_b_md = row[f"{method_b}_md"]
+        winner = comparer(row["img"], method_a_md, method_b_md)
+        if not winner:
+          continue
 
-                if winner == "version_a":
-                    win_rates[method_a][method_b]["win"] += 1
-                    win_rates[method_b][method_a]["loss"] += 1
-                else:
-                    win_rates[method_b][method_a]["win"] += 1
-                    win_rates[method_a][method_b]["loss"] += 1
-        if i % 10 == 0:
-            display_win_rates_table(win_rates)
+        if winner == "version_a":
+          win_rates[method_a][method_b]["win"] += 1
+          win_rates[method_b][method_a]["loss"] += 1
+        else:
+          win_rates[method_b][method_a]["win"] += 1
+          win_rates[method_a][method_b]["loss"] += 1
+    if i % 10 == 0:
+      display_win_rates_table(win_rates)
 
-    display_win_rates_table(win_rates)
+  display_win_rates_table(win_rates)
 
 
 if __name__ == "__main__":
-    main()
+  main()

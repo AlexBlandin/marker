@@ -22,27 +22,29 @@ Guidelines:
 3. Output only the HTML for the table, starting with the <table> tag and ending with the </table> tag.
 """.strip()
 
+
 class TableSchema(BaseModel):
-    table_html: str
+  table_html: str
+
 
 def gemini_table_rec(image: Image.Image):
-    client = genai.Client(
-        api_key=settings.GOOGLE_API_KEY,
-        http_options={"timeout": 60000}
-    )
+  client = genai.Client(api_key=settings.GOOGLE_API_KEY, http_options={"timeout": 60000})
 
-    image_bytes = BytesIO()
-    image.save(image_bytes, format="PNG")
+  image_bytes = BytesIO()
+  image.save(image_bytes, format="PNG")
 
-    responses = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=[types.Part.from_bytes(data=image_bytes.getvalue(), mime_type="image/png"), prompt],  # According to gemini docs, it performs better if the image is the first element
-        config={
-            "temperature": 0,
-            "response_schema": TableSchema,
-            "response_mime_type": "application/json",
-        },
-    )
+  responses = client.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=[
+      types.Part.from_bytes(data=image_bytes.getvalue(), mime_type="image/png"),
+      prompt,
+    ],  # According to gemini docs, it performs better if the image is the first element
+    config={
+      "temperature": 0,
+      "response_schema": TableSchema,
+      "response_mime_type": "application/json",
+    },
+  )
 
-    output = responses.candidates[0].content.parts[0].text
-    return json.loads(output)["table_html"]
+  output = responses.candidates[0].content.parts[0].text
+  return json.loads(output)["table_html"]

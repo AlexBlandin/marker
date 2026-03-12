@@ -6,18 +6,18 @@ from marker.renderers.markdown import MarkdownRenderer
 @pytest.mark.config({"page_range": [0]})
 @pytest.mark.filename("A17_FlightPlan.pdf")
 def test_disable_extract_images(pdf_document):
-    renderer = MarkdownRenderer({"extract_images": False})
-    md = renderer(pdf_document).markdown
+  renderer = MarkdownRenderer({"extract_images": False})
+  md = renderer(pdf_document).markdown
 
-    # Verify markdown
-    assert "jpeg" not in md
+  # Verify markdown
+  assert "jpeg" not in md
 
 
 @pytest.mark.config({"page_range": [0]})
 @pytest.mark.filename("A17_FlightPlan.pdf")
 def test_extract_images(pdf_document):
-    renderer = MarkdownRenderer()
-    md = renderer(pdf_document).markdown
+  renderer = MarkdownRenderer()
+  md = renderer(pdf_document).markdown
 
-    # Verify markdown
-    assert "jpeg" in md
+  # Verify markdown
+  assert "jpeg" in md

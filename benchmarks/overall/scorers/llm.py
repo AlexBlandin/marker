@@ -87,74 +87,65 @@ Output
 comparison_keys = ["comparison"]
 description_keys = ["image_description", "markdown_description"]
 text_keys = comparison_keys + description_keys
-score_keys = ["overall", "text", "formatting", "section_headers", "tables", "forms", "equations",
-            "lists", "images"]
+score_keys = ["overall", "text", "formatting", "section_headers", "tables", "forms", "equations", "lists", "images"]
 
 
 class LLMScorer(BaseScorer):
-    def __call__(self, sample, gt_markdown: List[str], markdown: str) -> BlockScores:
-        pdf_bytes = sample["pdf"]
-        with tempfile.NamedTemporaryFile(suffix=".pdf") as f:
-            f.write(pdf_bytes)
-            f.flush()
-            f.seek(0)
-            doc = pdfium.PdfDocument(f.name)
-            img = doc[0].render(scale=96/72).to_pil()
-            doc.close()
+  def __call__(self, sample, gt_markdown: List[str], markdown: str) -> BlockScores:
+    pdf_bytes = sample["pdf"]
+    with tempfile.NamedTemporaryFile(suffix=".pdf") as f:
+      f.write(pdf_bytes)
+      f.flush()
+      f.seek(0)
+      doc = pdfium.PdfDocument(f.name)
+      img = doc[0].render(scale=96 / 72).to_pil()
+      doc.close()
 
-        return self.llm_rater(img, markdown)
+    return self.llm_rater(img, markdown)
 
+  def llm_rater(self, img: Image.Image, markdown: str) -> BlockScores:
+    if not markdown:
+      null_scores = {k: 1 for k in score_keys}
+      text_scores = {k: "" for k in text_keys}
+      null_scores.update(text_scores)
+      return {"score": 1, "specific_scores": null_scores}
+    req_keys = text_keys + score_keys
+    properties = {}
+    for key in req_keys:
+      content_type = "INTEGER" if key in score_keys else "STRING"
+      properties[key] = {"type": content_type}
 
-    def llm_rater(self, img: Image.Image, markdown: str) -> BlockScores:
-        if not markdown:
-            null_scores = {k: 1 for k in score_keys}
-            text_scores = {k: "" for k in text_keys}
-            null_scores.update(text_scores)
-            return {
-                "score": 1,
-                "specific_scores": null_scores
-            }
-        req_keys = text_keys + score_keys
-        properties = {}
-        for key in req_keys:
-            content_type = "INTEGER" if key in score_keys else "STRING"
-            properties[key] = {"type": content_type}
+    response_schema = {"required": req_keys, "properties": properties, "type": "OBJECT"}
+    prompt = rating_prompt.replace("{{markdown}}", markdown)
+    response = self.llm_response_wrapper([img, prompt], response_schema)
+    assert all([k in response for k in req_keys]), f"Missing keys in response: {response}"
+    return {
+      "score": response["overall"],
+      "specific_scores": response,
+    }
 
-        response_schema = {
-            "required": req_keys,
-            "properties": properties,
-            "type": "OBJECT"
-        }
-        prompt = rating_prompt.replace("{{markdown}}", markdown)
-        response = self.llm_response_wrapper([img, prompt], response_schema)
-        assert all([k in response for k in req_keys]), f"Missing keys in response: {response}"
-        return {
-            "score": response["overall"],
-            "specific_scores": response,
-        }
-
-    def llm_response_wrapper(self, prompt, response_schema, depth=0):
-        client = genai.Client(
-            http_options={"timeout": 60000},
-            vertexai=True,
-            project=os.getenv("VERTEX_PROJECT_ID"),
-            location=os.getenv("VERTEX_LOCATION"),
-        )
-        try:
-            responses = client.models.generate_content(
-                model="gemini-2.0-flash-001",
-                contents=prompt,
-                config={
-                    "temperature": 0,
-                    "response_schema": response_schema,
-                    "response_mime_type": "application/json",
-                },
-            )
-            output = responses.candidates[0].content.parts[0].text
-            return json.loads(output)
-        except APIError as e:
-            print(f"Hit Gemini rate limit, waiting 120 seconds")
-            time.sleep(120)
-            if depth > 2:
-                raise e
-            return self.llm_response_wrapper(prompt, response_schema, depth + 1)
+  def llm_response_wrapper(self, prompt, response_schema, depth=0):
+    client = genai.Client(
+      http_options={"timeout": 60000},
+      vertexai=True,
+      project=os.getenv("VERTEX_PROJECT_ID"),
+      location=os.getenv("VERTEX_LOCATION"),
+    )
+    try:
+      responses = client.models.generate_content(
+        model="gemini-2.0-flash-001",
+        contents=prompt,
+        config={
+          "temperature": 0,
+          "response_schema": response_schema,
+          "response_mime_type": "application/json",
+        },
+      )
+      output = responses.candidates[0].content.parts[0].text
+      return json.loads(output)
+    except APIError as e:
+      print(f"Hit Gemini rate limit, waiting 120 seconds")
+      time.sleep(120)
+      if depth > 2:
+        raise e
+      return self.llm_response_wrapper(prompt, response_schema, depth + 1)

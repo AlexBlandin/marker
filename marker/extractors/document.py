@@ -11,21 +11,21 @@ logger = get_logger()
 
 
 class DocumentExtractionSchema(BaseModel):
-    analysis: str
-    document_json: str
+  analysis: str
+  document_json: str
 
 
 class DocumentExtractor(BaseExtractor):
-    """
-    An extractor that combines data from across all pages.
-    """
+  """
+  An extractor that combines data from across all pages.
+  """
 
-    page_schema: Annotated[
-        str,
-        "The JSON schema to be extracted from the page.",
-    ] = ""
+  page_schema: Annotated[
+    str,
+    "The JSON schema to be extracted from the page.",
+  ] = ""
 
-    page_extraction_prompt = """You are an expert document analyst who reads documents and pulls data out in JSON format. You will receive your detailed notes from all the pages of a document, and a JSON schema that we want to extract from the document. Your task is to extract all the information properly into the JSON schema.
+  page_extraction_prompt = """You are an expert document analyst who reads documents and pulls data out in JSON format. You will receive your detailed notes from all the pages of a document, and a JSON schema that we want to extract from the document. Your task is to extract all the information properly into the JSON schema.
 
 Some notes:
 - The schema may contain a single object to extract from the entire document, or an array of objects. 
@@ -103,44 +103,40 @@ Schema
 ```
 """
 
-    def assemble_document_notes(self, page_notes: List[PageExtractionSchema]) -> str:
-        notes = ""
-        for i, page_schema in enumerate(page_notes):
-            if not page_notes:
-                continue
-            notes += f"Page {i + 1}\n{page_schema.detailed_notes}\n\n"
-        return notes.strip()
+  def assemble_document_notes(self, page_notes: List[PageExtractionSchema]) -> str:
+    notes = ""
+    for i, page_schema in enumerate(page_notes):
+      if not page_notes:
+        continue
+      notes += f"Page {i + 1}\n{page_schema.detailed_notes}\n\n"
+    return notes.strip()
 
-    def __call__(
-        self,
-        page_notes: List[PageExtractionSchema],
-        **kwargs,
-    ) -> Optional[DocumentExtractionSchema]:
-        if not self.page_schema:
-            raise ValueError(
-                "Page schema must be defined for structured extraction to work."
-            )
+  def __call__(
+    self,
+    page_notes: List[PageExtractionSchema],
+    **kwargs,
+  ) -> Optional[DocumentExtractionSchema]:
+    if not self.page_schema:
+      raise ValueError("Page schema must be defined for structured extraction to work.")
 
-        prompt = self.page_extraction_prompt.replace(
-            "{{document_notes}}", self.assemble_document_notes(page_notes)
-        ).replace("{{schema}}", json.dumps(self.page_schema))
-        response = self.llm_service(prompt, None, None, DocumentExtractionSchema)
+    prompt = self.page_extraction_prompt.replace(
+      "{{document_notes}}", self.assemble_document_notes(page_notes)
+    ).replace("{{schema}}", json.dumps(self.page_schema))
+    response = self.llm_service(prompt, None, None, DocumentExtractionSchema)
 
-        logger.debug(f"Document extraction response: {response}")
+    logger.debug(f"Document extraction response: {response}")
 
-        if not response or any(
-            [
-                key not in response
-                for key in [
-                    "analysis",
-                    "document_json",
-                ]
-            ]
-        ):
-            return None
+    if not response or any(
+      [
+        key not in response
+        for key in [
+          "analysis",
+          "document_json",
+        ]
+      ]
+    ):
+      return None
 
-        json_data = response["document_json"].strip().lstrip("```json").rstrip("```")
+    json_data = response["document_json"].strip().lstrip("```json").rstrip("```")
 
-        return DocumentExtractionSchema(
-            analysis=response["analysis"], document_json=json_data
-        )
+    return DocumentExtractionSchema(analysis=response["analysis"], document_json=json_data)

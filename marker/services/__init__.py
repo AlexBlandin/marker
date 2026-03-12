@@ -1,3 +1,4 @@
+import re
 from typing import Optional, List, Annotated
 from io import BytesIO
 
@@ -10,46 +11,50 @@ import base64
 
 
 class BaseService:
-    timeout: Annotated[int, "The timeout to use for the service."] = 30
-    max_retries: Annotated[
-        int, "The maximum number of retries to use for the service."
-    ] = 2
-    retry_wait_time: Annotated[int, "The wait time between retries."] = 3
-    max_output_tokens: Annotated[
-        int, "The maximum number of output tokens to generate."
-    ] = None
+  timeout: Annotated[int, "The timeout to use for the service."] = 30
+  max_retries: Annotated[int, "The maximum number of retries to use for the service."] = 2
+  retry_wait_time: Annotated[int, "The wait time between retries."] = 3
+  max_output_tokens: Annotated[int, "The maximum number of output tokens to generate."] = None
 
-    def img_to_base64(self, img: PIL.Image.Image, format: str = "WEBP"):
-        image_bytes = BytesIO()
-        img.save(image_bytes, format=format)
-        return base64.b64encode(image_bytes.getvalue()).decode("utf-8")
+  def img_to_base64(self, img: PIL.Image.Image, format: str = "WEBP"):
+    image_bytes = BytesIO()
+    img.save(image_bytes, format=format)
+    return base64.b64encode(image_bytes.getvalue()).decode("utf-8")
 
-    def process_images(self, images: List[PIL.Image.Image]) -> list:
-        raise NotImplementedError
+  def process_images(self, images: List[PIL.Image.Image]) -> list:
+    raise NotImplementedError
 
-    def format_image_for_llm(self, image):
-        if not image:
-            return []
+  def format_image_for_llm(self, image):
+    if not image:
+      return []
 
-        if not isinstance(image, list):
-            image = [image]
+    if not isinstance(image, list):
+      image = [image]
 
-        image_parts = self.process_images(image)
-        return image_parts
+    image_parts = self.process_images(image)
+    return image_parts
 
-    def __init__(self, config: Optional[BaseModel | dict] = None):
-        assign_config(self, config)
+  def __init__(self, config: Optional[BaseModel | dict] = None):
+    assign_config(self, config)
 
-        # Ensure we have all necessary fields filled out (API keys, etc.)
-        verify_config_keys(self)
+    # Ensure we have all necessary fields filled out (API keys, etc.)
+    verify_config_keys(self)
 
-    def __call__(
-        self,
-        prompt: str,
-        image: PIL.Image.Image | List[PIL.Image.Image] | None,
-        block: Block | None,
-        response_schema: type[BaseModel],
-        max_retries: int | None = None,
-        timeout: int | None = None,
-    ):
-        raise NotImplementedError
+  @staticmethod
+  def strip_thinking_tags(text: str) -> str:
+    """Strip <think>...</think> reasoning blocks from model output."""
+    if not text:
+      return text
+    stripped = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+    return stripped if stripped else text
+
+  def __call__(
+    self,
+    prompt: str,
+    image: PIL.Image.Image | List[PIL.Image.Image] | None,
+    block: Block | None,
+    response_schema: type[BaseModel],
+    max_retries: int | None = None,
+    timeout: int | None = None,
+  ):
+    raise NotImplementedError

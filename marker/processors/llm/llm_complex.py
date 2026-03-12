@@ -10,8 +10,8 @@ from marker.schema.document import Document
 
 
 class LLMComplexRegionProcessor(BaseLLMSimpleBlockProcessor):
-    block_types = (BlockTypes.ComplexRegion,)
-    complex_region_prompt = """You are a text correction expert specializing in accurately reproducing text from images.
+  block_types = (BlockTypes.ComplexRegion,)
+  complex_region_prompt = """You are a text correction expert specializing in accurately reproducing text from images.
 You will receive an image of a text block and the text that can be extracted from the image.
 Your task is to generate markdown to properly represent the content of the image.  Do not omit any text present in the image - make sure everything is included in the markdown representation.  The markdown representation should be as faithful to the original image as possible.
 
@@ -51,43 +51,40 @@ Output:
 ```
 """
 
-    def block_prompts(self, document: Document) -> List[PromptData]:
-        prompt_data = []
-        for block in self.inference_blocks(document):
-            text = block["block"].raw_text(document)
-            prompt = self.complex_region_prompt.replace("{extracted_text}", text)
-            image = self.extract_image(document, block["block"])
-            prompt_data.append({
-                "prompt": prompt,
-                "image": image,
-                "block": block["block"],
-                "schema": ComplexSchema,
-                "page": block["page"]
-            })
-        return prompt_data
+  def block_prompts(self, document: Document) -> List[PromptData]:
+    prompt_data = []
+    for block in self.inference_blocks(document):
+      text = block["block"].raw_text(document)
+      prompt = self.complex_region_prompt.replace("{extracted_text}", text)
+      image = self.extract_image(document, block["block"])
+      prompt_data.append(
+        {"prompt": prompt, "image": image, "block": block["block"], "schema": ComplexSchema, "page": block["page"]}
+      )
+    return prompt_data
 
-    def rewrite_block(self, response: dict, prompt_data: PromptData, document: Document):
-        block = prompt_data["block"]
-        text = block.raw_text(document)
+  def rewrite_block(self, response: dict, prompt_data: PromptData, document: Document):
+    block = prompt_data["block"]
+    text = block.raw_text(document)
 
-        if not response or "corrected_markdown" not in response:
-            block.update_metadata(llm_error_count=1)
-            return
+    if not response or "corrected_markdown" not in response:
+      block.update_metadata(llm_error_count=1)
+      return
 
-        corrected_markdown = response["corrected_markdown"]
+    corrected_markdown = response["corrected_markdown"]
 
-        # The original table is okay
-        if "no corrections" in corrected_markdown.lower():
-            return
+    # The original table is okay
+    if "no corrections" in corrected_markdown.lower():
+      return
 
-        # Potentially a partial response
-        if len(corrected_markdown) < len(text) * .5:
-            block.update_metadata(llm_error_count=1)
-            return
+    # Potentially a partial response
+    if len(corrected_markdown) < len(text) * 0.5:
+      block.update_metadata(llm_error_count=1)
+      return
 
-        # Convert LLM markdown to html
-        corrected_markdown = corrected_markdown.strip().lstrip("```markdown").rstrip("```").strip()
-        block.html = markdown2.markdown(corrected_markdown, extras=["tables"])
+    # Convert LLM markdown to html
+    corrected_markdown = corrected_markdown.strip().lstrip("```markdown").rstrip("```").strip()
+    block.html = markdown2.markdown(corrected_markdown, extras=["tables"])
+
 
 class ComplexSchema(BaseModel):
-    corrected_markdown: str
+  corrected_markdown: str

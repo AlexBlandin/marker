@@ -91,7 +91,11 @@ class LMStudioService(BaseService):
           timeout=timeout,
           response_format=response_format,
         )
-        response_text = response.choices[0].message.content
+        message = response.choices[0].message
+        response_text = self.strip_thinking_tags(message.content or "")
+        if not response_text:
+          # Reasoning models (Qwen3.5, DeepSeek-R1) may put output in reasoning_content
+          response_text = self.strip_thinking_tags(getattr(message, "reasoning_content", None) or "")
         total_tokens = response.usage.total_tokens
         if block:
           block.update_metadata(llm_tokens_used=total_tokens, llm_request_count=1)

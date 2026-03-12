@@ -15,26 +15,24 @@ logger = get_logger()
 
 FORMAT_TAGS = ["b", "i", "u", "del", "math", "sub", "sup", "a", "code", "p", "img"]
 BLOCK_MAP = {
-    "Text": [],
-    "TextInlineMath": [],
-    "Table": ["table", "tbody", "tr", "td", "th"],
-    "ListGroup": ["ul", "li"],
-    "SectionHeader": [],
-    "Form": ["form", "input", "select", "textarea", "table", "tbody", "tr", "td", "th"],
-    "Figure": [],
-    "Picture": [],
-    "Code": ["pre"],
-    "TableOfContents": ["table", "tbody", "tr", "td", "th"],
+  "Text": [],
+  "TextInlineMath": [],
+  "Table": ["table", "tbody", "tr", "td", "th"],
+  "ListGroup": ["ul", "li"],
+  "SectionHeader": [],
+  "Form": ["form", "input", "select", "textarea", "table", "tbody", "tr", "td", "th"],
+  "Figure": [],
+  "Picture": [],
+  "Code": ["pre"],
+  "TableOfContents": ["table", "tbody", "tr", "td", "th"],
 }
 ALL_TAGS = FORMAT_TAGS + [tag for tags in BLOCK_MAP.values() for tag in tags]
 
 
 class LLMPageCorrectionProcessor(BaseLLMComplexBlockProcessor):
-    block_correction_prompt: Annotated[
-        str, "The user prompt to guide the block correction process."
-    ] = None
-    default_user_prompt = """Your goal is to reformat the blocks to be as correct as possible, without changing the underlying meaning of the text within the blocks.  Mostly focus on reformatting the content.  Ignore minor formatting issues like extra <i> tags."""
-    page_prompt = """You're a text correction expert specializing in accurately reproducing text from PDF pages. You will be given a JSON list of blocks on a PDF page, along with the image for that page.  The blocks will be formatted like the example below.  The blocks will be presented in reading order.
+  block_correction_prompt: Annotated[str, "The user prompt to guide the block correction process."] = None
+  default_user_prompt = """Your goal is to reformat the blocks to be as correct as possible, without changing the underlying meaning of the text within the blocks.  Mostly focus on reformatting the content.  Ignore minor formatting issues like extra <i> tags."""
+  page_prompt = """You're a text correction expert specializing in accurately reproducing text from PDF pages. You will be given a JSON list of blocks on a PDF page, along with the image for that page.  The blocks will be formatted like the example below.  The blocks will be presented in reading order.
 
 ```json
 [
@@ -135,171 +133,147 @@ User Prompt
 {{user_prompt}}
 """
 
-    def get_selected_blocks(
-        self,
-        document: Document,
-        page: PageGroup,
-    ) -> List[dict]:
-        selected_blocks = page.structure_blocks(document)
-        json_blocks = [
-            self.normalize_block_json(block, document, page)
-            for i, block in enumerate(selected_blocks)
-        ]
-        return json_blocks
+  def get_selected_blocks(
+    self,
+    document: Document,
+    page: PageGroup,
+  ) -> List[dict]:
+    selected_blocks = page.structure_blocks(document)
+    json_blocks = [self.normalize_block_json(block, document, page) for i, block in enumerate(selected_blocks)]
+    return json_blocks
 
-    def process_rewriting(self, document: Document, page1: PageGroup):
-        page_blocks = self.get_selected_blocks(document, page1)
-        image = page1.get_image(document, highres=False)
+  def process_rewriting(self, document: Document, page1: PageGroup):
+    page_blocks = self.get_selected_blocks(document, page1)
+    image = page1.get_image(document, highres=False)
 
-        prompt = (
-            self.page_prompt.replace("{{page_json}}", json.dumps(page_blocks))
-            .replace("{{format_tags}}", json.dumps(ALL_TAGS))
-            .replace("{{user_prompt}}", self.block_correction_prompt)
+    prompt = (
+      self.page_prompt.replace("{{page_json}}", json.dumps(page_blocks))
+      .replace("{{format_tags}}", json.dumps(ALL_TAGS))
+      .replace("{{user_prompt}}", self.block_correction_prompt)
+    )
+    response = self.llm_service(prompt, image, page1, PageSchema)
+    logger.debug(f"Got reponse from LLM: {response}")
+
+    if not response or "correction_type" not in response:
+      logger.warning("LLM did not return a valid response")
+      return
+
+    correction_type = response["correction_type"]
+    if correction_type == "no_corrections":
+      return
+    elif correction_type in ["reorder", "reorder_first"]:
+      self.load_blocks(response)
+      self.handle_reorder(response["blocks"], page1)
+
+      # If we needed to reorder first, we will handle the rewriting next
+      if correction_type == "reorder_first":
+        self.process_rewriting(document, page1)
+    elif correction_type == "rewrite":
+      self.load_blocks(response)
+      self.handle_rewrites(response["blocks"], document)
+    else:
+      logger.warning(f"Unknown correction type: {correction_type}")
+      return
+
+  def load_blocks(self, response):
+    if isinstance(response["blocks"], str):
+      response["blocks"] = json.loads(response["blocks"])
+
+  def handle_reorder(self, blocks: list, page1: PageGroup):
+    unique_page_ids = set()
+    document_page_ids = [str(page1.page_id)]
+    document_pages = [page1]
+
+    for block_data in blocks:
+      try:
+        page_id, _, _ = block_data["id"].split("/")
+        unique_page_ids.add(page_id)
+      except Exception as e:
+        logger.debug(f"Error parsing block ID {block_data['id']}: {e}")
+        continue
+
+    if set(document_page_ids) != unique_page_ids:
+      logger.debug("Some page IDs in the response do not match the document's pages")
+      return
+
+    for page_id, document_page in zip(unique_page_ids, document_pages):
+      block_ids_for_page = []
+      for block_data in blocks:
+        try:
+          page_id, block_type, block_id = block_data["id"].split("/")
+          block_id = BlockId(
+            page_id=page_id,
+            block_id=block_id,
+            block_type=getattr(BlockTypes, block_type),
+          )
+          block_ids_for_page.append(block_id)
+        except Exception as e:
+          logger.debug(f"Error parsing block ID {block_data['id']}: {e}")
+          continue
+
+        # Both sides should have the same values, just be reordered
+        if not all([block_id in document_page.structure for block_id in block_ids_for_page]):
+          logger.debug(f"Some blocks for page {page_id} not found in document")
+          continue
+
+        if not all([block_id in block_ids_for_page for block_id in document_page.structure]):
+          logger.debug(f"Some blocks in document page {page_id} not found in response")
+          continue
+
+        # Swap the order of blocks in the document page
+        document_page.structure = block_ids_for_page
+
+  def handle_rewrites(self, blocks: list, document: Document):
+    for block_data in blocks:
+      try:
+        block_id = block_data["id"].strip().lstrip("/")
+        _, page_id, block_type, block_id = block_id.split("/")
+        block_id = BlockId(
+          page_id=page_id,
+          block_id=block_id,
+          block_type=getattr(BlockTypes, block_type),
         )
-        response = self.llm_service(prompt, image, page1, PageSchema)
-        logger.debug(f"Got reponse from LLM: {response}")
+        block = document.get_block(block_id)
+        if not block:
+          logger.debug(f"Block {block_id} not found in document")
+          continue
 
-        if not response or "correction_type" not in response:
-            logger.warning("LLM did not return a valid response")
-            return
+        if hasattr(block, "html"):
+          block.html = block_data["html"]
+      except Exception as e:
+        logger.debug(f"Error parsing block ID {block_data['id']}: {e}")
+        continue
 
-        correction_type = response["correction_type"]
-        if correction_type == "no_corrections":
-            return
-        elif correction_type in ["reorder", "reorder_first"]:
-            self.load_blocks(response)
-            self.handle_reorder(response["blocks"], page1)
+  def rewrite_blocks(self, document: Document):
+    if not self.block_correction_prompt:
+      return
 
-            # If we needed to reorder first, we will handle the rewriting next
-            if correction_type == "reorder_first":
-                self.process_rewriting(document, page1)
-        elif correction_type == "rewrite":
-            self.load_blocks(response)
-            self.handle_rewrites(response["blocks"], document)
-        else:
-            logger.warning(f"Unknown correction type: {correction_type}")
-            return
+    # Don't show progress if there are no blocks to process
+    total_blocks = len(document.pages)
+    if total_blocks == 0:
+      return
 
-    def load_blocks(self, response):
-        if isinstance(response["blocks"], str):
-            response["blocks"] = json.loads(response["blocks"])
+    pbar = tqdm(
+      total=max(1, total_blocks - 1),
+      desc=f"{self.__class__.__name__} running",
+      disable=self.disable_tqdm,
+    )
 
-    def handle_reorder(self, blocks: list, page1: PageGroup):
-        unique_page_ids = set()
-        document_page_ids = [str(page1.page_id)]
-        document_pages = [page1]
+    with ThreadPoolExecutor(max_workers=self.max_concurrency) as executor:
+      for future in as_completed([executor.submit(self.process_rewriting, document, page) for page in document.pages]):
+        future.result()  # Raise exceptions if any occurred
+        pbar.update(1)
 
-        for block_data in blocks:
-            try:
-                page_id, _, _ = block_data["id"].split("/")
-                unique_page_ids.add(page_id)
-            except Exception as e:
-                logger.debug(f"Error parsing block ID {block_data['id']}: {e}")
-                continue
-
-        if set(document_page_ids) != unique_page_ids:
-            logger.debug(
-                "Some page IDs in the response do not match the document's pages"
-            )
-            return
-
-        for page_id, document_page in zip(unique_page_ids, document_pages):
-            block_ids_for_page = []
-            for block_data in blocks:
-                try:
-                    page_id, block_type, block_id = block_data["id"].split("/")
-                    block_id = BlockId(
-                        page_id=page_id,
-                        block_id=block_id,
-                        block_type=getattr(BlockTypes, block_type),
-                    )
-                    block_ids_for_page.append(block_id)
-                except Exception as e:
-                    logger.debug(f"Error parsing block ID {block_data['id']}: {e}")
-                    continue
-
-                # Both sides should have the same values, just be reordered
-                if not all(
-                    [
-                        block_id in document_page.structure
-                        for block_id in block_ids_for_page
-                    ]
-                ):
-                    logger.debug(
-                        f"Some blocks for page {page_id} not found in document"
-                    )
-                    continue
-
-                if not all(
-                    [
-                        block_id in block_ids_for_page
-                        for block_id in document_page.structure
-                    ]
-                ):
-                    logger.debug(
-                        f"Some blocks in document page {page_id} not found in response"
-                    )
-                    continue
-
-                # Swap the order of blocks in the document page
-                document_page.structure = block_ids_for_page
-
-    def handle_rewrites(self, blocks: list, document: Document):
-        for block_data in blocks:
-            try:
-                block_id = block_data["id"].strip().lstrip("/")
-                _, page_id, block_type, block_id = block_id.split("/")
-                block_id = BlockId(
-                    page_id=page_id,
-                    block_id=block_id,
-                    block_type=getattr(BlockTypes, block_type),
-                )
-                block = document.get_block(block_id)
-                if not block:
-                    logger.debug(f"Block {block_id} not found in document")
-                    continue
-
-                if hasattr(block, "html"):
-                    block.html = block_data["html"]
-            except Exception as e:
-                logger.debug(f"Error parsing block ID {block_data['id']}: {e}")
-                continue
-
-    def rewrite_blocks(self, document: Document):
-        if not self.block_correction_prompt:
-            return
-
-        # Don't show progress if there are no blocks to process
-        total_blocks = len(document.pages)
-        if total_blocks == 0:
-            return
-
-        pbar = tqdm(
-            total=max(1, total_blocks - 1),
-            desc=f"{self.__class__.__name__} running",
-            disable=self.disable_tqdm,
-        )
-
-        with ThreadPoolExecutor(max_workers=self.max_concurrency) as executor:
-            for future in as_completed(
-                [
-                    executor.submit(self.process_rewriting, document, page)
-                    for page in document.pages
-                ]
-            ):
-                future.result()  # Raise exceptions if any occurred
-                pbar.update(1)
-
-        pbar.close()
+    pbar.close()
 
 
 class BlockSchema(BaseModel):
-    id: str
-    html: str
-    block_type: str
+  id: str
+  html: str
+  block_type: str
 
 
 class PageSchema(BaseModel):
-    analysis: str
-    correction_type: str
-    blocks: List[BlockSchema]
+  analysis: str
+  correction_type: str
+  blocks: List[BlockSchema]
