@@ -32,12 +32,12 @@ Paste stack trace here
 
 Please fill in all relevant details:
 
-- **Marker version**: 
-- **Surya version**: 
-- **Python version**: 
-- **PyTorch version**: 
-- **Transformers version**: 
-- **Operating System** (incl. container info if relevant): 
+- **Marker version**:
+- **Surya version**:
+- **Python version**:
+- **PyTorch version**:
+- **Transformers version**:
+- **Operating System** (incl. container info if relevant):
 
 ## ✅ Expected Behavior
 

@@ -1,6 +1,6 @@
 # An Aggregated Multicolumn Dilated Convolution Network for Perspective-Free Counting
 
-Diptodip Deb Georgia Institute of Technology diptodipdeb@gatech.edu
+Diptodip Deb Georgia Institute of Technology <diptodipdeb@gatech.edu>
 
 # Abstract
 
@@ -14,7 +14,7 @@ Lempitsky et al. [\[15\]](#page-8-3) showed that it is possible to learn to coun
 
 However, in many counting problems, such as those
 
-Jonathan Ventura University of Colorado Colorado Springs jventura@uccs.edu
+Jonathan Ventura University of Colorado Colorado Springs <jventura@uccs.edu>
 
 counting cells in a microscope image, pedestrians in a crowd, or vehicles in a traffic jam, regressors trained on a single image scale are not reliable [\[18\]](#page-8-4). This is due to a variety of challenges including overlap of objects and perspective effects which cause significant variance in object shape, size and appearance.
 

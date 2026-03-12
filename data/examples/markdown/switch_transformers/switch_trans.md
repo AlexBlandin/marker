@@ -2,15 +2,15 @@
 
 ### William Fedus∗
 
-liamfedus@google.com
+<liamfedus@google.com>
 
 ### Barret Zoph∗
 
-barretzoph@google.com
+<barretzoph@google.com>
 
 #### Noam Shazeer
 
-noam@google.com Google, Mountain View, CA 94043, USA
+<noam@google.com> Google, Mountain View, CA 94043, USA
 
 Editor: Alexander Clark
 
@@ -110,6 +110,7 @@ The benefits for the Switch layer are three-fold: (1) The router computation is 
 ![](_page_5_Figure_3.jpeg)
 
 - <span id="page-5-2"></span>Figure 3: Illustration of token routing dynamics. Each expert processes a fixed batch-size of tokens modulated by the capacity factor. Each token is routed to the expert with the highest router probability, but each expert has a fixed batch size of (total_tokens / num_experts) × capacity_factor. If the tokens are unevenly dispatched then certain experts will overflow (denoted by dotted red lines), resulting in these tokens not being processed by this layer. A larger capacity factor alleviates this overflow issue, but also increases computation and communication costs (depicted by padded white/empty slots).
+
 ### <span id="page-5-0"></span>2.2 Efficient Sparse Routing
 
 We use Mesh-Tensorflow (MTF) [(Shazeer et al.,](#page-38-3) [2018)](#page-38-3) which is a library, with similar semantics and API to Tensorflow [(Abadi et al.,](#page-35-3) [2016)](#page-35-3) that facilitates efficient distributed data and model parallel architectures. It does so by abstracting the physical set of cores to a logical mesh of processors. Tensors and computations may then be sharded per named dimensions, facilitating easy partitioning of models across dimensions. We design our model with TPUs in mind, which require statically declared sizes. Below we describe our distributed Switch Transformer implementation.
@@ -120,7 +121,7 @@ Distributed Switch Implementation. All of our tensor shapes are statically deter
 
 $$\text{expected capacity} = \left(\frac{\text{tokens per batch}}{\text{number of experts}}\right) \times \text{capacity factor}.\tag{3}$$
 
-A capacity factor greater than 1.0 creates additional buffer to accommodate for when tokens are not perfectly balanced across experts. If too many tokens are routed to an expert (referred to later as dropped tokens), computation is skipped and the token representation is passed directly to the next layer through the residual connection. Increasing the expert capacity is not without drawbacks, however, since high values will result in wasted computation and memory. This trade-off is explained in Figure [3.](#page-5-2) Empirically we find ensuring lower rates of dropped tokens are important for the scaling of sparse expert-models. Throughout our experiments we didn't notice any dependency on the number of experts for the number of tokens dropped (typically $< 1%$). Using the auxiliary load balancing loss (next section) with a high enough coefficient ensured good load balancing. We study the impact that these design decisions have on model quality and speed in Table [1.](#page-8-0) 
+A capacity factor greater than 1.0 creates additional buffer to accommodate for when tokens are not perfectly balanced across experts. If too many tokens are routed to an expert (referred to later as dropped tokens), computation is skipped and the token representation is passed directly to the next layer through the residual connection. Increasing the expert capacity is not without drawbacks, however, since high values will result in wasted computation and memory. This trade-off is explained in Figure [3.](#page-5-2) Empirically we find ensuring lower rates of dropped tokens are important for the scaling of sparse expert-models. Throughout our experiments we didn't notice any dependency on the number of experts for the number of tokens dropped (typically $< 1%$). Using the auxiliary load balancing loss (next section) with a high enough coefficient ensured good load balancing. We study the impact that these design decisions have on model quality and speed in Table [1.](#page-8-0)
 
 A Differentiable Load Balancing Loss. To encourage a balanced load across experts we add an auxiliary loss (Shazeer et al., 2017, 2018; Lepikhin et al., 2020). As in Shazeer et al. (2018); Lepikhin et al. (2020), Switch Transformers simplifies the original design in Shazeer et al. (2017) which had separate load-balancing and importance-weighting losses. For each Switch layer, this auxiliary loss is added to the total model loss during training. Given $N$ experts indexed by $i = 1$ to $N$ and a batch $\mathcal{B}$ with $T$ tokens, the auxiliary loss is computed as the scaled dot-product between vectors $f$ and $P$,
 
@@ -226,6 +227,7 @@ Figure [4](#page-11-1) demonstrates consistent scaling benefits with the number 
 ![](_page_11_Figure_4.jpeg)
 
 - <span id="page-11-1"></span>Figure 4: Scaling properties of the Switch Transformer. Left Plot: We measure the quality improvement, as measured by perplexity, as the parameters increase by scaling the number of experts. The top-left point corresponds to the T5-Base model with 223M parameters. Moving from top-left to bottom-right, we double the number of experts from 2, 4, 8 and so on until the bottom-right point of a 256 expert model with 14.7B parameters. Despite all models using an equal computational budget, we observe consistent improvements scaling the number of experts. Right Plot: Negative log perplexity per step sweeping over the number of experts. The dense baseline is shown with the purple line and we note improved sample efficiency of our Switch-Base models.
+
 #### <span id="page-12-0"></span>3.2 Scaling Results on a Time-Basis
 
 Figure [4](#page-11-1) demonstrates that on a step basis, as we increase the number of experts, the performance consistently improves. While our models have roughly the same amount of FLOPS per token as the baseline, our Switch Transformers incurs additional communication costs across devices as well as the extra computation of the routing mechanism. Therefore, the increased sample efficiency observed on a step-basis doesn't necessarily translate to a better model quality as measured by wall-clock. This raises the question:
@@ -379,6 +381,7 @@ We now consider a scenario where all cores are allocated exclusively to the mode
 ![](_page_20_Figure_4.jpeg)
 
 - <span id="page-20-1"></span>Figure 9: Data and weight partitioning strategies. Each 4×4 dotted-line grid represents 16 cores and the shaded squares are the data contained on that core (either model weights or batch of tokens). We illustrate both how the model weights and the data tensors are split for each strategy. First Row: illustration of how model weights are split across the cores. Shapes of different sizes in this row represent larger weight matrices in the Feed Forward Network (FFN) layers (e.g larger $d_{ff}$ sizes). Each color of the shaded squares identifies a unique weight matrix. The number of parameters per core is fixed, but larger weight matrices will apply more computation to each token. Second Row: illustration of how the data batch is split across cores. Each core holds the same number of tokens which maintains a fixed memory usage across all strategies. The partitioning strategies have different properties of allowing each core to either have the same tokens or different tokens across cores, which is what the different colors symbolize.
+
 #### <span id="page-20-0"></span>5.3 Model and Data Parallelism
 
 It is common to mix both model and data parallelism for large scale models, which was done in the largest T5 models [(Raffel et al.,](#page-37-0) [2019;](#page-37-0) [Xue et al.,](#page-39-2) [2020)](#page-39-2) and in GPT-3 [(Brown et al.,](#page-35-0) [2020)](#page-35-0). With a total of $N = n \times m$ cores, now each core will be responsible for $B/n$ tokens and $d_{ff}/m$ of both the weights and intermediate activation. In the forward and backward pass each core communicates a tensor of size $[B/n, d_{model}]$ in an all-reduce operation.
@@ -468,14 +471,14 @@ Why aren't sparse models widely used already? The motivation to try sparse model
 This paper lays out a simplified architecture, improved training procedures, and a study of how sparse models scale. However, there remain many open future directions which we briefly describe here:
 
 - 1. A significant challenge is further improving training stability for the largest models. While our stability techniques were effective for our Switch-Base, Switch-Large and Switch-C models (no observed instability), they were not sufficient for Switch-XXL. We have taken early steps towards stabilizing these models, which we think may be generally useful for large models, including using regularizers for improving stability and adapted forms of gradient clipping, but this remains unsolved.
-- 2. Generally we find that improved pre-training quality leads to better downstream results (Appendix [E)](#page-31-0), though we sometimes encounter striking anomalies. For instance, despite similar perplexities modeling the C4 data set, the 1.6T parameter Switch-C achieves only an 87.7 exact match score in SQuAD, which compares unfavorably to 89.6 for the smaller Switch-XXL model. One notable difference is that the Switch-XXL model applies ≈10x the FLOPS per token than the Switch-C model, even though it has ≈4x less unique parameters (395B vs 1.6T). This suggests a poorly understood dependence between fine-tuning quality, FLOPS per token and number of parameters.
-- 3. Perform a comprehensive study of scaling relationships to guide the design of architectures blending data, model and expert-parallelism. Ideally, given the specs of a hardware configuration (computation, memory, communication) one could more rapidly design an optimal model. And, vice versa, this may also help in the design of future hardware.
-- 4. Our work falls within the family of adaptive computation algorithms. Our approach always used identical, homogeneous experts, but future designs (facilitated by more flexible infrastructure) could support heterogeneous experts. This would enable more flexible adaptation by routing to larger experts when more computation is desired perhaps for harder examples.
-- 5. Investigating expert layers outside the FFN layer of the Transformer. We find preliminary evidence that this similarly can improve model quality. In Appendix [A,](#page-26-1) we report quality improvement adding these inside Self-Attention layers, where our
+- 1. Generally we find that improved pre-training quality leads to better downstream results (Appendix [E)](#page-31-0), though we sometimes encounter striking anomalies. For instance, despite similar perplexities modeling the C4 data set, the 1.6T parameter Switch-C achieves only an 87.7 exact match score in SQuAD, which compares unfavorably to 89.6 for the smaller Switch-XXL model. One notable difference is that the Switch-XXL model applies ≈10x the FLOPS per token than the Switch-C model, even though it has ≈4x less unique parameters (395B vs 1.6T). This suggests a poorly understood dependence between fine-tuning quality, FLOPS per token and number of parameters.
+- 1. Perform a comprehensive study of scaling relationships to guide the design of architectures blending data, model and expert-parallelism. Ideally, given the specs of a hardware configuration (computation, memory, communication) one could more rapidly design an optimal model. And, vice versa, this may also help in the design of future hardware.
+- 1. Our work falls within the family of adaptive computation algorithms. Our approach always used identical, homogeneous experts, but future designs (facilitated by more flexible infrastructure) could support heterogeneous experts. This would enable more flexible adaptation by routing to larger experts when more computation is desired perhaps for harder examples.
+- 1. Investigating expert layers outside the FFN layer of the Transformer. We find preliminary evidence that this similarly can improve model quality. In Appendix [A,](#page-26-1) we report quality improvement adding these inside Self-Attention layers, where our
 
 layer replaces the weight matrices which produce Q, K, V. However, due to training instabilities with the bfloat16 format, we instead leave this as an area for future work.
 
-- 6. Examining Switch Transformer in new and across different modalities. We have thus far only considered language, but we believe that model sparsity can similarly provide advantages in new modalities, as well as multi-modal networks.
+- 1. Examining Switch Transformer in new and across different modalities. We have thus far only considered language, but we believe that model sparsity can similarly provide advantages in new modalities, as well as multi-modal networks.
 This list could easily be extended, but we hope this gives a flavor for the types of challenges that we are thinking about and what we suspect are promising future directions.
 
 ### <span id="page-26-0"></span>9. Conclusion
@@ -509,6 +512,7 @@ Table [10](#page-27-1) records the quality after a fixed number of steps as well
 | Expert FF + Attention  | bfloat16  | [diverges]                 | [diverges]          | –                     |
 
 - <span id="page-27-1"></span>Table 10: Switch attention layer results. All models have 32 experts and train with 524k tokens per batch. Experts FF is when experts replace the FFN in the Transformer, which is our standard setup throughout the paper. Experts FF + Attention is when experts are used to replace both the FFN and the Self-Attention layers. When training with bfloat16 precision the models that have experts attention diverge.
+
 ### <span id="page-28-0"></span>B. Preventing Token Dropping with No-Token-Left-Behind
 
 Due to software constraints on TPU accelerators, the shapes of our Tensors must be statically sized. As a result, each expert has a finite and fixed capacity to process token representations. This, however, presents an issue for our model which dynamically routes tokens at run-time that may result in an uneven distribution over experts. If the number of tokens sent to an expert is less than the expert capacity, then the computation may simply be padded – an inefficient use of the hardware, but mathematically correct. However, when the number of tokens sent to an expert is larger than its capacity (expert overflow), a protocol is needed to handle this. [Lepikhin et al.](#page-37-2) [(2020)](#page-37-2) adapts a Mixture-of-Expert model and addresses expert overflow by passing its representation to the next layer without processing through a residual connection which we also follow.
@@ -579,6 +583,7 @@ def load balance loss(router probs, expert mask):
    loss = mtf.reduce mean(density 1 proxy ∗ density 1) ∗ (num experts ˆ 2)
    return loss
 ```
+
 - Figure 14: Pseudo code for the load balance loss for Switch Transformers in Mesh Tensorflow.
 
 ```
@@ -592,13 +597,15 @@ def router(inputs, capacity factor):
    # Core layout is split across num cores for all tensors and operations.
    # inputs shape: [num cores, tokens per core, d model]
 ```
+
 #### router weights = mtf.Variable(shape=[d model, num experts])
 
 ```
 # router logits shape: [num cores, tokens per core, num experts]
 router logits = mtf.einsum([inputs, router weights], reduced dim=d model)
 ```
-#### if is training:
+
+#### if is training
 
 # Add noise for exploration across experts. router logits += mtf.random uniform(shape=router logits.shape, minval=1−eps, maxval=1+eps)
 
@@ -649,11 +656,13 @@ dispatch tensor = mtf.cast(combine tensor, tf.bool)
 ```
 return dispatch tensor, combine tensor, aux loss
 ```
+
 <span id="page-33-0"></span>Figure 15: Pseudo code for the router for Switch Transformers in Mesh Tensorflow.
 
 ```
 import mesh tensorflow as mtf
 ```
+
 def switch layer(inputs, n, capacity factor, num experts): """Distributed switch transformer feed−forward layer."""
 
 ```
@@ -708,6 +717,7 @@ expert outputs combined = mtf.einsum([expert outputs, combine tensor], reduce di
 outputs = mtf.reshape(expert outputs combined, [batch, seq len, d model])
 return outputs, aux loss
 ```
+
 Figure 16: Pseudo code of the Switch Transformer layer in Mesh Tensorflow.
 
 ### References
@@ -725,7 +735,7 @@ Figure 16: Pseudo code of the Switch Transformer layer in Mesh Tensorflow.
 - <span id="page-35-10"></span>Angela Fan, Shruti Bhosale, Holger Schwenk, Zhiyi Ma, Ahmed El-Kishky, Siddharth Goyal, Mandeep Baines, Onur Celebi, Guillaume Wenzek, Vishrav Chaudhary, et al. Beyond english-centric multilingual machine translation. Journal of Machine Learning Research, 22(107):1–48, 2021.
 - <span id="page-35-4"></span>William Fedus, Ian Goodfellow, and Andrew M Dai. Maskgan: Better text generation via filling in the . arXiv preprint arXiv:1801.07736, 2018.
 - <span id="page-35-2"></span>Trevor Gale, Matei Zaharia, Cliff Young, and Erich Elsen. Sparse gpu kernels for deep learning. arXiv preprint arXiv:2006.10901, 2020.
-- <span id="page-35-1"></span>Scott Gray, Alec Radford, and Diederik P Kingma. Gpu kernels for block-sparse weights. https://openai.com/blog/block-sparse-gpu-kernels/, 2017.
+- <span id="page-35-1"></span>Scott Gray, Alec Radford, and Diederik P Kingma. Gpu kernels for block-sparse weights. <https://openai.com/blog/block-sparse-gpu-kernels/>, 2017.
 - <span id="page-36-7"></span>Kelvin Guu, Kenton Lee, Zora Tung, Panupong Pasupat, and Ming-Wei Chang. Realm: Retrieval-augmented language model pre-training. arXiv preprint arXiv:2002.08909, 2020.
 - <span id="page-36-8"></span>Aaron Harlap, Deepak Narayanan, Amar Phanishayee, Vivek Seshadri, Nikhil Devanur, Greg Ganger, and Phil Gibbons. Pipedream: Fast and efficient pipeline parallel dnn training. arXiv preprint arXiv:1806.03377, 2018.
 - <span id="page-36-4"></span>Karl Moritz Hermann, Tomas Kocisky, Edward Grefenstette, Lasse Espeholt, Will Kay, Mustafa Suleyman, and Phil Blunsom. Teaching machines to read and comprehend. In C. Cortes, N. Lawrence, D. Lee, M. Sugiyama, and R. Garnett, editors, Advances in Neural Information Processing Systems, volume 28, pages 1693–1701. Curran Associates, Inc., 2015. URL [https://proceedings.neurips.cc/paper/2015/file/](https://proceedings.neurips.cc/paper/2015/file/afdec7005cc9f14302cd0474fd0f3c96-Paper.pdf) [afdec7005cc9f14302cd0474fd0f3c96-Paper.pdf](https://proceedings.neurips.cc/paper/2015/file/afdec7005cc9f14302cd0474fd0f3c96-Paper.pdf).
@@ -763,7 +773,7 @@ Figure 16: Pseudo code of the Switch Transformer layer in Mesh Tensorflow.
 - <span id="page-38-5"></span>Nitish Srivastava, Geoffrey E. Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov. Dropout: a simple way to prevent neural networks from overfitting. Journal of Machine Learning Research, 15(1):1929–1958, 2014. URL [http://www.cs.](http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf) [toronto.edu/~rsalakhu/papers/srivastava14a.pdf](http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf).
 - <span id="page-38-1"></span>Emma Strubell, Ananya Ganesh, and Andrew McCallum. Energy and policy considerations for deep learning in nlp. arXiv preprint arXiv:1906.02243, 2019.
 - <span id="page-38-11"></span>Sainbayar Sukhbaatar, Edouard Grave, Piotr Bojanowski, and Armand Joulin. Adaptive attention span in transformers. arXiv preprint arXiv:1905.07799, 2019.
-- <span id="page-38-0"></span>Rich Sutton. The Bitter Lesson. http://www.incompleteideas.net/IncIdeas/BitterLesson.html, 2019.
+- <span id="page-38-0"></span>Rich Sutton. The Bitter Lesson. <http://www.incompleteideas.net/IncIdeas/BitterLesson.html>, 2019.
 - <span id="page-38-12"></span>Richard S Sutton and Andrew G Barto. Reinforcement learning: An introduction. Stanford University, 2018.
 - <span id="page-38-4"></span>Wilson L Taylor. "cloze procedure": A new tool for measuring readability. Journalism quarterly, 30(4):415–433, 1953.
 - <span id="page-39-1"></span><span id="page-39-0"></span>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in neural information processing systems, pages 5998–6008, 2017.

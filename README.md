@@ -50,6 +50,7 @@ Our model weights use a modified AI Pubs Open Rail-M license (free for research,
 There's a [hosted API](https://www.datalab.to?utm_source=gh-marker) and [painless on-prem solution](https://www.datalab.to/blog/self-serve-on-prem-licensing) for marker - it's free to sign up, and we'll throw in credits for you to test it out.
 
 The API:
+
 - Supports PDF, image, PPT, PPTX, DOC, DOCX, XLS, XLSX, HTML, EPUB files
 - Is 1/4th the price of leading cloud-based competitors
 - Fast - ~15s for a 250 page PDF
@@ -102,6 +103,7 @@ marker_single /path/to/file.pdf
 You can pass in PDFs or images.
 
 Options:
+
 - `--page_range TEXT`: Specify which pages to process. Accepts comma-separated page numbers and ranges. Example: `--page_range "0,5-10,20"` will process pages 0, 5 through 10, and page 20.
 - `--output_format [markdown|json|html|chunks]`: Specify the format for the output results.
 - `--output_dir PATH`: Directory where output files will be saved. Defaults to the value specified in settings.OUTPUT_DIR.
@@ -226,6 +228,7 @@ text, _, images = text_from_rendered(rendered)
 This takes all the same configuration as the PdfConverter.  You can specify the configuration `force_layout_block=Table` to avoid layout detection and instead assume every page is a table.  Set `output_format=json` to also get cell bounding boxes.
 
 You can also run this via the CLI with
+
 ```shell
 marker_single FILENAME --use_llm --force_layout_block Table --converter_cls marker.converters.table.TableConverter --output_format json
 ```
@@ -247,6 +250,7 @@ rendered = converter("FILEPATH")
 This takes all the same configuration as the PdfConverter.
 
 You can also run this via the CLI with
+
 ```shell
 marker_single FILENAME --converter_cls marker.converters.ocr.OCRConverter
 ```
@@ -526,6 +530,7 @@ Options:
 - `--scores` which scoring functions to use, can be `llm`, `heuristic`.  Comma separated.
 
 ### Table Conversion
+
 The processed FinTabNet dataset is hosted [here](https://huggingface.co/datasets/datalab-to/fintabnet-test) and is automatically downloaded. Run the benchmark with:
 
 ```shell
@@ -561,6 +566,7 @@ Note: Passing the `--use_llm` and `--force_ocr` flags will mostly solve these is
 # Usage and Deployment Examples
 
 You can always run `marker` locally, but if you wanted to expose it as an API, we have a few options:
+
 - Our platform API which is powered by `marker` and `surya` and is easy to test out - it's free to sign up, and we'll include credits, [try it out here](https://datalab.to)
 - Our painless on-prem solution for commercial use, which you can [read about here](https://www.datalab.to/blog/self-serve-on-prem-licensing) and gives you privacy guarantees with high throughput inference optimizations.
 - [Deployment example with Modal](./examples/README_MODAL.md) that shows you how to deploy and access `marker` through a web endpoint using [`Modal`](https://modal.com). Modal is an AI compute platform that enables developers to deploy and scale models on GPUs in minutes.

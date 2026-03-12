@@ -83,7 +83,7 @@ Thanks to all the students who worked with earlier versions of this book and all
 
 More than 100 sharp-eyed and thoughtful readers have sent in suggestions and corrections over the past few years. Their contributions, and enthusiasm for this project, have been a huge help.
 
-If you have a suggestion or correction, please send email to feedback@thinkpython.com. If I make a change based on your feedback, I will add you to the contributor list (unless you ask to be omitted).
+If you have a suggestion or correction, please send email to <feedback@thinkpython.com>. If I make a change based on your feedback, I will add you to the contributor list (unless you ask to be omitted).
 
 If you include at least part of the sentence the error appears in, that makes it easy for me to search. Page and section numbers are fine, too, but not quite as easy to work with. Thanks!
 
@@ -426,7 +426,7 @@ If you include at least part of the sentence the error appears in, that makes it
 | 17.3      | Another example                         | 159                                      |     |
 | 17.4      | A more complicated example              | 160                                      |     |
 | 17.5      | The init method                         | 160                                      |     |
-| 17.6      | The __str__ method                      | 161                                      |     |
+| 17.6      | The **str** method                      | 161                                      |     |
 | 17.7      | Operator overloading                    | 161                                      |     |
 | 17.8      | Type-based dispatch                     | 162                                      |     |
 | 17.9      | Polymorphism                            | 163                                      |     |
@@ -619,6 +619,7 @@ Traditionally, the first program you write in a new language is called "Hello, W
 ```
 print 'Hello, World!'
 ```
+
 This is an example of a **print statement**, which doesn't actually print anything on paper. It displays a value on the screen. In this case, the result is the words
 
 Hello, World!
@@ -630,6 +631,7 @@ In Python 3, the syntax for printing is slightly different:
 ```
 print('Hello, World!')
 ```
+
 The parentheses indicate that print is a function. We'll get to functions in Chapter [3.](#page-40-0)
 
 For the rest of this book, I'll use the print statement. If you are using Python 3, you will have to translate. But other than that, there are very few differences we have to worry about.
@@ -721,12 +723,14 @@ If you are not sure what type a value has, the interpreter can tell you.
 >>> type(17)
 <type 'int'>
 ```
+
 Not surprisingly, strings belong to the type str and integers belong to the type int. Less obviously, numbers with a decimal point belong to a type called float, because these numbers are represented in a format called **floating-point**.
 
 ```
 >>> type(3.2)
 <type 'float'>
 ```
+
 What about values like '17' and '3.2'? They look like numbers, but they are in quotation marks like strings.
 
 ```
@@ -735,6 +739,7 @@ What about values like '17' and '3.2'? They look like numbers, but they are in q
 >>> type('3.2')
 <type 'str'>
 ```
+
 They're strings.
 
 When you type a large integer, you might be tempted to use commas between groups of three digits, as in 1,000,000. This is not a legal integer in Python, but it is legal:
@@ -758,6 +763,7 @@ An **assignment statement** creates new variables and gives them values:
 >>> n = 17
 >>> pi = 3.1415926535897932
 ```
+
 This example makes three assignments. The first assigns a string to a new variable named message; the second gives the integer 17 to n; the third assigns the (approximate) value of *π* to pi.
 
 A common way to represent variables on paper is to write the name with an arrow pointing to the variable's value. This kind of figure is called a **state diagram** because it shows what state each of the variables is in (think of it as the variable's state of mind). Figure [2.1](#page-33-2) shows the result of the previous example.
@@ -772,6 +778,7 @@ The type of a variable is the type of the value it refers to.
 >>> type(pi)
 <type 'float'>
 ```
+
 #### <span id="page-33-1"></span>**2.3 Variable names and keywords**
 
 Programmers generally choose names for their variables that are meaningful—they document what the variable is used for.
@@ -790,6 +797,7 @@ SyntaxError: invalid syntax
 >>> class = 'Advanced Theoretical Zymurgy'
 SyntaxError: invalid syntax
 ```
+
 76trombones is illegal because it does not begin with a letter. more@ is illegal because it contains an illegal character, @. But what's wrong with class?
 
 It turns out that class is one of Python's **keywords**. The interpreter uses keywords to recognize the structure of the program, and they cannot be used as variable names.
@@ -826,6 +834,7 @@ In Python 2, the division operator might not do what you expect:
 >>> minute/60
 0
 ```
+
 The value of minute is 59, and in conventional arithmetic 59 divided by 60 is 0.98333, not 0. The reason for the discrepancy is that Python is performing **floor division**. When both of the operands are integers, the result is also an integer; floor division chops off the fraction part, so in this example it rounds down to zero.
 
 In Python 3, the result of this division is a float. The new operator // performs floor division.
@@ -855,6 +864,7 @@ For example, if you are using Python as a calculator, you might type
 >>> miles * 1.61
 42.182
 ```
+
 The first line assigns a value to miles, but it has no visible effect. The second line is an expression, so the interpreter evaluates it and displays the result. So we learn that a marathon is about 42 kilometers.
 
 But if you type the same code into a script and run it, you get no output at all. In script mode an expression, all by itself, has no visible effect. Python actually evaluates the expression, but it doesn't display the value unless you tell it to:
@@ -877,7 +887,7 @@ x + 1
 
 When more than one operator appears in an expression, the order of evaluation depends on the **rules of precedence**. For mathematical operators, Python follows mathematical convention. The acronym **PEMDAS** is a useful way to remember the rules:
 
-- **P**arentheses have the highest precedence and can be used to force an expression to evaluate in the order you want. Since expressions in parentheses are evaluated first, 2 * (3-1) is 4, and (1+1)**(5-2) is 8. You can also use parentheses to make an expression easier to read, as in (minute * 100) / 60, even if it doesn't change the result.
+- **P**arentheses have the highest precedence and can be used to force an expression to evaluate in the order you want. Since expressions in parentheses are evaluated first, 2 *(3-1) is 4, and (1+1)**(5-2) is 8. You can also use parentheses to make an expression easier to read, as in (minute* 100) / 60, even if it doesn't change the result.
 - **E**xponentiation has the next highest precedence, so 2**1+1 is 3, not 4, and 3*1**3 is 3, not 27.
 - **M**ultiplication and **D**ivision have the same precedence, which is higher than **A**ddition and **S**ubtraction, which also have the same precedence. So 2*3-1 is 5, not 4, and 6+4/2 is 8, not 5.
 - Operators with the same precedence are evaluated from left to right (except exponentiation). So in the expression $degrees / 2 * pi$, the division happens first and the result is multiplied by pi. To divide by 2*π*, you can use parentheses or write degrees / 2 / pi.
@@ -898,9 +908,10 @@ second = 'warbler'
 print first + second
 The output of this program is throatwarbler.
 ```
-The * operator also works on strings; it performs repetition. For example, 'Spam'*3 is 'SpamSpamSpam'. If one of the operands is a string, the other has to be an integer.
 
-This use of + and * makes sense by analogy with addition and multiplication. Just as 4*3 is equivalent to 4+4+4, we expect $'Spam'*3$ to be the same as $'Spam'+'Spam'+'Spam'$, and it is. On the other hand, there is a significant way in which string concatenation and repetition are different from integer addition and multiplication. Can you think of a property that addition has that string concatenation does not?
+The *operator also works on strings; it performs repetition. For example, 'Spam'*3 is 'SpamSpamSpam'. If one of the operands is a string, the other has to be an integer.
+
+This use of + and *makes sense by analogy with addition and multiplication. Just as 4*3 is equivalent to 4+4+4, we expect $'Spam'*3$ to be the same as $'Spam'+'Spam'+'Spam'$, and it is. On the other hand, there is a significant way in which string concatenation and repetition are different from integer addition and multiplication. Can you think of a property that addition has that string concatenation does not?
 
 ### <span id="page-37-0"></span>**2.9 Comments**
 
@@ -912,11 +923,13 @@ For this reason, it is a good idea to add notes to your programs to explain in n
 # compute the percentage of the hour that has elapsed
 percentage = (minute * 100) / 60
 ```
+
 In this case, the comment appears on a line by itself. You can also put comments at the end of a line:
 
 ```
 percentage = (minute * 100) / 60 # percentage of an hour
 ```
+
 Everything from the # to the end of the line is ignored—it has no effect on the program.
 
 Comments are most useful when they document non-obvious features of the code. It is reasonable to assume that the reader can figure out *what* the code does; it is much more useful to explain *why*.
@@ -946,6 +959,7 @@ The runtime error you are most likely to make is a "use before def;" that is, tr
 >>> interest = principle * rate
 NameError: name 'principle' is not defined
 ```
+
 Variables names are case sensitive, so LaTeX is not the same as latex.
 
 At this point the most likely cause of a semantic error is the order of operations. For example, to evaluate 1 2*π* , you might be tempted to write
@@ -986,6 +1000,7 @@ But the division happens first, so you would get $\pi/2$, which is not the same 
 **concatenate:** To join two operands end-to-end.
 
 - **comment:** Information in a program that is meant for other programmers (or anyone reading the source code) and has no effect on the execution of the program.
+
 #### <span id="page-39-0"></span>**2.12 Exercises**
 
 **Exercise 2.2.** *Assume that we execute the following assignment statements:*
@@ -995,6 +1010,7 @@ width = 17
 height = 12.0
 delimiter = '.'
 ```
+
 *For each of the following expressions, write the value of the expression and the type (of the value of the expression).*
 
 ```
@@ -1004,6 +1020,7 @@ delimiter = '.'
 4. 1 + 2 * 5
 5. delimiter * 5
 ```
+
 *Use the Python interpreter to check your answers.* **Exercise 2.3.** *Practice using the Python interpreter as a calculator:*
 
 - *1. The volume of a sphere with radius r is* $\frac{4}{3}\pi r^3$*. What is the volume of a sphere with radius 5? Hint: 392.7 is wrong!*
@@ -1034,6 +1051,7 @@ Python provides built-in functions that convert values from one type to another.
 >>> int('Hello')
 ValueError: invalid literal for int(): Hello
 ```
+
 int can convert floating-point values to integers, but it doesn't round off; it chops off the fraction part:
 
 ```
@@ -1042,6 +1060,7 @@ int can convert floating-point values to integers, but it doesn't round off; it 
 >>> int(-2.3)
 -2
 ```
+
 float converts integers and strings to floating-point numbers:
 
 ```
@@ -1055,6 +1074,7 @@ Finally, str converts its argument to a string:
 >>> str(3.14159)
 '3.14159'
 ```
+
 ### <span id="page-41-0"></span>**3.3 Math functions**
 
 Python has a math module that provides most of the familiar mathematical functions. A **module** is a file that contains a collection of related functions.
@@ -1064,12 +1084,14 @@ Before we can use the module, we have to import it:
 ```
 >>> import math
 ```
+
 This statement creates a **module object** named math. If you print the module object, you get some information about it:
 
 ```
 >>> print math
 <module 'math' (built-in)>
 ```
+
 The module object contains the functions and variables defined in the module. To access one of the functions, you have to specify the name of the module and the name of the function, separated by a dot (also known as a period). This format is called **dot notation**.
 
 ```
@@ -1078,6 +1100,7 @@ The module object contains the functions and variables defined in the module. To
 >>> radians = 0.7
 >>> height = math.sin(radians)
 ```
+
 The first example uses log10 to compute a signal-to-noise ratio in decibels (assuming that signal_power and noise_power are defined). The math module also provides log, which computes logarithms base e.
 
 The second example finds the sine of radians. The name of the variable is a hint that sin and the other trigonometric functions (cos, tan, etc.) take arguments in radians. To convert from degrees to radians, divide by 360 and multiply by 2*π*:
@@ -1088,6 +1111,7 @@ The second example finds the sine of radians. The name of the variable is a hint
 >>> math.sin(radians)
 0.707106781187
 ```
+
 The expression math.pi gets the variable pi from the math module. The value of this variable is an approximation of *π*, accurate to about 15 digits.
 
 If you know your trigonometry, you can check the previous result by comparing it to the square root of two divided by two:
@@ -1103,6 +1127,7 @@ One of the most useful features of programming languages is their ability to tak
 ```
 x = math.sin(degrees / 360.0 * 2 * math.pi)
 ```
+
 And even function calls:
 
 x = math.exp(math.log(x+1))
@@ -1120,6 +1145,7 @@ def print_lyrics():
     print "I'm a lumberjack, and I'm okay."
     print "I sleep all night and I work all day."
 ```
+
 def is a keyword that indicates that this is a function definition. The name of the function is print_lyrics. The rules for function names are the same as for variable names: letters, numbers and some punctuation marks are legal, but the first character can't be a number. You can't use a keyword as the name of a function, and you should avoid having a variable and a function with the same name.
 
 The empty parentheses after the name indicate that this function doesn't take any arguments.
@@ -1136,6 +1162,7 @@ If you type a function definition in interactive mode, the interpreter prints el
 ... print "I sleep all night and I work all day."
 ...
 ```
+
 To end the function, you have to enter an empty line (this is not necessary in a script).
 
 Defining a function creates a variable with the same name.
@@ -1147,6 +1174,7 @@ Defining a function creates a variable with the same name.
 <type 'function'>
 The value of print_lyrics is a function object, which has type 'function'.
 ```
+
 The syntax for calling the new function is the same as for built-in functions:
 
 ```
@@ -1154,6 +1182,7 @@ The syntax for calling the new function is the same as for built-in functions:
 I'm a lumberjack, and I'm okay.
 I sleep all night and I work all day.
 ```
+
 Once you have defined a function, you can use it inside another function. For example, to repeat the previous refrain, we could write a function called repeat_lyrics:
 
 ```
@@ -1161,6 +1190,7 @@ def repeat_lyrics():
     print_lyrics()
     print_lyrics()
 ```
+
 And then call repeat_lyrics:
 
 ```
@@ -1171,6 +1201,7 @@ I'm a lumberjack, and I'm okay.
 I sleep all night and I work all day.
 But that's not really how the song goes.
 ```
+
 #### <span id="page-43-0"></span>**3.6 Definitions and uses**
 
 Pulling together the code fragments from the previous section, the whole program looks like this:
@@ -1187,6 +1218,7 @@ def repeat_lyrics():
 ```
 repeat_lyrics()
 ```
+
 This program contains two function definitions: print_lyrics and repeat_lyrics. Function definitions get executed just like other statements, but the effect is to create function objects. The statements inside the function do not get executed until the function is called, and the function definition generates no output.
 
 As you might expect, you have to create a function before you can execute it. In other words, the function definition has to be executed before the first time it is called.
@@ -1222,6 +1254,7 @@ def print_twice(bruce):
     print bruce
     print bruce
 ```
+
 This function assigns the argument to a parameter named bruce. When the function is called, it prints the value of the parameter (whatever it is) twice.
 
 This function works with any value that can be printed.
@@ -1237,6 +1270,7 @@ Spam
 3.14159265359
 3.14159265359
 ```
+
 The same rules of composition that apply to built-in functions also apply to user-defined functions, so we can use any kind of expression as an argument for print_twice:
 
 ```
@@ -1247,6 +1281,7 @@ Spam Spam Spam Spam
 -1.0
 -1.0
 ```
+
 The argument is evaluated before the function is called, so in the examples the expressions 'Spam '*4 and math.cos(math.pi) are only evaluated once.
 
 You can also use a variable as an argument:
@@ -1257,6 +1292,7 @@ You can also use a variable as an argument:
 Eric, the half a bee.
 Eric, the half a bee.
 ```
+
 The name of the variable we pass as an argument (michael) has nothing to do with the name of the parameter (bruce). It doesn't matter what the value was called back home (in the caller); here in print_twice, we call everybody bruce.
 
 #### <span id="page-45-0"></span>**3.9 Variables and parameters are local**
@@ -1268,6 +1304,7 @@ def cat_twice(part1, part2):
     cat = part1 + part2
     print_twice(cat)
 ```
+
 This function takes two arguments, concatenates them, and prints the result twice. Here is an example that uses it:
 
 ```
@@ -1277,12 +1314,14 @@ This function takes two arguments, concatenates them, and prints the result twic
 Bing tiddle tiddle bang.
 Bing tiddle tiddle bang.
 ```
+
 When cat_twice terminates, the variable cat is destroyed. If we try to print it, we get an exception:
 
 ```
 >>> print cat
 NameError: name 'cat' is not defined
 ```
+
 ![](_page_46_Figure_1.jpeg)
 
 <span id="page-46-1"></span>Figure 3.1: Stack diagram.
@@ -1295,11 +1334,11 @@ To keep track of which variables can be used where, it is sometimes useful to dr
 
 Each function is represented by a **frame**. A frame is a box with the name of a function beside it and the parameters and variables of the function inside it. The stack diagram for the previous example is shown in Figure [3.1.](#page-46-1)
 
-The frames are arranged in a stack that indicates which function called which, and so on. In this example, print_twice was called by cat_twice, and cat_twice was called by __main__, which is a special name for the topmost frame. When you create a variable outside of any function, it belongs to __main__.
+The frames are arranged in a stack that indicates which function called which, and so on. In this example, print_twice was called by cat_twice, and cat_twice was called by **main**, which is a special name for the topmost frame. When you create a variable outside of any function, it belongs to **main**.
 
 Each parameter refers to the same value as its corresponding argument. So, part1 has the same value as line1, part2 has the same value as line2, and bruce has the same value as cat.
 
-If an error occurs during a function call, Python prints the name of the function, and the name of the function that called it, and the name of the function that called *that*, all the way back to __main__.
+If an error occurs during a function call, Python prints the name of the function, and the name of the function that called it, and the name of the function that called *that*, all the way back to **main**.
 
 For example, if you try to access cat from within print_twice, you get a NameError:
 
@@ -1313,6 +1352,7 @@ Traceback (innermost last):
     print cat
 NameError: name 'cat' is not defined
 ```
+
 This list of functions is called a **traceback**. It tells you what program file the error occurred in, and what line, and what functions were executing at the time. It also shows the line of code that caused the error.
 
 The order of the functions in the traceback is the same as the order of the frames in the stack diagram. The function that is currently running is at the bottom.
@@ -1327,12 +1367,14 @@ When you call a fruitful function, you almost always want to do something with t
 x = math.cos(radians)
 golden = (math.sqrt(5) + 1) / 2
 ```
+
 When you call a function in interactive mode, Python displays the result:
 
 ```
 >>> math.sqrt(5)
 2.2360679774997898
 ```
+
 But in a script, if you call a fruitful function all by itself, the return value is lost forever!
 
 math.sqrt(5)
@@ -1348,12 +1390,14 @@ Bing
 >>> print result
 None
 ```
+
 The value None is not the same as the string 'None'. It is a special value that has its own type:
 
 ```
 >>> print type(None)
 <type 'NoneType'>
 ```
+
 The functions we have written so far are all void. We will start writing fruitful functions in a few chapters.
 
 #### <span id="page-47-1"></span>**3.12 Why functions?**
@@ -1376,6 +1420,7 @@ Python provides two ways to import modules; we have already seen one:
 >>> print math.pi
 3.14159265359
 ```
+
 If you import math, you get a module object named math. The module object contains constants like pi and functions like sin and exp.
 
 But if you try to access pi directly, you get an error.
@@ -1386,17 +1431,20 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 NameError: name 'pi' is not defined
 ```
+
 As an alternative, you can import an object from a module like this:
 
 ```
 >>> from math import pi
 ```
+
 Now you can access pi directly, without dot notation.
 
 ```
 >>> print pi
 3.14159265359
 ```
+
 Or you can use the star operator to import *everything* from the module:
 
 ```
@@ -1404,6 +1452,7 @@ Or you can use the star operator to import *everything* from the module:
 >>> cos(pi)
 -1.0
 ```
+
 The advantage of importing everything from the math module is that your code can be more concise. The disadvantage is that there might be conflicts between names defined in different modules, or between a name from a module and one of your variables.
 
 #### <span id="page-48-1"></span>**3.14 Debugging**
@@ -1454,6 +1503,7 @@ Make sure that the code you are looking at is the code you are running. If you'r
 ```
 >>> right_justify('allen')
 ```
+
 allen
 
 **Exercise 3.4.** *A function object is a value you can assign to a variable or pass as an argument. For example,* do_twice *is a function that takes a function object as an argument and calls it twice:*
@@ -1463,6 +1513,7 @@ def do_twice(f):
     f()
     f()
 ```
+
 *Here's an example that uses* do_twice *to call a function named* print_spam *twice.*
 
 ```
@@ -1473,6 +1524,7 @@ def print_spam():
 ```
 do_twice(print_spam)
 ```
+
 - *1. Type this example into a script and test it.*
 - *2. Modify* do_twice *so that it takes two arguments, a function object and a value, and calls the function twice, passing the value as an argument.*
 - *3. Write a more general version of* print_spam*, called* print_twice*, that takes a string as a parameter and prints it twice.*
@@ -1496,17 +1548,20 @@ do_twice(print_spam)
 | | |
 + - - - - + - - - - +
 ```
+
 *Hint: to print more than one value on a line, you can print a comma-separated sequence:*
 
 ```
 print '+', '-'
 ```
+
 *If the sequence ends with a comma, Python leaves the line unfinished, so the value printed next appears on the same line.*
 
 ```
 print '+',
 print '-'
 ```
+
 *The output of these statements is* '+ -'*.*
 
 *A* print *statement all by itself ends the current line and goes to the next line.*
@@ -1531,6 +1586,7 @@ If Swampy is installed as a package on your system, you can import TurtleWorld l
 ```
 from swampy.TurtleWorld import *
 ```
+
 If you downloaded the Swampy modules but did not install them as a package, you can either work in the directory that contains the Swampy files, or add that directory to Python's search path. Then you can import TurtleWorld like this:
 
 from TurtleWorld import *
@@ -1545,6 +1601,7 @@ world = TurtleWorld()
 bob = Turtle()
 print bob
 ```
+
 wait_for_user()
 
 The first line imports everything from the TurtleWorld module in the swampy package.
@@ -1582,12 +1639,14 @@ fd(bob, 100)
 lt(bob)
 fd(bob, 100)
 ```
+
 We can do the same thing more concisely with a for statement. Add this example to mypolygon.py and run it again:
 
 ```
 for i in range(4):
     print 'Hello!'
 ```
+
 You should see something like this:
 
 Hello! Hello! Hello!
@@ -1615,17 +1674,18 @@ The following sections have solutions to the exercises, so don't look until you 
 - 1. Write a function called square that takes a parameter named t, which is a turtle. It should use the turtle to draw a square.
 Write a function call that passes bob as an argument to square, and then run the program again.
 
-- 2. Add another parameter, named length, to square. Modify the body so length of the sides is length, and then modify the function call to provide a second argument. Run the program again. Test your program with a range of values for length.
-- 3. The functions lt and rt make 90-degree turns by default, but you can provide a second argument that specifies the number of degrees. For example, lt(bob, 45) turns bob 45 degrees to the left.
+- 1. Add another parameter, named length, to square. Modify the body so length of the sides is length, and then modify the function call to provide a second argument. Run the program again. Test your program with a range of values for length.
+- 1. The functions lt and rt make 90-degree turns by default, but you can provide a second argument that specifies the number of degrees. For example, lt(bob, 45) turns bob 45 degrees to the left.
 
 Make a copy of square and change the name to polygon. Add another parameter named n and modify the body so it draws an n-sided regular polygon. Hint: The exterior angles of an n-sided regular polygon are 360/*n* degrees.
 
-- 4. Write a function called circle that takes a turtle, t, and radius, r, as parameters and that draws an approximate circle by invoking polygon with an appropriate length and number of sides. Test your function with a range of values of r.
+- 1. Write a function called circle that takes a turtle, t, and radius, r, as parameters and that draws an approximate circle by invoking polygon with an appropriate length and number of sides. Test your function with a range of values of r.
 Hint: figure out the circumference of the circle and make sure that length * n = circumference.
 
 Another hint: if bob is too slow for you, you can speed him up by changing bob.delay, which is the time between moves, in seconds. bob.delay = 0.01 ought to get him moving.
 
-- 5. Make a more general version of circle called arc that takes an additional parameter angle, which determines what fraction of a circle to draw. angle is in units of degrees, so when angle=360, arc should draw a complete circle.
+- 1. Make a more general version of circle called arc that takes an additional parameter angle, which determines what fraction of a circle to draw. angle is in units of degrees, so when angle=360, arc should draw a complete circle.
+
 #### <span id="page-55-0"></span>**4.4 Encapsulation**
 
 The first exercise asks you to put your square-drawing code into a function definition and then call the function, passing the turtle as a parameter. Here is a solution:
@@ -1639,6 +1699,7 @@ for i in range(4):
     fd(t, 100)
     lt(t)
 ```
+
 square(bob)
 
 The innermost statements, fd and lt are indented twice to show that they are inside the for loop, which is inside the function definition. The next line, square(bob), is flush with the left margin, so that is the end of both the for loop and the function definition.
@@ -1649,6 +1710,7 @@ Inside the function, t refers to the same turtle bob refers to, so lt(t) has the
 ray = Turtle()
 square(ray)
 ```
+
 Wrapping a piece of code up in a function is called **encapsulation**. One of the benefits of encapsulation is that it attaches a name to the code, which serves as a kind of documentation. Another advantage is that if you re-use the code, it is more concise to call a function twice than to copy and paste the body!
 
 #### <span id="page-55-1"></span>**4.5 Generalization**
@@ -1661,6 +1723,7 @@ def square(t, length):
         fd(t, length)
         lt(t)
 ```
+
 square(bob, 100)
 
 Adding a parameter to a function is called **generalization** because it makes the function more general: in the previous version, the square is always the same size; in this version it can be any size.
@@ -1678,11 +1741,13 @@ def polygon(t, n, length):
 ```
 polygon(bob, 7, 70)
 ```
+
 This draws a 7-sided polygon with side length 70. If you have more than a few numeric arguments, it is easy to forget what they are, or what order they should be in. It is legal, and sometimes helpful, to include the names of the parameters in the argument list:
 
 ```
 polygon(bob, n=7, length=70)
 ```
+
 These are called **keyword arguments** because they include the parameter names as "keywords" (not to be confused with Python keywords like while and def).
 
 This syntax makes the program more readable. It is also a reminder about how arguments and parameters work: when you call a function, the arguments are assigned to the parameters.
@@ -1698,6 +1763,7 @@ def circle(t, r):
     length = circumference / n
     polygon(t, n, length)
 ```
+
 The first line computes the circumference of a circle with radius r using the formula 2*πr*. Since we use math.pi, we have to import math. By convention, import statements are usually at the beginning of the script.
 
 n is the number of line segments in our approximation of a circle, so length is the length of each segment. Thus, polygon draws a 50-sides polygon that approximates a circle with radius r.
@@ -1717,6 +1783,7 @@ def circle(t, r):
     length = circumference / n
     polygon(t, n, length)
 ```
+
 Now the number of segments is (approximately) circumference/3, so the length of each segment is (approximately) 3, which is small enough that the circles look good, but big enough to be efficient, and appropriate for any size circle.
 
 ### <span id="page-57-0"></span>**4.7 Refactoring**
@@ -1735,6 +1802,7 @@ def arc(t, r, angle):
         fd(t, step_length)
         lt(t, step_angle)
 ```
+
 The second half of this function looks like polygon, but we can't re-use polygon without changing the interface. We could generalize polygon to take an angle as a third argument, but then polygon would no longer be an appropriate name! Instead, let's call the more general function polyline:
 
 ```
@@ -1743,6 +1811,7 @@ def polyline(t, n, length, angle):
         fd(t, length)
         lt(t, angle)
 ```
+
 Now we can rewrite polygon and arc to use polyline:
 
 ```
@@ -1759,6 +1828,7 @@ def arc(t, r, angle):
     step_angle = float(angle) / n
     polyline(t, n, step_length, step_angle)
 ```
+
 Finally, we can rewrite circle to use arc:
 
 This process—rearranging a program to improve function interfaces and facilitate code reuse—is called **refactoring**. In this case, we noticed that there was similar code in arc and polygon, so we "factored it out" into polyline.
@@ -1770,10 +1840,10 @@ If we had planned ahead, we might have written polyline first and avoided refact
 A **development plan** is a process for writing programs. The process we used in this case study is "encapsulation and generalization." The steps of this process are:
 
 - 1. Start by writing a small program with no function definitions.
-- 2. Once you get the program working, encapsulate it in a function and give it a name.
-- 3. Generalize the function by adding appropriate parameters.
-- 4. Repeat steps 1–3 until you have a set of working functions. Copy and paste working code to avoid retyping (and re-debugging).
-- 5. Look for opportunities to improve the program by refactoring. For example, if you have similar code in several places, consider factoring it into an appropriately general function.
+- 1. Once you get the program working, encapsulate it in a function and give it a name.
+- 1. Generalize the function by adding appropriate parameters.
+- 1. Repeat steps 1–3 until you have a set of working functions. Copy and paste working code to avoid retyping (and re-debugging).
+- 1. Look for opportunities to improve the program by refactoring. For example, if you have similar code in several places, consider factoring it into an appropriately general function.
 
 This process has some drawbacks—we will see alternatives later—but it can be useful if you don't know ahead of time how to divide the program into functions. This approach lets you design as you go along.
 
@@ -1790,6 +1860,7 @@ def polyline(t, n, length, angle):
         fd(t, length)
         lt(t, angle)
 ```
+
 This docstring is a triple-quoted string, also known as a multiline string because the triple quotes allow the string to span more than one line.
 
 It is terse, but it contains the essential information someone would need to use this function. It explains concisely what the function does (without getting into the details of how it does it). It explains what effect each parameter has on the behavior of the function and what type each parameter should be (if it is not obvious).
@@ -1845,7 +1916,7 @@ Preconditions are the responsibility of the caller. If the caller violates a (pr
 
 **Exercise 4.3.** *Write an appropriately general set of functions that can draw shapes as in Figure [4.2.](#page-60-2)*
 
-*Solution:* <http://thinkpython.com/code/pie.py>*.* 
+*Solution:* <http://thinkpython.com/code/pie.py>*.*
 
 **Exercise 4.4.** *The letters of the alphabet can be constructed from a moderate number of basic elements, like vertical and horizontal lines and a few curves. Design a font that can be drawn with a minimal number of basic elements and then write functions that draw letters of the alphabet.*
 
@@ -1872,6 +1943,7 @@ The **modulus operator** works on integers and yields the remainder when the fir
 1
 So 7 divided by 3 is 2 with 1 left over.
 ```
+
 The modulus operator turns out to be surprisingly useful. For example, you can check whether one number is divisible by another—if x % y is zero, then x is divisible by y.
 
 Also, you can extract the right-most digit or digits from a number. For example, $x % 10 $yields the right-most digit of x (in base 10). Similarly x % 100 yields the last two digits.
@@ -1886,6 +1958,7 @@ True
 >>> 5 == 6
 False
 ```
+
 True and False are special values that belong to the type bool; they are not strings:
 
 ```
@@ -1894,6 +1967,7 @@ True and False are special values that belong to the type bool; they are not str
 >>> type(False)
 <type 'bool'>
 ```
+
 The == operator is one of the **relational operators**; the others are:
 
 | x != y | # x is not equal to y             |
@@ -1918,6 +1992,7 @@ Strictly speaking, the operands of the logical operators should be boolean expre
 ```
 >>> 17 and True
 ```
+
 True
 
 This flexibility can be useful, but there are some subtleties to it that might be confusing. You might want to avoid it (unless you know what you are doing).
@@ -1930,6 +2005,7 @@ In order to write useful programs, we almost always need the ability to check co
 if x > 0:
     print 'x is positive'
 ```
+
 The boolean expression after if is called the **condition**. If it is true, then the indented statement gets executed. If not, nothing happens.
 
 if statements have the same structure as function definitions: a header followed by an indented body. Statements like this are called **compound statements**.
@@ -1958,6 +2034,7 @@ elif x > y:
 else:
     print 'x and y are equal'
 ```
+
 elif is an abbreviation of "else if." Again, exactly one branch will be executed. There is no limit on the number of elif statements. If there is an else clause, it has to be at the end, but there doesn't have to be one.
 
 ```
@@ -1968,6 +2045,7 @@ elif choice == 'b':
 elif choice == 'c':
     draw_c()
 ```
+
 Each condition is checked in order. If the first is false, the next is checked, and so on. If one of them is true, the corresponding branch executes, and the statement ends. Even if more than one condition is true, only the first true branch executes.
 
 ### <span id="page-64-2"></span>**5.7 Nested conditionals**
@@ -1980,6 +2058,7 @@ if x == y:
 else:
     if x < y:
 ```
+
 print 'x is less than y' else: print 'x is greater than y'
 
 The outer conditional contains two branches. The first branch contains a simple statement. The second branch contains another if statement, which has two branches of its own. Those two branches are both simple statements, although they could have been conditional statements as well.
@@ -1993,12 +2072,14 @@ if 0 < x:
     if x < 10:
         print 'x is a positive single-digit number.'
 ```
+
 The print statement is executed only if we make it past both conditionals, so we can get the same effect with the and operator:
 
 ```
 if 0 < x and x < 10:
     print 'x is a positive single-digit number.'
 ```
+
 #### <span id="page-65-0"></span>**5.8 Recursion**
 
 It is legal for one function to call another; it is also legal for a function to call itself. It may not be obvious why that is a good thing, but it turns out to be one of the most magical things a program can do. For example, look at the following function:
@@ -2011,6 +2092,7 @@ def countdown(n):
         print n
         countdown(n-1)
 ```
+
 If n is 0 or negative, it outputs the word, "Blastoff!" Otherwise, it outputs n and then calls a function named countdown—itself—passing n-1 as an argument.
 
 What happens if we call this function like this?
@@ -2018,6 +2100,7 @@ What happens if we call this function like this?
 ```
 >>> countdown(3)
 ```
+
 The execution of countdown begins with n=3, and since n is greater than 0, it outputs the value 3, and then calls itself...
 
 The execution of countdown begins with n=2, and since n is greater than 0, it outputs the value 2, and then calls itself...
@@ -2032,7 +2115,7 @@ The countdown that got n=2 returns.
 
 The countdown that got n=3 returns.
 
-And then you're back in __main__. So, the total output looks like this:
+And then you're back in **main**. So, the total output looks like this:
 
 ```
 3
@@ -2040,6 +2123,7 @@ And then you're back in __main__. So, the total output looks like this:
 1
 Blastoff!
 ```
+
 A function that calls itself is **recursive**; the process is called **recursion**.
 
 As another example, we can write a function that prints a string n times.
@@ -2051,6 +2135,7 @@ def print_n(s, n):
     print s
     print_n(s, n-1)
 ```
+
 If n <= 0 the return statement exits the function. The flow of execution immediately returns to the caller, and the remaining lines of the function are not executed.
 
 The rest of the function is similar to countdown: if n is greater than 0, it displays s and then calls itself to display s n − 1 additional times. So the number of lines of output is 1 + (n -1), which adds up to n.
@@ -2065,7 +2150,7 @@ Every time a function gets called, Python creates a new function frame, which co
 
 Figure [5.1](#page-67-2) shows a stack diagram for countdown called with n = 3.
 
-As usual, the top of the stack is the frame for __main__. It is empty because we did not create any variables in __main__ or pass any arguments to it.
+As usual, the top of the stack is the frame for **main**. It is empty because we did not create any variables in **main** or pass any arguments to it.
 
 The four countdown frames have different values for the parameter n. The bottom of the stack, where n=0, is called the **base case**. It does not make a recursive call, so there are no more frames.
 
@@ -2091,6 +2176,7 @@ File "<stdin>", line 2, in recurse
   File "<stdin>", line 2, in recurse
 RuntimeError: Maximum recursion depth exceeded
 ```
+
 This traceback is a little bigger than the one we saw in the previous chapter. When the error occurs, there are 1000 recurse frames on the stack!
 
 #### <span id="page-67-1"></span>**5.11 Keyboard input**
@@ -2105,6 +2191,7 @@ What are you waiting for?
 >>> print text
 What are you waiting for?
 ```
+
 Before getting input from the user, it is a good idea to print a prompt telling the user what to input. raw_input can take a prompt as an argument:
 
 ```
@@ -2114,6 +2201,7 @@ Arthur, King of the Britons!
 >>> print name
 Arthur, King of the Britons!
 ```
+
 The sequence \n at the end of the prompt represents a **newline**, which is a special character that causes a line break. That's why the user's input appears below the prompt.
 
 If you expect the user to type an integer, you can try to convert the return value to int:
@@ -2126,6 +2214,7 @@ What...is the airspeed velocity of an unladen swallow?
 >>> int(speed)
 17
 ```
+
 But if the user types something other than a string of digits, you get an error:
 
 ```
@@ -2135,6 +2224,7 @@ What do you mean, an African or a European swallow?
 >>> int(speed)
 ValueError: invalid literal for int() with base 10
 ```
+
 We will see how to handle this kind of error later.
 
 #### <span id="page-68-0"></span>**5.12 Debugging**
@@ -2153,6 +2243,7 @@ Syntax errors are usually easy to find, but there are a few gotchas. Whitespace 
     y = 6
     ^
 ```
+
 IndentationError: unexpected indent
 
 In this example, the problem is that the second line is indented by one space. But the error message points to y, which is misleading. In general, error messages indicate where the problem was discovered, but the actual error might be earlier in the code, sometimes on a previous line.
@@ -2169,6 +2260,7 @@ ratio = signal_power / noise_power
 decibels = 10 * math.log10(ratio)
 print decibels
 ```
+
 But when you run it in Python 2, you get an error message.
 
 ```
@@ -2177,6 +2269,7 @@ Traceback (most recent call last):
     decibels = 10 * math.log10(ratio)
 ValueError: math domain error
 ```
+
 The error message indicates line 5, but there is nothing wrong with that line. To find the real error, it might be useful to print the value of ratio, which turns out to be 0. The problem is in line 4, because dividing two integers does floor division. The solution is to represent signal power and noise power with floating-point values.
 
 In general, error messages tell you where the problem was discovered, but that is often not where it was caused.
@@ -2246,11 +2339,12 @@ def draw(t, length, n):
     lt(t, angle)
     bk(t, length*n)
 ```
+
 **Exercise 5.6.** *The Koch curve is a fractal that looks something like Figure [5.2.](#page-71-0) To draw a Koch curve with length x, all you have to do is*
 
 - 1. Draw a Koch curve with length $x/3$.
 - *2. Turn left 60 degrees.*
-- 3. Draw a Koch curve with length $x/3$.
+- 1. Draw a Koch curve with length $x/3$.
 - *4. Turn right 120 degrees.*
 - *5. Draw a Koch curve with length x*/3*.*
 - *6. Turn left 60 degrees.*
@@ -2263,7 +2357,8 @@ def draw(t, length, n):
 
 Solution: <http://thinkpython.com/code/koch.py>
 
-- 3. The Koch curve can be generalized in several ways. See [http://en.wikipedia.org/](http://en.wikipedia.org/wiki/Koch_snowflake) [wiki/ Koch_ snowflake](http://en.wikipedia.org/wiki/Koch_snowflake) *for examples and implement your favorite.*
+- 1. The Koch curve can be generalized in several ways. See [http://en.wikipedia.org/](http://en.wikipedia.org/wiki/Koch_snowflake) [wiki/ Koch_ snowflake](http://en.wikipedia.org/wiki/Koch_snowflake) *for examples and implement your favorite.*
+
 # <span id="page-72-0"></span>**Chapter 6**
 
 # **Fruitful functions**
@@ -2283,12 +2378,14 @@ def area(radius):
     temp = math.pi * radius**2
     return temp
 ```
+
 We have seen the return statement before, but in a fruitful function the return statement includes an expression. This statement means: "Return immediately from this function and use the following expression as a return value." The expression can be arbitrarily complicated, so we could have written this function more concisely:
 
 ```
 def area(radius):
     return math.pi * radius**2
 ```
+
 On the other hand, **temporary variables** like temp often make debugging easier.
 
 Sometimes it is useful to have multiple return statements, one in each branch of a conditional:
@@ -2300,6 +2397,7 @@ def absolute_value(x):
     else:
         return x
 ```
+
 Since these return statements are in an alternative conditional, only one will be executed.
 
 As soon as a return statement executes, the function terminates without executing any subsequent statements. Code that appears after a return statement, or any other place the flow of execution can never reach, is called **dead code**.
@@ -2313,13 +2411,15 @@ def absolute_value(x):
     if x > 0:
         return x
 ```
+
 This function is incorrect because if x happens to be 0, neither condition is true, and the function ends without hitting a return statement. If the flow of execution gets to the end of a function, the return value is None, which is not the absolute value of 0.
 
 ```
 >>> print absolute_value(0)
 None
 ```
-By the way, Python provides a built-in function called abs that computes absolute values. **Exercise 6.1.** *Write a* compare *function that returns* 1 *if* $x > y$*,* 0 *if* $x == y$*, and* -1 *if* $x < y$*.* 
+
+By the way, Python provides a built-in function called abs that computes absolute values. **Exercise 6.1.** *Write a* compare *function that returns* 1 *if* $x > y$*,* 0 *if* $x == y$*, and* -1 *if* $x < y$*.*
 
 #### <span id="page-73-0"></span>**6.2 Incremental development**
 
@@ -2341,6 +2441,7 @@ Already you can write an outline of the function:
 def distance(x1, y1, x2, y2):
     return 0.0
 ```
+
 Obviously, this version doesn't compute distances; it always returns zero. But it is syntactically correct, and it runs, which means that you can test it before you make it more complicated.
 
 To test the new function, call it with sample arguments:
@@ -2359,6 +2460,7 @@ def distance(x1, y1, x2, y2):
     print 'dy is', dy
     return 0.0
 ```
+
 If the function is working, it should display 'dx is 3' and 'dy is 4'. If so, we know that the function is getting the right arguments and performing the first computation correctly. If not, there are only a few lines to check.
 
 Next we compute the sum of squares of dx and dy:
@@ -2371,6 +2473,7 @@ def distance(x1, y1, x2, y2):
     print 'dsquared is: ', dsquared
     return 0.0
 ```
+
 Again, you would run the program at this stage and check the output (which should be 25). Finally, you can use math.sqrt to compute and return the result:
 
 ```
@@ -2381,6 +2484,7 @@ def distance(x1, y1, x2, y2):
     result = math.sqrt(dsquared)
     return result
 ```
+
 If that works correctly, you are done. Otherwise, you might want to print the value of result before the return statement.
 
 The final version of the function doesn't display anything when it runs; it only returns a value. The print statements we wrote are useful for debugging, but once you get the function working, you should remove them. Code like that is called **scaffolding** because it is helpful for building the program but is not part of the final product.
@@ -2390,8 +2494,8 @@ When you start out, you should add only a line or two of code at a time. As you 
 The key aspects of the process are:
 
 - 1. Start with a working program and make small incremental changes. At any point, if there is an error, you should have a good idea where it is.
-- 2. Use temporary variables to hold intermediate values so you can display and check them.
-- 3. Once the program is working, you might want to remove some of the scaffolding or consolidate multiple statements into compound expressions, but only if it does not make the program difficult to read.
+- 1. Use temporary variables to hold intermediate values so you can display and check them.
+- 1. Once the program is working, you might want to remove some of the scaffolding or consolidate multiple statements into compound expressions, but only if it does not make the program difficult to read.
 
 **Exercise 6.2.** *Use incremental development to write a function called* hypotenuse *that returns the length of the hypotenuse of a right triangle given the lengths of the two legs as arguments. Record each stage of the development process as you go.*
 
@@ -2410,6 +2514,7 @@ The next step is to find the area of a circle with that radius; we just wrote th
 ```
 result = area(radius)
 ```
+
 Encapsulating these steps in a function, we get:
 
 ```
@@ -2418,12 +2523,14 @@ def circle_area(xc, yc, xp, yp):
     result = area(radius)
     return result
 ```
+
 The temporary variables radius and result are useful for development and debugging, but once the program is working, we can make it more concise by composing the function calls:
 
 ```
 def circle_area(xc, yc, xp, yp):
     return area(distance(xc, yc, xp, yp))
 ```
+
 #### <span id="page-75-1"></span>**6.4 Boolean functions**
 
 Functions can return booleans, which is often convenient for hiding complicated tests inside functions. For example:
@@ -2435,6 +2542,7 @@ def is_divisible(x, y):
     else:
         return False
 ```
+
 It is common to give boolean functions names that sound like yes/no questions; is_divisible returns either True or False to indicate whether x is divisible by y.
 
 Here is an example:
@@ -2445,12 +2553,14 @@ False
 >>> is_divisible(6, 3)
 True
 ```
+
 The result of the == operator is a boolean, so we can write the function more concisely by returning it directly:
 
 ```
 def is_divisible(x, y):
     return x % y == 0
 ```
+
 Boolean functions are often used in conditional statements:
 
 if is_divisible(x, y):
@@ -2486,6 +2596,7 @@ If you can write a recursive definition of something, you can usually write a Py
 ```
 def factorial(n):
 ```
+
 If the argument happens to be 0, all we have to do is return 1:
 
 ```
@@ -2493,6 +2604,7 @@ def factorial(n):
     if n == 0:
         return 1
 ```
+
 Otherwise, and this is the interesting part, we have to make a recursive call to find the factorial of $n - 1$ and then multiply it by $n$:
 
 ```
@@ -2504,6 +2616,7 @@ def factorial(n):
         result = n * recurse
         return result
 ```
+
 The flow of execution for this program is similar to the flow of countdown in Section [5.8.](#page-65-0) If we call factorial with the value 3:
 
 Since 3 is not 0, we take the second branch and calculate the factorial of n-1...
@@ -2551,6 +2664,7 @@ fibonacci(0) = 0
 fibonacci(1) = 1
 fibonacci(n) = fibonacci(n − 1) + fibonacci(n − 2)
 ```
+
 Translated into Python, it looks like this:
 
 ```
@@ -2562,6 +2676,7 @@ def fibonacci (n):
     else:
         return fibonacci(n-1) + fibonacci(n-2)
 ```
+
 If you try to follow the flow of execution here, even for fairly small values of *n*, your head explodes. But according to the leap of faith, if you assume that the two recursive calls work correctly, then it is clear that you get the right result by adding them together.
 
 #### <span id="page-79-0"></span>**6.8 Checking types**
@@ -2571,6 +2686,7 @@ What happens if we call factorial and give it 1.5 as an argument?
 ```
 >>> factorial(1.5)
 ```
+
 RuntimeError: Maximum recursion depth exceeded
 
 It looks like an infinite recursion. But how can that be? There is a base case—when n == 0. But if n is not an integer, we can *miss* the base case and recurse forever.
@@ -2594,6 +2710,7 @@ def factorial (n):
     else:
         return n * factorial(n-1)
 ```
+
 The first base case handles nonintegers; the second catches negative integers. In both cases, the program prints an error message and returns None to indicate that something went wrong:
 
 ```
@@ -2604,6 +2721,7 @@ None
 Factorial is not defined for negative integers.
 None
 ```
+
 If we get past both checks, then we know that *n* is positive or zero, so we can prove that the recursion terminates.
 
 This program demonstrates a pattern sometimes called a **guardian**. The first two conditionals act as guardians, protecting the code that follows from values that might cause an error. The guardians make it possible to prove the correctness of the code.
@@ -2639,6 +2757,7 @@ def factorial(n):
         print space, 'returning', result
         return result
 ```
+
 space is a string of space characters that controls the indentation of the output. Here is the result of factorial(5) :
 
 ```
@@ -2655,6 +2774,7 @@ returning 1
                  returning 24
                      returning 120
 ```
+
 If you are confused about the flow of execution, this kind of output can be helpful. It takes some time to develop effective scaffolding, but a little bit of scaffolding can save a lot of debugging.
 
 #### <span id="page-81-0"></span>**6.10 Glossary**
@@ -2693,6 +2813,7 @@ y = x + 1
 print c(x, y+3, x+y)
 Exercise 6.5. The Ackermann function, A(m, n), is defined:
 ```
+
 <span id="page-82-1"></span>
 $$A(m,n) = \begin{cases} n+1 & \text{if } m=0\\ A(m-1,1) & \text{if } m>0 \text{ and } n=0\\ A(m-1,A(m,n-1)) & \text{if } m>0 \text{ and } n>0. \end{cases}$$
 
@@ -2711,6 +2832,7 @@ def first(word):
 def last(word):
     return word[-1]
 ```
+
 *We'll see how they work in Chapter [8.](#page-92-0)*
 
 - *1. Type these functions into a file named* palindrome.py *and test them out. What happens if you call* middle *with a string with two letters? One letter? What about the empty string, which is written* '' *and contains no letters?*
@@ -2772,6 +2894,7 @@ If you try to update a variable that doesn't exist, you get an error, because Py
 >>> x = x+1
 NameError: name 'x' is not defined
 ```
+
 Before you can update a variable, you have to **initialize** it, usually with a simple assignment:
 
 >>> x = 0 >>> x = x+1
@@ -2793,13 +2916,14 @@ def countdown(n):
         n = n-1
     print 'Blastoff!'
 ```
+
 You can almost read the while statement as if it were English. It means, "While n is greater than 0, display the value of n and then reduce the value of n by 1. When you get to 0, display the word Blastoff!"
 
 More formally, here is the flow of execution for a while statement:
 
 - 1. Evaluate the condition, yielding True or False.
-- 2. If the condition is false, exit the while statement and continue execution at the next statement.
-- 3. If the condition is true, execute the body and then go back to step 1.
+- 1. If the condition is false, exit the while statement and continue execution at the next statement.
+- 1. If the condition is true, execute the body and then go back to step 1.
 
 This type of flow is called a **loop** because the third step loops back around to the top.
 
@@ -2819,6 +2943,7 @@ while n != 1:
    else: # n is odd
       n = n*3+1
 ```
+
 The condition for this loop is n != 1, so the loop will continue until n is 1, which makes the condition false.
 
 Each time through the loop, the program outputs the value of n and then checks whether it is even or odd. If it is even, n is divided by 2. If it is odd, the value of n is replaced with n*3+1. For example, if the argument passed to sequence is 3, the resulting sequence is 3, 10, 5, 16, 8, 4, 2, 1.
@@ -2842,6 +2967,7 @@ while True:
         break
     print line
 ```
+
 print 'Done!'
 
 The loop condition is True, which is always true, so the loop runs until it hits the break statement.
@@ -2854,6 +2980,7 @@ not done
 > done
 Done!
 ```
+
 This way of writing while loops is common because you can check the condition anywhere in the loop (not just at the top) and you can express the stop condition affirmatively ("stop when this happens") rather than negatively ("keep going until that happens.").
 
 #### <span id="page-87-0"></span>**7.5 Square roots**
@@ -2873,6 +3000,7 @@ For example, if *a* is 4 and *x* is 3:
 >>> print y
 2.16666666667
 ```
+
 √/4 = 2). If we repeat the process with the new estimate, it gets even closer:
 
 ```
@@ -2881,6 +3009,7 @@ For example, if *a* is 4 and *x* is 3:
 >>> print y
 2.00641025641
 ```
+
 After a few more updates, the estimate is almost exact:
 
 ```
@@ -2893,6 +3022,7 @@ After a few more updates, the estimate is almost exact:
 >>> print y
 2.00000000003
 ```
+
 In general we don't know ahead of time how many steps it takes to get to the right answer, but we know when we get there because the estimate stops changing:
 
 ```
@@ -2905,6 +3035,7 @@ In general we don't know ahead of time how many steps it takes to get to the rig
 >>> print y
 2.0
 ```
+
 When y == x, we can stop. Here is a loop that starts with an initial estimate, x, and improves it until it stops changing:
 
 ```
@@ -2915,6 +3046,7 @@ while True:
         break
     x = y
 ```
+
 For most values of a this works fine, but in general it is dangerous to test float equality. Floating-point values are only approximately right: most rational numbers, like 1/3, and irrational numbers, like √ 2, can't be represented exactly with a float.
 
 Rather than checking whether x and y are exactly equal, it is safer to use the built-in function abs to compute the absolute value, or magnitude, of the difference between them:
@@ -2923,6 +3055,7 @@ Rather than checking whether x and y are exactly equal, it is safer to use the b
 if abs(y-x) < epsilon:
     break
 ```
+
 Where epsilon has a value like 0.0000001 that determines how close is close enough. **Exercise 7.2.** *Encapsulate this loop in a function called* square_root *that takes* a *as a parameter, chooses a reasonable value of* x*, and returns an estimate of the square root of* a*.*
 
 ### <span id="page-88-0"></span>**7.6 Algorithms**
@@ -2986,6 +3119,7 @@ In practice it is not always clear what the "middle of the program" is and not a
 8.0 2.82842712475 2.82842712475 4.4408920985e-16
 9.0 3.0 3.0 0.0
 ```
+
 *The first column is a number, a; the second column is the square root of a computed with the function from Section [7.5;](#page-87-0) the third column is the square root computed by* math.sqrt*; the fourth column is the absolute value of the difference between the two estimates.*
 
 **Exercise 7.4.** *The built-in function* eval *takes a string and evaluates it using the Python interpreter. For example:*
@@ -2999,6 +3133,7 @@ In practice it is not always clear what the "middle of the program" is and not a
 >>> eval('type(math.pi)')
 <type 'float'>
 ```
+
 *Write a function called* eval_loop *that iteratively prompts the user, takes the resulting input and evaluates it using* eval*, and prints the result.*
 
 *It should continue until the user enters* 'done'*, and then return the value of the last expression it evaluated.*
@@ -3036,6 +3171,7 @@ For most people, the first letter of 'banana' is b, not a. But for computer scie
 >>> print letter
 b
 ```
+
 So b is the 0th letter ("zero-eth") of 'banana', a is the 1th letter ("one-eth"), and n is the 2th ("two-eth") letter.
 
 You can use any expression, including variables and operators, as an index, but the value of the index has to be an integer. Otherwise you get:
@@ -3044,6 +3180,7 @@ You can use any expression, including variables and operators, as an index, but 
 >>> letter = fruit[1.5]
 TypeError: string indices must be integers, not float
 ```
+
 ## <span id="page-92-2"></span>**8.2** len
 
 len is a built-in function that returns the number of characters in a string:
@@ -3053,6 +3190,7 @@ len is a built-in function that returns the number of characters in a string:
 >>> len(fruit)
 6
 ```
+
 To get the last letter of a string, you might be tempted to try something like this:
 
 ```
@@ -3060,6 +3198,7 @@ To get the last letter of a string, you might be tempted to try something like t
 >>> last = fruit[length]
 IndexError: string index out of range
 ```
+
 The reason for the IndexError is that there is no letter in 'banana' with the index 6. Since we started counting at zero, the six letters are numbered 0 to 5. To get the last character, you have to subtract 1 from length:
 
 ```
@@ -3067,6 +3206,7 @@ The reason for the IndexError is that there is no letter in 'banana' with the in
 >>> print last
 a
 ```
+
 Alternatively, you can use negative indices, which count backward from the end of the string. The expression fruit[-1] yields the last letter, fruit[-2] yields the second to last, and so on.
 
 ## <span id="page-93-0"></span>**8.3 Traversal with a** for **loop**
@@ -3080,6 +3220,7 @@ while index < len(fruit):
     print letter
     index = index + 1
 ```
+
 This loop traverses the string and displays each letter on a line by itself. The loop condition is index < len(fruit), so when index is equal to the length of the string, the condition is false, and the body of the loop is not executed. The last character accessed is the one with the index len(fruit)-1, which is the last character in the string.
 
 **Exercise 8.1.** *Write a function that takes a string as an argument and displays the letters backward, one per line.*
@@ -3090,6 +3231,7 @@ Another way to write a traversal is with a for loop:
 for char in fruit:
     print char
 ```
+
 Each time through the loop, the next character in the string is assigned to the variable char. The loop continues until no characters are left.
 
 The following example shows how to use concatenation (string addition) and a for loop to generate an abecedarian series (that is, in alphabetical order). In Robert McCloskey's book *Make Way for Ducklings*, the names of the ducklings are Jack, Kack, Lack, Mack, Nack, Ouack, Pack, and Quack. This loop outputs these names in order:
@@ -3115,6 +3257,7 @@ Qack
 Of course, that's not quite right because "Ouack" and "Quack" are misspelled.
 Exercise 8.2. Modify the program to fix this error.
 ```
+
 #### <span id="page-94-0"></span>**8.4 String slices**
 
 A segment of a string is called a **slice**. Selecting a slice is similar to selecting a character:
@@ -3126,6 +3269,7 @@ Monty
 >>> print s[6:12]
 Python
 ```
+
 The operator [n:m] returns the part of the string from the "n-eth" character to the "m-eth" character, including the first but excluding the last. This behavior is counterintuitive, but it might help to imagine the indices pointing *between* the characters, as in Figure [8.1.](#page-94-1)
 
 If you omit the first index (before the colon), the slice starts at the beginning of the string. If you omit the second index, the slice goes to the end of the string:
@@ -3137,6 +3281,7 @@ If you omit the first index (before the colon), the slice starts at the beginnin
 >>> fruit[3:]
 'ana'
 ```
+
 If the first index is greater than or equal to the second the result is an **empty string**, represented by two quotation marks:
 
 ```
@@ -3144,6 +3289,7 @@ If the first index is greater than or equal to the second the result is an **emp
 >>> fruit[3:3]
 ''
 ```
+
 An empty string contains no characters and has length 0, but other than that, it is the same as any other string.
 
 **Exercise 8.3.** *Given that* fruit *is a string, what does* fruit[:] *mean?*
@@ -3157,6 +3303,7 @@ It is tempting to use the [] operator on the left side of an assignment, with th
 >>> greeting[0] = 'J'
 TypeError: 'str' object does not support item assignment
 ```
+
 The "object" in this case is the string and the "item" is the character you tried to assign. For now, an **object** is the same thing as a value, but we will refine that definition later. An **item** is one of the values in a sequence.
 
 The reason for the error is that strings are **immutable**, which means you can't change an existing string. The best you can do is create a new string that is a variation on the original:
@@ -3167,6 +3314,7 @@ The reason for the error is that strings are **immutable**, which means you can'
 >>> print new_greeting
 Jello, world!
 ```
+
 This example concatenates a new first letter onto a slice of greeting. It has no effect on the original string.
 
 #### <span id="page-95-1"></span>**8.6 Searching**
@@ -3182,6 +3330,7 @@ def find(word, letter):
         index = index + 1
     return -1
 ```
+
 In a sense, find is the opposite of the [] operator. Instead of taking an index and extracting the corresponding character, it takes a character and finds the index where that character appears. If the character is not found, the function returns -1.
 
 This is the first example we have seen of a return statement inside a loop. If word[index] == letter, the function breaks out of the loop and returns immediately.
@@ -3204,6 +3353,7 @@ for letter in word:
         count = count + 1
 print count
 ```
+
 This program demonstrates another pattern of computation called a **counter**. The variable count is initialized to 0 and then incremented each time an a is found. When the loop exits, count contains the result—the total number of a's.
 
 **Exercise 8.5.** *Encapsulate this code in a function named* count*, and generalize it so that it accepts the string and the letter as arguments.*
@@ -3222,6 +3372,7 @@ Instead of the function syntax upper(word), it uses the method syntax word.upper
 >>> print new_word
 BANANA
 ```
+
 This form of dot notation specifies the name of the method, upper, and the name of the string to apply the method to, word. The empty parentheses indicate that this method takes no argument.
 
 A method call is called an **invocation**; in this case, we would say that we are invoking upper on the word.
@@ -3234,6 +3385,7 @@ As it turns out, there is a string method named find that is remarkably similar 
 >>> print index
 1
 ```
+
 In this example, we invoke find on word and pass the letter we are looking for as a parameter.
 
 Actually, the find method is more general than our function; it can find substrings, not just characters:
@@ -3242,12 +3394,14 @@ Actually, the find method is more general than our function; it can find substri
 >>> word.find('na')
 2
 ```
+
 It can take as a second argument the index where it should start:
 
 ```
 >>> word.find('na', 3)
 4
 ```
+
 And as a third argument the index where it should stop:
 
 ```
@@ -3255,6 +3409,7 @@ And as a third argument the index where it should stop:
 >>> name.find('b', 1, 2)
 -1
 ```
+
 This search fails because b does not appear in the index range from 1 to 2 (not including 2). **Exercise 8.7.** *There is a string method called* count *that is similar to the function in the previous exercise. Read the documentation of this method and write an invocation that counts the number of* a*s in* 'banana'*.*
 
 **Exercise 8.8.** *Read the documentation of the string methods at* [http: // docs. python. org/ 2/](http://docs.python.org/2/library/stdtypes.html#string-methods) [library/ stdtypes. html# string-methods](http://docs.python.org/2/library/stdtypes.html#string-methods) *. You might want to experiment with some of them to make sure you understand how they work.* strip *and* replace *are particularly useful.*
@@ -3270,6 +3425,7 @@ The word in is a boolean operator that takes two strings and returns True if the
 True
 >>> 'seed' in 'banana'
 ```
+
 False
 
 For example, the following function prints all the letters from word1 that also appear in word2:
@@ -3280,6 +3436,7 @@ def in_both(word1, word2):
         if letter in word2:
             print letter
 ```
+
 With well-chosen variable names, Python sometimes reads like English. You could read this loop, "for (each) letter in (the first) word, if (the) letter (appears) in (the second) word, print (the) letter."
 
 Here's what you get if you compare apples and oranges:
@@ -3290,6 +3447,7 @@ a
 e
 s
 ```
+
 #### <span id="page-97-1"></span>**8.10 String comparison**
 
 The relational operators work on strings. To see if two strings are equal:
@@ -3306,6 +3464,7 @@ elif word > 'banana':
 else:
     print 'All right, bananas.'
 ```
+
 Python does not handle uppercase and lowercase letters the same way that people do. All the uppercase letters come before all the lowercase letters, so:
 
 Your word, Pineapple, comes before banana.
@@ -3329,6 +3488,7 @@ def is_reverse(word1, word2):
         j = j-1
     return True
 ```
+
 The first if statement checks whether the words are the same length. If not, we can return False immediately and then, for the rest of the function, we can assume that the words are the same length. This is an example of the guardian pattern in Section [6.8.](#page-79-0)
 
 i and j are indices: i traverses word1 forward while j traverses word2 backward. If we find two letters that don't match, we can return False immediately. If we get through the whole loop and all the letters match, we return True.
@@ -3346,6 +3506,7 @@ File "reverse.py", line 15, in is_reverse
     if word1[i] != word2[j]:
 IndexError: string index out of range
 ```
+
 For debugging this kind of error, my first move is to print the values of the indices immediately before the line where the error appears.
 
 ```
@@ -3356,6 +3517,7 @@ while j > 0:
    i = i+1
    j = j-1
 ```
+
 Now when I run the program again, I get more information:
 
 ```
@@ -3364,6 +3526,7 @@ Now when I run the program again, I get more information:
 ...
 IndexError: string index out of range
 ```
+
 The first time through the loop, the value of j is 4, which is out of range for the string 'pots'. The index of the last character is 3, so the initial value for j should be len(word2)-1.
 
 If I fix that error and run the program again, I get:
@@ -3375,6 +3538,7 @@ If I fix that error and run the program again, I get:
 2 1
 True
 ```
+
 This time we get the right answer, but it looks like the loop only ran three times, which is suspicious. To get a better idea of what is happening, it is useful to draw a state diagram. During the first iteration, the frame for is_reverse is shows in Figure [8.2.](#page-99-1)
 
 I took a little license by arranging the variables in the frame and adding dotted lines to show that the values of i and j indicate characters in word1 and word2.
@@ -3412,6 +3576,7 @@ I took a little license by arranging the variables in the frame and adding dotte
 >>> fruit[0:5:2]
 'bnn'
 ```
+
 *A step size of -1 goes through the word backwards, so the slice* [::-1] *generates a reversed string.*
 
 *Use this idiom to write a one-line version of* is_palindrome *from Exercise [6.6.](#page-82-0)* **Exercise 8.11.** *The following functions are all* intended *to check whether a string contains any*
@@ -3449,6 +3614,7 @@ def any_lowercase5(s):
             return False
     return True
 ```
+
 <span id="page-101-0"></span>**Exercise 8.12.** *ROT13 is a weak form of encryption that involves "rotating" each letter in a word by 13 places. To rotate a letter means to shift it through the alphabet, wrapping around to the beginning if necessary, so 'A' shifted by 3 is 'D' and 'Z' shifted by 1 is 'A'.*
 
 *Write a function called* rotate_word *that takes a string and an integer as parameters, and that returns a new string that contains the letters from the original string "rotated" by the given amount.*
@@ -3474,6 +3640,7 @@ This file is in plain text, so you can open it with a text editor, but you can a
 >>> print fin
 <open file 'words.txt', mode 'r' at 0xb7f4b380>
 ```
+
 fin is a common name for a file object used for input. Mode 'r' indicates that this file is open for reading (as opposed to 'w' for writing).
 
 The file object provides several methods for reading, including readline, which reads characters from the file until it gets to a newline and returns the result as a string:
@@ -3482,6 +3649,7 @@ The file object provides several methods for reading, including readline, which 
 >>> fin.readline()
 'aa\r\n'
 ```
+
 The first word in this particular list is "aa," which is a kind of lava. The sequence \r\n represents two whitespace characters, a carriage return and a newline, that separate this word from the next.
 
 The file object keeps track of where it is in the file, so if you call readline again, you get the next word:
@@ -3490,6 +3658,7 @@ The file object keeps track of where it is in the file, so if you call readline 
 >>> fin.readline()
 'aah\r\n'
 ```
+
 The next word is "aah," which is a perfectly legitimate word, so stop looking at me like that. Or, if it's the whitespace that's bothering you, we can get rid of it with the string method strip:
 
 ```
@@ -3497,6 +3666,7 @@ The next word is "aah," which is a perfectly legitimate word, so stop looking at
 >>> word = line.strip()
 >>> print word
 ```
+
 aahed
 
 You can also use a file object as part of a for loop. This program reads words.txt and prints each word, one per line:
@@ -3507,6 +3677,7 @@ for line in fin:
     word = line.strip()
     print word
 ```
+
 **Exercise 9.1.** *Write a program that reads* words.txt *and prints only the words with more than 20 characters (not counting whitespace).*
 
 ## <span id="page-103-0"></span>**9.2 Exercises**
@@ -3544,6 +3715,7 @@ def has_no_e(word):
             return False
     return True
 ```
+
 The for loop traverses the characters in word. If we find the letter "e", we can immediately return False; otherwise we have to go to the next letter. If we exit the loop normally, that means we didn't find an "e", so we return True.
 
 avoids is a more general version of has_no_e but it has the same structure:
@@ -3559,6 +3731,7 @@ def uses_only(word, available):
             return False
     return True
 ```
+
 Instead of a list of forbidden letters, we have a list of available letters. If we find a letter in word that is not in available, we can return False.
 
 uses_all is similar except that we reverse the role of the word and the string of letters:
@@ -3570,6 +3743,7 @@ def uses_all(word, required):
             return False
     return True
 ```
+
 Instead of traversing the letters in word, the loop traverses the required letters. If any of the required letters do not appear in the word, we can return False.
 
 If you were really thinking like a computer scientist, you would have recognized that uses_all was an instance of a previously-solved problem, and you would have written:
@@ -3578,6 +3752,7 @@ If you were really thinking like a computer scientist, you would have recognized
 def uses_all(word, required):
     return uses_only(required, word)
 ```
+
 This is an example of a program development method called **problem recognition**, which means that you recognize the problem you are working on as an instance of a previouslysolved problem, and apply a previously-developed solution.
 
 #### <span id="page-104-0"></span>**9.4 Looping with indices**
@@ -3595,6 +3770,7 @@ def is_abecedarian(word):
         previous = c
     return True
 ```
+
 An alternative is to use recursion:
 
 ```
@@ -3605,6 +3781,7 @@ def is_abecedarian(word):
         return False
     return is_abecedarian(word[1:])
 ```
+
 Another option is to use a while loop:
 
 ```
@@ -3616,6 +3793,7 @@ def is_abecedarian(word):
         i = i+1
     return True
 ```
+
 The loop starts at i=0 and ends when i=len(word)-1. Each time through the loop, it compares the *i*th character (which you can think of as the current character) to the *i* + 1th character (which you can think of as the next).
 
 If the next character is less than (alphabetically before) the current one, then we have discovered a break in the abecedarian trend, and we return False.
@@ -3635,12 +3813,14 @@ def is_palindrome(word):
         j = j-1
     return True
 ```
+
 Or, if you noticed that this is an instance of a previously-solved problem, you might have written:
 
 ```
 def is_palindrome(word):
     return is_reverse(word, word)
 ```
+
 Assuming you did Exercise [8.9.](#page-99-2)
 
 #### <span id="page-106-0"></span>**9.5 Debugging**
@@ -3725,6 +3905,7 @@ As you might expect, you can assign list values to variables:
 >>> print cheeses, numbers, empty
 ['Cheddar', 'Edam', 'Gouda'] [17, 123] []
 ```
+
 #### <span id="page-108-2"></span>**10.2 Lists are mutable**
 
 The syntax for accessing the elements of a list is the same as for accessing the characters of a string—the bracket operator. The expression inside the brackets specifies the index. Remember that the indices start at 0:
@@ -3733,6 +3914,7 @@ The syntax for accessing the elements of a list is the same as for accessing the
 >>> print cheeses[0]
 Cheddar
 ```
+
 ![](_page_109_Figure_1.jpeg)
 
 <span id="page-109-0"></span>Figure 10.1: State diagram.
@@ -3745,6 +3927,7 @@ Unlike strings, lists are mutable. When the bracket operator appears on the left
 >>> print numbers
 [17, 5]
 ```
+
 The one-eth element of numbers, which used to be 123, is now 5.
 
 You can think of a list as a relationship between indices and elements. This relationship is called a **mapping**; each index "maps to" one of the elements. Figure [10.1](#page-109-0) shows the state diagram for cheeses, numbers and empty:
@@ -3766,6 +3949,7 @@ True
 >>> 'Brie' in cheeses
 False
 ```
+
 #### <span id="page-110-0"></span>**10.3 Traversing a list**
 
 The most common way to traverse the elements of a list is with a for loop. The syntax is the same as for strings:
@@ -3778,6 +3962,7 @@ This works well if you only need to read the elements of the list. But if you wa
 for i in range(len(numbers)):
     numbers[i] = numbers[i] * 2
 ```
+
 This loop traverses the list and updates each element. len returns the number of elements in the list. range returns a list of indices from 0 to *n* − 1, where *n* is the length of the list. Each time through the loop i gets the index of the next element. The assignment statement in the body uses i to read the old value of the element and to assign the new value.
 
 A for loop over an empty list never executes the body:
@@ -3786,18 +3971,20 @@ A for loop over an empty list never executes the body:
 for x in []:
     print 'This never happens.'
 ```
+
 Although a list can contain another list, the nested list still counts as a single element. The length of this list is four:
 
 ```
 ['spam', 1, ['Brie', 'Roquefort', 'Pol le Veq'], [1, 2, 3]]
 ```
+
 #### <span id="page-110-1"></span>**10.4 List operations**
 
 The + operator concatenates lists:
 
 Similarly, the * operator repeats a list a given number of times:
 
->>> [0] * 4 [0, 0, 0, 0] >>> [1, 2, 3] * 3 [1, 2, 3, 1, 2, 3, 1, 2, 3]
+>>> [0] *4 [0, 0, 0, 0] >>> [1, 2, 3]* 3 [1, 2, 3, 1, 2, 3, 1, 2, 3]
 
 The first example repeats [0] four times. The second example repeats the list [1, 2, 3] three times.
 
@@ -3814,12 +4001,14 @@ The slice operator also works on lists:
 >>> t[3:]
 ['d', 'e', 'f']
 ```
+
 If you omit the first index, the slice starts at the beginning. If you omit the second, the slice goes to the end. So if you omit both, the slice is a copy of the whole list.
 
 ```
 >>> t[:]
 ['a', 'b', 'c', 'd', 'e', 'f']
 ```
+
 Since lists are mutable, it is often useful to make a copy before performing operations that fold, spindle or mutilate lists.
 
 A slice operator on the left side of an assignment can update multiple elements:
@@ -3830,6 +4019,7 @@ A slice operator on the left side of an assignment can update multiple elements:
 >>> print t
 ['a', 'x', 'y', 'd', 'e', 'f']
 ```
+
 #### <span id="page-111-0"></span>**10.6 List methods**
 
 Python provides methods that operate on lists. For example, append adds a new element to the end of a list:
@@ -3840,6 +4030,7 @@ Python provides methods that operate on lists. For example, append adds a new el
 >>> print t
 ['a', 'b', 'c', 'd']
 ```
+
 extend takes a list as an argument and appends all of the elements:
 
 ```
@@ -3849,6 +4040,7 @@ extend takes a list as an argument and appends all of the elements:
 >>> print t1
 ['a', 'b', 'c', 'd', 'e']
 ```
+
 This example leaves t2 unmodified.
 
 sort arranges the elements of the list from low to high:
@@ -3859,6 +4051,7 @@ sort arranges the elements of the list from low to high:
 >>> print t
 ['a', 'b', 'c', 'd', 'e']
 ```
+
 List methods are all void; they modify the list and return None. If you accidentally write t = t.sort(), you will be disappointed with the result.
 
 #### <span id="page-112-0"></span>**10.7 Map, filter and reduce**
@@ -3872,6 +4065,7 @@ def add_all(t):
         total += x
     return total
 ```
+
 total is initialized to 0. Each time through the loop, x gets one element from the list. The += operator provides a short way to update a variable. This **augmented assignment statement**:
 
 total += x
@@ -3889,6 +4083,7 @@ Adding up the elements of a list is such a common operation that Python provides
 >>> sum(t)
 6
 ```
+
 An operation like this that combines a sequence of elements into a single value is sometimes called **reduce**.
 
 **Exercise 10.1.** *Write a function called* nested_sum *that takes a nested list of integers and add up the elements from all of the nested lists.*
@@ -3902,6 +4097,7 @@ def capitalize_all(t):
         res.append(s.capitalize())
     return res
 ```
+
 res is initialized with an empty list; each time through the loop, we append the next element. So res is another kind of accumulator.
 
 An operation like capitalize_all is sometimes called a **map** because it "maps" a function (in this case the method capitalize) onto each of the elements in a sequence.
@@ -3921,6 +4117,7 @@ if s.isupper():
         res.append(s)
 return res
 ```
+
 isupper is a string method that returns True if the string contains only upper case letters.
 
 An operation like only_upper is called a **filter** because it selects some of the elements and filters out the others.
@@ -3941,6 +4138,7 @@ There are several ways to delete elements from a list. If you know the index of 
 >>> print x
 b
 ```
+
 pop modifies the list and returns the element that was removed. If you don't provide an index, it deletes and returns the last element.
 
 If you don't need the removed value, you can use the del operator:
@@ -3955,6 +4153,7 @@ If you know the element you want to remove (but not the index), you can use remo
 >>> print t
 ['a', 'c']
 ```
+
 The return value from remove is None.
 
 To remove more than one element, you can use del with a slice index:
@@ -3965,6 +4164,7 @@ To remove more than one element, you can use del with a slice index:
 >>> print t
 ['a', 'f']
 ```
+
 As usual, the slice selects all the elements up to, but not including, the second index. **Exercise 10.4.** *Write a function called* middle *that takes a list and returns a new list that contains* all but the first and last elements. So middle([1,2,3,4]) should return [2,3].
 
 **Exercise 10.5.** *Write a function called* chop *that takes a list, modifies it by removing the first and last elements, and returns* None*.*
@@ -3979,6 +4179,7 @@ A string is a sequence of characters and a list is a sequence of values, but a l
 >>> print t
 ['s', 'p', 'a', 'm']
 ```
+
 Because list is the name of a built-in function, you should avoid using it as a variable name. I also avoid l because it looks too much like 1. So that's why I use t.
 
 The list function breaks a string into individual letters. If you want to break a string into words, you can use the split method:
@@ -3989,6 +4190,7 @@ The list function breaks a string into individual letters. If you want to break 
 >>> print t
 ['pining', 'for', 'the', 'fjords']
 ```
+
 An optional argument called a **delimiter** specifies which characters to use as word boundaries. The following example uses a hyphen as a delimiter:
 
 ```
@@ -3997,6 +4199,7 @@ An optional argument called a **delimiter** specifies which characters to use as
 >>> s.split(delimiter)
 ['spam', 'spam', 'spam']
 ```
+
 join is the inverse of split. It takes a list of strings and concatenates the elements. join is a string method, so you have to invoke it on the delimiter and pass the list as a parameter:
 
 ```
@@ -4005,6 +4208,7 @@ join is the inverse of split. It takes a list of strings and concatenates the el
 >>> delimiter.join(t)
 'pining for the fjords'
 ```
+
 In this case the delimiter is a space character, so join puts a space between words. To concatenate strings without spaces, you can use the empty string, '', as a delimiter.
 
 #### <span id="page-114-1"></span>**10.10 Objects and values**
@@ -4015,6 +4219,7 @@ If we execute these assignment statements:
 a = 'banana'
 b = 'banana'
 ```
+
 We know that a and b both refer to a string, but we don't know whether they refer to the *same* string. There are two possible states, shown in Figure [10.2.](#page-115-1)
 
 In one case, a and b refer to two different objects that have the same value. In the second case, they refer to the same object.
@@ -4039,6 +4244,7 @@ Figure 10.2: State diagram.
 >>> a is b
 True
 ```
+
 In this example, Python only created one string object, and both a and b refer to it.
 
 But when you create two lists, you get two objects:
@@ -4061,6 +4267,7 @@ If a refers to an object and you assign b = a, then both variables refer to the 
 >>> b is a
 True
 ```
+
 The state diagram looks like Figure [10.4.](#page-116-1)
 
 The association of a variable with an object is called a **reference**. In this example, there are two references to the same object.
@@ -4096,6 +4303,7 @@ When you pass a list to a function, the function gets a reference to the list. I
 def delete_head(t):
     del t[0]
 ```
+
 Here's how it is used:
 
 ```
@@ -4104,6 +4312,7 @@ Here's how it is used:
 >>> print letters
 ['b', 'c']
 ```
+
 The parameter t and the variable letters are aliases for the same object. The stack diagram looks like Figure [10.5.](#page-116-2)
 
 Since the list is shared by two frames, I drew it between them.
@@ -4121,6 +4330,7 @@ None
 >>> print t3
 [1, 2, 3, 4]
 ```
+
 This difference is important when you write functions that are supposed to modify lists. For example, this function *does not* delete the head of a list:
 
 def bad_delete_head(t): t = t[1:] # WRONG!
@@ -4133,6 +4343,7 @@ An alternative is to write a function that creates and returns a new list. For e
 def tail(t):
     return t[1:]
 ```
+
 This function leaves the original list unmodified. Here's how it is used:
 
 ```
@@ -4141,6 +4352,7 @@ This function leaves the original list unmodified. Here's how it is used:
 >>> print rest
 ['b', 'c']
 ```
+
 #### <span id="page-117-0"></span>**10.13 Debugging**
 
 Careless use of lists (and other mutable objects) can lead to long hours of debugging. Here are some common pitfalls and ways to avoid them:
@@ -4158,7 +4370,7 @@ Because sort returns None, the next operation you perform with t is likely to fa
 
 Before using list methods and operators, you should read the documentation carefully and then test them in interactive mode. The methods and operators that lists share with other sequences (like strings) are documented at [http://docs.python.](http://docs.python.org/2/library/stdtypes.html#typesseq) [org/2/library/stdtypes.html#typesseq](http://docs.python.org/2/library/stdtypes.html#typesseq). The methods and operators that only apply to mutable sequences are documented at [http://docs.python.org/2/library/](http://docs.python.org/2/library/stdtypes.html#typesseq-mutable) [stdtypes.html#typesseq-mutable](http://docs.python.org/2/library/stdtypes.html#typesseq-mutable).
 
-- 2. Pick an idiom and stick with it.
+- 1. Pick an idiom and stick with it.
 Part of the problem with lists is that there are too many ways to do things. For example, to remove an element from a list, you can use pop, remove, del, or even a slice assignment.
 
 To add an element, you can use the append method or the + operator. Assuming that t is a list and x is a list element, these are right:
@@ -4175,7 +4387,7 @@ And these are wrong:
 
 Try out each of these examples in interactive mode to make sure you understand what they do. Notice that only the last one causes a runtime error; the other three are legal, but they do the wrong thing.
 
-- 3. Make copies to avoid aliasing.
+- 1. Make copies to avoid aliasing.
 If you want to use a method like sort that modifies the argument, but you need to keep the original list as well, you can make a copy.
 
 orig = t[:] t.sort()
@@ -4260,28 +4472,33 @@ The function dict creates a new dictionary with no items. Because dict is the na
 >>> print eng2sp
 {}
 ```
+
 The squiggly-brackets, {}, represent an empty dictionary. To add items to the dictionary, you can use square brackets:
 
 ```
 >>> eng2sp['one'] = 'uno'
 ```
+
 This line creates an item that maps from the key 'one' to the value 'uno'. If we print the dictionary again, we see a key-value pair with a colon between the key and value:
 
 ```
 >>> print eng2sp
 {'one': 'uno'}
 ```
+
 This output format is also an input format. For example, you can create a new dictionary with three items:
 
 ```
 >>> eng2sp = {'one': 'uno', 'two': 'dos', 'three': 'tres'}
 ```
+
 But if you print eng2sp, you might be surprised:
 
 ```
 >>> print eng2sp
 {'one': 'uno', 'three': 'tres', 'two': 'dos'}
 ```
+
 The order of the key-value pairs is not the same. In fact, if you type the same example on your computer, you might get a different result. In general, the order of items in a dictionary is unpredictable.
 
 But that's not a problem because the elements of a dictionary are never indexed with integer indices. Instead, you use the keys to look up the corresponding values:
@@ -4290,6 +4507,7 @@ But that's not a problem because the elements of a dictionary are never indexed 
 >>> print eng2sp['two']
 'dos'
 ```
+
 The key 'two' always maps to the value 'dos' so the order of the items doesn't matter.
 
 If the key isn't in the dictionary, you get an exception:
@@ -4298,12 +4516,14 @@ If the key isn't in the dictionary, you get an exception:
 >>> print eng2sp['four']
 KeyError: 'four'
 ```
+
 The len function works on dictionaries; it returns the number of key-value pairs:
 
 ```
 >>> len(eng2sp)
 3
 ```
+
 The in operator works on dictionaries; it tells you whether something appears as a *key* in the dictionary (appearing as a value is not good enough).
 
 ```
@@ -4312,6 +4532,7 @@ True
 >>> 'uno' in eng2sp
 False
 ```
+
 To see whether something appears as a value in a dictionary, you can use the method values, which returns the values as a list, and then use the in operator:
 
 ```
@@ -4319,6 +4540,7 @@ To see whether something appears as a value in a dictionary, you can use the met
 >>> 'uno' in vals
 True
 ```
+
 The in operator uses different algorithms for lists and dictionaries. For lists, it uses a search algorithm, as in Section [8.6.](#page-95-1) As the list gets longer, the search time gets longer in direct proportion. For dictionaries, Python uses an algorithm called a **hashtable** that has a remarkable property: the in operator takes about the same amount of time no matter how many items there are in a dictionary. I won't explain how that's possible, but you can read more about it at <http://en.wikipedia.org/wiki/Hash_table>.
 
 <span id="page-123-1"></span>**Exercise 11.1.** *Write a function that reads the words in* words.txt *and stores them as keys in a dictionary. It doesn't matter what the values are. Then you can use the* in *operator as a fast way to check whether a string is in the dictionary.*
@@ -4330,9 +4552,9 @@ The in operator uses different algorithms for lists and dictionaries. For lists,
 Suppose you are given a string and you want to count how many times each letter appears. There are several ways you could do it:
 
 - 1. You could create 26 variables, one for each letter of the alphabet. Then you could traverse the string and, for each character, increment the corresponding counter, probably using a chained conditional.
-- 2. You could create a list with 26 elements. Then you could convert each character to a number (using the built-in function ord), use the number as an index into the list, and increment the appropriate counter.
+- 1. You could create a list with 26 elements. Then you could convert each character to a number (using the built-in function ord), use the number as an index into the list, and increment the appropriate counter.
 
-- 3. You could create a dictionary with characters as keys and counters as the corresponding values. The first time you see a character, you would add an item to the dictionary. After that you would increment the value of an existing item.
+- 1. You could create a dictionary with characters as keys and counters as the corresponding values. The first time you see a character, you would add an item to the dictionary. After that you would increment the value of an existing item.
 Each of these options performs the same computation, but each of them implements that computation in a different way.
 
 An **implementation** is a way of performing a computation; some implementations are better than others. For example, an advantage of the dictionary implementation is that we don't have to know ahead of time which letters appear in the string and we only have to make room for the letters that do appear.
@@ -4349,6 +4571,7 @@ def histogram(s):
              d[c] += 1
     return d
 ```
+
 The name of the function is **histogram**, which is a statistical term for a set of counters (or frequencies).
 
 The first line of the function creates an empty dictionary. The for loop traverses the string. Each time through the loop, if the character c is not in the dictionary, we create a new item with key c and the initial value 1 (since we have seen this letter once). If c is already in the dictionary we increment d[c].
@@ -4360,6 +4583,7 @@ Here's how it works:
 >>> print h
 {'a': 1, 'b': 1, 'o': 2, 'n': 1, 's': 2, 'r': 2, 'u': 2, 't': 1}
 ```
+
 The histogram indicates that the letters 'a' and 'b' appear once; 'o' appears twice, and so on.
 
 **Exercise 11.2.** *Dictionaries have a method called* get *that takes a key and a default value. If the key appears in the dictionary,* get *returns the corresponding value; otherwise it returns the default value. For example:*
@@ -4373,6 +4597,7 @@ The histogram indicates that the letters 'a' and 'b' appear once; 'o' appears tw
 >>> h.get('b', 0)
 0
 ```
+
 *Use* get *to write* histogram *more concisely. You should be able to eliminate the* if *statement.*
 
 #### <span id="page-124-0"></span>**11.2 Looping and dictionaries**
@@ -4392,6 +4617,7 @@ r 2
 t 1
 o 1
 ```
+
 Again, the keys are in no particular order.
 
 **Exercise 11.3.** *Dictionaries have a method called* keys *that returns the keys of the dictionary, in no particular order, as a list.*
@@ -4413,6 +4639,7 @@ def reverse_lookup(d, v):
             return k
     raise ValueError
 ```
+
 This function is yet another example of the search pattern, but it uses a feature we haven't seen before, raise. The raise statement causes an exception; in this case it causes a ValueError, which generally indicates that there is something wrong with the value of a parameter.
 
 If we get to the end of the loop, that means v doesn't appear in the dictionary as a value, so we raise an exception.
@@ -4425,6 +4652,7 @@ Here is an example of a successful reverse lookup:
 >>> print k
 r
 ```
+
 And an unsuccessful one:
 
 ```
@@ -4434,6 +4662,7 @@ Traceback (most recent call last):
   File "<stdin>", line 5, in reverse_lookup
 ValueError
 ```
+
 The result when you raise an exception is the same as when Python raises one: it prints a traceback and an error message.
 
 The raise statement takes a detailed error message as an optional argument. For example:
@@ -4461,6 +4690,7 @@ def invert_dict(d):
             inverse[val].append(key)
     return inverse
 ```
+
 Each time through the loop, key gets a key from d and val gets the corresponding value. If val is not in inverse, that means we haven't seen it before, so we create a new item and initialize it with a **singleton** (a list that contains a single element). Otherwise we have seen this value before, so we append the corresponding key to the list.
 
 Here is an example:
@@ -4473,6 +4703,7 @@ Here is an example:
 >>> print inverse
 {1: ['a', 'p', 't', 'o'], 2: ['r']}
 ```
+
 ![](_page_127_Figure_1.jpeg)
 
 <span id="page-127-1"></span>Figure 11.1: State diagram.
@@ -4489,6 +4720,7 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in ?
 TypeError: list objects are unhashable
 ```
+
 I mentioned earlier that a dictionary is implemented using a hashtable and that means that the keys have to be **hashable**.
 
 A **hash** is a function that takes a value (of any kind) and returns an integer. Dictionaries use these integers, called hash values, to store and look up key-value pairs.
@@ -4528,6 +4760,7 @@ def fibonacci(n):
     known[n] = res
     return res
 ```
+
 known is a dictionary that keeps track of the Fibonacci numbers we already know. It starts with two items: 0 maps to 0 and 1 maps to 1.
 
 Whenever fibonacci is called, it checks known. If the result is already there, it can return immediately. Otherwise it has to compute the new value, add it to the dictionary, and return it.
@@ -4538,7 +4771,7 @@ Whenever fibonacci is called, it checks known. If the result is already there, i
 
 ## <span id="page-129-0"></span>**11.6 Global variables**
 
-In the previous example, known is created outside the function, so it belongs to the special frame called __main__. Variables in __main__ are sometimes called **global** because they can be accessed from any function. Unlike local variables, which disappear when their function ends, global variables persist from one function call to the next.
+In the previous example, known is created outside the function, so it belongs to the special frame called **main**. Variables in **main** are sometimes called **global** because they can be accessed from any function. Unlike local variables, which disappear when their function ends, global variables persist from one function call to the next.
 
 It is common to use global variables for **flags**; that is, boolean variables that indicate ("flag") whether a condition is true. For example, some programs use a flag named verbose to control the level of detail in the output:
 
@@ -4548,6 +4781,7 @@ def example1():
     if verbose:
         print 'Running example1'
 ```
+
 If you try to reassign a global variable, you might be surprised. The following example is supposed to keep track of whether the function has been called:
 
 ```
@@ -4555,6 +4789,7 @@ been_called = False
 def example2():
    been_called = True # WRONG
 ```
+
 But if you run it you will see that the value of been_called doesn't change. The problem is that example2 creates a new local variable named been_called. The local variable goes away when the function ends, and has no effect on the global variable.
 
 To reassign a global variable inside a function you have to **declare** the global variable before you use it:
@@ -4565,6 +4800,7 @@ def example2():
     global been_called
     been_called = True
 ```
+
 The global statement tells the interpreter something like, "In this function, when I say been_called, I mean the global variable; don't create a local one."
 
 Here's an example that tries to update a global variable:
@@ -4578,6 +4814,7 @@ def example3():
 ```
 If you run it you get:
 ```
+
 UnboundLocalError: local variable 'count' referenced before assignment
 
 Python assumes that count is local, which means that you are reading it before writing it. The solution, again, is to declare count global.
@@ -4587,6 +4824,7 @@ def example3():
     global count
     count += 1
 ```
+
 If the global value is mutable, you can modify it without declaring it:
 
 ```
@@ -4594,6 +4832,7 @@ known = {0:0, 1:1}
 def example4():
     known[2] = 1
 ```
+
 So you can add, remove and replace elements of a global list or dictionary, but if you want to reassign the variable, you have to declare it:
 
 ```
@@ -4601,6 +4840,7 @@ def example5():
     global known
     known = dict()
 ```
+
 #### <span id="page-130-0"></span>**11.7 Long integers**
 
 If you compute fibonacci(50), you get:
@@ -4609,6 +4849,7 @@ If you compute fibonacci(50), you get:
 >>> fibonacci(50)
 12586269025L
 ```
+
 The L at the end indicates that the result is a long integer, or type long. In Python 3, long is gone; all integers, even really big ones, are type int.
 
 Values with type int have a limited range; long integers can be arbitrarily big, but as they get bigger they consume more space and time.
@@ -4623,6 +4864,7 @@ Any time the result of a computation is too big to be represented with an intege
 >>> 100000 * 100000
 10000000000L
 ```
+
 In the first case the result has type int; in the second case it is long.
 
 **Exercise 11.8.** *Exponentiation of large integers is the basis of common algorithms for public-key encryption. Read the Wikipedia page on the RSA algorithm (*[http: // en. wikipedia. org/ wiki/](http://en.wikipedia.org/wiki/RSA_(algorithm)) [RSA_ ( algorithm)](http://en.wikipedia.org/wiki/RSA_(algorithm)) *) and write functions to encode and decode messages.*
@@ -4717,6 +4959,7 @@ Although it is not necessary, it is common to enclose tuples in parentheses:
 ```
 >>> t = ('a', 'b', 'c', 'd', 'e')
 ```
+
 To create a tuple with a single element, you have to include a final comma:
 
 ```
@@ -4731,6 +4974,7 @@ A value in parentheses is not a tuple:
 >>> type(t2)
 <type 'str'>
 ```
+
 Another way to create a tuple is the built-in function tuple. With no argument, it creates an empty tuple:
 
 ```
@@ -4738,6 +4982,7 @@ Another way to create a tuple is the built-in function tuple. With no argument, 
 >>> print t
 ()
 ```
+
 If the argument is a sequence (string, list or tuple), the result is a tuple with the elements of the sequence:
 
 ```
@@ -4745,6 +4990,7 @@ If the argument is a sequence (string, list or tuple), the result is a tuple wit
 >>> print t
 ('l', 'u', 'p', 'i', 'n', 's')
 ```
+
 Because tuple is the name of a built-in function, you should avoid using it as a variable name.
 
 Most list operators also work on tuples. The bracket operator indexes an element:
@@ -4754,6 +5000,7 @@ Most list operators also work on tuples. The bracket operator indexes an element
 >>> print t[0]
 'a'
 ```
+
 And the slice operator selects a range of elements.
 
 >>> print t[1:3] ('b', 'c')
@@ -4784,12 +5031,14 @@ The number of variables on the left and the number of values on the right have t
 >>> a, b = 1, 2, 3
 ValueError: too many values to unpack
 ```
+
 More generally, the right side can be any kind of sequence (string, list or tuple). For example, to split an email address into a user name and a domain, you could write:
 
 ```
 >>> addr = 'monty@python.org'
 >>> uname, domain = addr.split('@')
 ```
+
 The return value from split is a list with two elements; the first element is assigned to uname, the second to domain.
 
 ```
@@ -4798,6 +5047,7 @@ monty
 >>> print domain
 python.org
 ```
+
 #### <span id="page-136-0"></span>**12.3 Tuples as return values**
 
 Strictly speaking, a function can only return one value, but if the value is a tuple, the effect is the same as returning multiple values. For example, if you want to divide two integers and compute the quotient and remainder, it is inefficient to compute $x/y$ and then $x%y$. It is better to compute them both at the same time.
@@ -4815,12 +5065,14 @@ Or use tuple assignment to store the elements separately:
 >>> print rem
 1
 ```
+
 Here is an example of a function that returns a tuple:
 
 ```
 def min_max(t):
     return min(t), max(t)
 ```
+
 max and min are built-in functions that find the largest and smallest elements of a sequence. min_max computes both and returns a tuple of two values.
 
 #### <span id="page-136-1"></span>**12.4 Variable-length argument tuples**
@@ -4831,12 +5083,14 @@ Functions can take a variable number of arguments. A parameter name that begins 
 def printall(*args):
     print args
 ```
+
 The gather parameter can have any name you like, but args is conventional. Here's how the function works:
 
 ```
 >>> printall(1, 2.0, '3')
 (1, 2.0, '3')
 ```
+
 The complement of gather is **scatter**. If you have a sequence of values and you want to pass it to a function as multiple arguments, you can use the * operator. For example, divmod takes exactly two arguments; it doesn't work with a tuple:
 
 ```
@@ -4844,6 +5098,7 @@ The complement of gather is **scatter**. If you have a sequence of values and yo
 >>> divmod(t)
 TypeError: divmod expected 2 arguments, got 1
 ```
+
 TypeError: atbmod expected 2 arguments, got
 
 But if you scatter the tuple, it works:
@@ -4862,6 +5117,7 @@ But sum does not.
 TypeError: sum expected at most 2 arguments, got 3
 Write a function called sumall that takes any number of arguments and returns their sum.
 ```
+
 ## <span id="page-137-0"></span>**12.5 Lists and tuples**
 
 zip is a built-in function that takes two or more sequences and “zips” them into a list of tuples where each tuple contains one element from each sequence. In Python 3, zip returns an iterator of tuples, but for most purposes, an iterator behaves like a list.
@@ -4874,6 +5130,7 @@ This example zips a string and a list:
 >>> zip(s, t)
 [('a', 0), ('b', 1), ('c', 2)]
 ```
+
 The result is a list of tuples where each tuple contains a character from the string and the corresponding element from the list.
 
 If the sequences are not the same length, the result has the length of the shorter one.
@@ -4887,6 +5144,7 @@ t = [('a', 0), ('b', 1), ('c', 2)]
 for letter, number in t:
     print number, letter
 ```
+
 Each time through the loop, Python selects the next tuple in the list and assigns the elements to letter and number. The output of this loop is:
 
 0 a 1 b 2 c
@@ -4900,12 +5158,14 @@ def has_match(t1, t2):
             return True
     return False
 ```
+
 If you need to traverse the elements of a sequence and their indices, you can use the built-in function enumerate:
 
 ```
 for index, element in enumerate('abc'):
     print index, element
 ```
+
 The output of this loop is:
 
 0 a 1 b 2 c Again.
@@ -4920,6 +5180,7 @@ Dictionaries have a method called items that returns a list of tuples, where eac
 >>> print t
 [('a', 0), ('c', 2), ('b', 1)]
 ```
+
 As you should expect from a dictionary, the items are in no particular order. In Python 3, items returns an iterator, but for many purposes, iterators behave like lists.
 
 Going in the other direction, you can use a list of tuples to initialize a new dictionary:
@@ -4930,6 +5191,7 @@ Going in the other direction, you can use a list of tuples to initialize a new d
 >>> print d
 {'a': 0, 'c': 2, 'b': 1}
 ```
+
 Combining dict with zip yields a concise way to create a dictionary:
 
 ```
@@ -4937,6 +5199,7 @@ Combining dict with zip yields a concise way to create a dictionary:
 >>> print d
 {'a': 0, 'c': 2, 'b': 1}
 ```
+
 The dictionary method update also takes a list of tuples and adds them, as key-value pairs, to an existing dictionary.
 
 Combining items, tuple assignment and for, you get the idiom for traversing the keys and values of a dictionary:
@@ -4945,6 +5208,7 @@ Combining items, tuple assignment and for, you get the idiom for traversing the 
 for key, val in d.items():
     print val, key
 ```
+
 The output of this loop is:
 
 ```
@@ -4952,6 +5216,7 @@ The output of this loop is:
 2 c
 1 b
 ```
+
 Again.
 
 It is common to use tuples as keys in dictionaries (primarily because you can't use lists). For example, a telephone directory might map from last-name, first-name pairs to telephone numbers. Assuming that we have defined last, first and number, we could write:
@@ -4983,6 +5248,7 @@ tuple
 for last, first in directory:
     print first, last, directory[last,first]
 ```
+
 This loop traverses the keys in directory, which are tuples. It assigns the elements of each tuple to last and first, then prints the name and corresponding telephone number.
 
 There are two ways to represent tuples in a state diagram. The more detailed version shows the indices and elements just as they appear in a list. For example, the tuple ('Cleese', 'John') would appear as in Figure [12.1.](#page-139-1)
@@ -5003,6 +5269,7 @@ True
 >>> (0, 1, 2000000) < (0, 3, 4)
 True
 ```
+
 The sort function works the same way. It sorts primarily by first element, but in the case of a tie, it sorts by second element, and so on.
 
 This feature lends itself to a pattern called **DSU** for
@@ -5025,6 +5292,7 @@ def sort_by_length(words):
         res.append(word)
     return res
 ```
+
 The first loop builds a list of tuples, where each tuple is a word preceded by its length.
 
 sort compares the first element, length, first, and only considers the second element to break ties. The keyword argument reverse=True tells sort to go in decreasing order.
@@ -5044,8 +5312,8 @@ To start with the obvious, strings are more limited than other sequences because
 Lists are more common than tuples, mostly because they are mutable. But there are a few cases where you might prefer tuples:
 
 - 1. In some contexts, like a return statement, it is syntactically simpler to create a tuple than a list. In other contexts, you might prefer a list.
-- 2. If you want to use a sequence as a dictionary key, you have to use an immutable type like a tuple or string.
-- 3. If you are passing a sequence as an argument to a function, using tuples reduces the potential for unexpected behavior due to aliasing.
+- 1. If you want to use a sequence as a dictionary key, you have to use an immutable type like a tuple or string.
+- 1. If you are passing a sequence as an argument to a function, using tuples reduces the potential for unexpected behavior due to aliasing.
 
 Because tuples are immutable, they don't provide methods like sort and reverse, which modify existing lists. But Python provides the built-in functions sorted and reversed, which take any sequence as a parameter and return a new list with the same elements in a different order.
 
@@ -5082,6 +5350,7 @@ And here's a dictionary with 3 items that map integers to strings.
 >>> print structshape(d)
 dict of 3 int->str
 ```
+
 If you are having trouble keeping track of your data structures, structshape can help.
 
 #### <span id="page-142-0"></span>**12.10 Glossary**
@@ -5177,6 +5446,7 @@ for i in range(10):
     x = random.random()
     print x
 ```
+
 The function randint takes parameters low and high and returns an integer between low and high (including both).
 
 ```
@@ -5185,6 +5455,7 @@ The function randint takes parameters low and high and returns an integer betwee
 >>> random.randint(5, 10)
 9
 ```
+
 To choose an element from a sequence at random, you can use choice:
 
 ```
@@ -5194,6 +5465,7 @@ To choose an element from a sequence at random, you can use choice:
 >>> random.choice(t)
 3
 ```
+
 The random module also provides functions to generate random values from continuous distributions including Gaussian, exponential, gamma, and a few more.
 
 **Exercise 13.5.** *Write a function named* choose_from_hist *that takes a histogram as defined in Section [11.1](#page-123-0) and returns a random value from the histogram, chosen with probability in proportion to frequency. For example, for this histogram:*
@@ -5204,6 +5476,7 @@ The random module also provides functions to generate random values from continu
 >>> print hist
 {'a': 2, 'b': 1}
 ```
+
 *your function should return* 'a' *with probability* 2/3 *and* 'b' *with probability* 1/3*.*
 
 #### <span id="page-146-0"></span>**13.3 Word histogram**
@@ -5227,6 +5500,7 @@ def process_line(line, hist):
         word = word.lower()
         hist[word] = hist.get(word, 0) + 1
 ```
+
 hist = process_file('emma.txt')
 
 This program reads emma.txt, which contains the text of *Emma* by Jane Austen.
@@ -5243,6 +5517,7 @@ To count the total number of words in the file, we can add up the frequencies in
 def total_words(hist):
     return sum(hist.values())
 ```
+
 The number of different words is just the number of items in the dictionary:
 
 def different_words(hist):
@@ -5255,6 +5530,7 @@ Here is some code to print the results:
 print 'Total number of words:', total_words(hist)
 print 'Number of different words:', different_words(hist)
 ```
+
 And the results:
 
 Total number of words: 161080 Number of different words: 7214
@@ -5271,6 +5547,7 @@ def most_common(hist):
     t.sort(reverse=True)
     return t
 ```
+
 Here is a loop that prints the ten most common words:
 
 ```
@@ -5279,6 +5556,7 @@ print 'The most common words are:'
 for freq, word in t[0:10]:
     print word, '\t', freq
 ```
+
 And here are the results from *Emma*:
 
 The most common words are: to 5242 the 5205 and 4897 of 4295 i 3191 a 3130 it 2529 her 2483 was 2400 she 2364
@@ -5294,6 +5572,7 @@ def print_most_common(hist, num=10):
     for freq, word in t[:num]:
         print word, '\t', freq
 ```
+
 The first parameter is required; the second is optional. The **default value** of num is 10.
 
 If you only provide one argument:
@@ -5301,11 +5580,13 @@ If you only provide one argument:
 ```
 print_most_common(hist)
 ```
+
 num gets the default value. If you provide two arguments:
 
 ```
 print_most_common(hist, 20)
 ```
+
 num gets the value of the argument instead. In other words, the optional argument **overrides** the default value.
 
 If a function has both required and optional parameters, all the required parameters have to come first, followed by the optional ones.
@@ -5324,6 +5605,7 @@ def subtract(d1, d2):
             res[key] = None
     return res
 ```
+
 To find the words in the book that are not in words.txt, we can use process_file to build a histogram for words.txt, and then subtract:
 
 ```
@@ -5335,6 +5617,7 @@ diff = subtract(hist, words)
 print "The words in the book that aren't in the word list are:"
 for word in diff.keys():
 ```
+
 print word,
 
 Here are some of the results from *Emma*:
@@ -5344,6 +5627,7 @@ The words in the book that aren't in the word list are:
  rencontre jane's blanche woodhouses disingenuousness
 friend's venice apartment ...
 ```
+
 Some of these words are names and possessives. Others, like "rencontre," are no longer in common use. But a few are common words that should really be in the list!
 
 ```
@@ -5352,6 +5636,7 @@ tions. Read the documentation at http: // docs. python. org/ 2/ library/ stdtype
 types-set and write a program that uses set subtraction to find words in the book that are not in
 the word list. Solution: http: // thinkpython. com/ code/ analyze_ book2. py .
 ```
+
 #### <span id="page-148-1"></span>**13.7 Random words**
 
 To choose a random word from the histogram, the simplest algorithm is to build a list with multiple copies of each word, according to the observed frequency, and then choose from the list:
@@ -5362,6 +5647,7 @@ def random_word(h):
     for word, freq in h.items():
         t.extend([word] * freq)
 ```
+
 return random.choice(t)
 
 The expression [word] * freq creates a list with freq copies of the string word. The extend method is similar to append except that the argument is a sequence.
@@ -5435,6 +5721,7 @@ Your first choice might be a list, since it is easy to add and remove elements, 
 def shift(prefix, word):
     return prefix[1:] + (word,)
 ```
+
 shift takes a tuple of words, prefix, and a string, word, and forms a new tuple that has all the words in prefix except the first, and word added to the end.
 
 For the collection of suffixes, the operations we need to perform include adding a new suffix (or increasing the frequency of an existing one), and choosing a random suffix.
@@ -5484,6 +5771,7 @@ Finding a hard bug requires reading, running, ruminating, and sometimes retreati
 **override:** To replace a default value with an argument.
 
 - **benchmarking:** The process of choosing between data structures by implementing alternatives and testing them on a sample of the possible inputs.
+
 #### <span id="page-153-1"></span>**13.12 Exercises**
 
 **Exercise 13.9.** *The "rank" of a word is its position in a list of words sorted by frequency: the most common word has rank 1, the second most common has rank 2, etc.*
@@ -5531,6 +5819,7 @@ To write a file, you have to open it with mode 'w' as a second parameter:
 >>> print fout
 <open file 'output.txt', mode 'w' at 0xb7eb2410>
 ```
+
 If the file already exists, opening it in write mode clears out the old data and starts fresh, so be careful! If the file doesn't exist, a new one is created.
 
 The write method puts data into the file.
@@ -5553,6 +5842,7 @@ The argument of write has to be a string, so if we want to put other values in a
 >>> x = 52
 >>> fout.write(str(x))
 ```
+
 An alternative is to use the **format operator**, %. When applied to integers, % is the modulus operator. But when the first operand is a string, % is the format operator.
 
 The first operand is the **format string**, which contains one or more **format sequences**, which specify how the second operand is formatted. The result is a string.
@@ -5564,6 +5854,7 @@ For example, the format sequence '%d' means that the second operand should be fo
 >>> '%d' % camels
 '42'
 ```
+
 The result is the string '42', which is not to be confused with the integer value 42.
 
 A format sequence can appear anywhere in the string, so you can embed a value in a sentence:
@@ -5573,6 +5864,7 @@ A format sequence can appear anywhere in the string, so you can embed a value in
 >>> 'I have spotted %d camels.' % camels
 'I have spotted 42 camels.'
 ```
+
 If there is more than one format sequence in the string, the second argument has to be a tuple. Each format sequence is matched with an element of the tuple, in order.
 
 The following example uses '%d' to format an integer, '%g' to format a floating-point number (don't ask why), and '%s' to format a string:
@@ -5581,6 +5873,7 @@ The following example uses '%d' to format an integer, '%g' to format a floating-
 >>> 'In %d years I have spotted %g %s.' % (3, 0.1, 'camels')
 'In 3 years I have spotted 0.1 camels.'
 ```
+
 The number of elements in the tuple has to match the number of format sequences in the string. Also, the types of the elements have to match the format sequences:
 
 ```
@@ -5589,6 +5882,7 @@ TypeError: not enough arguments for format string
 >>> '%d' % 'dollars'
 TypeError: illegal argument type for built-in operation
 ```
+
 In the first example, there aren't enough elements; in the second, the element is the wrong type.
 
 The format operator is powerful, but it can be difficult to use. You can read more about it at <http://docs.python.org/2/library/stdtypes.html#string-formatting>.
@@ -5605,6 +5899,7 @@ The os module provides functions for working with files and directories ("os" st
 >>> print cwd
 /home/dinsdale
 ```
+
 cwd stands for "current working directory." The result in this example is /home/dinsdale, which is the home directory of a user named dinsdale.
 
 A string like cwd that identifies a file is called a **path**. A **relative path** starts from the current directory; an **absolute path** starts from the topmost directory in the file system.
@@ -5615,11 +5910,13 @@ The paths we have seen so far are simple filenames, so they are relative to the 
 >>> os.path.abspath('memo.txt')
 '/home/dinsdale/memo.txt'
 ```
+
 os.path.exists checks whether a file or directory exists:
 
 ```
 >>> os.path.exists('memo.txt')
 ```
+
 True
 
 If it exists, os.path.isdir checks whether it's a directory:
@@ -5630,6 +5927,7 @@ False
 >>> os.path.isdir('music')
 True
 ```
+
 Similarly, os.path.isfile checks whether it's a file.
 
 os.listdir returns a list of the files (and other directories) in the given directory:
@@ -5638,6 +5936,7 @@ os.listdir returns a list of the files (and other directories) in the given dire
 >>> os.listdir(cwd)
 ['music', 'photos', 'memo.txt']
 ```
+
 To demonstrate these functions, the following example "walks" through a directory, prints the names of all the files, and calls itself recursively on all the directories.
 
 ```
@@ -5652,6 +5951,7 @@ if os.path.isfile(path):
 else:
     walk(path)
 ```
+
 os.path.join takes a directory and a file name and joins them into a complete path. **Exercise 14.1.** *The* os *module provides a function called* walk *that is similar to this one but more versatile. Read the documentation and use it to print the names of the files in a given directory and its subdirectories.*
 
 *Solution:* [http: // thinkpython. com/ code/ walk. py](http://thinkpython.com/code/walk.py) *.*
@@ -5664,6 +5964,7 @@ A lot of things can go wrong when you try to read and write files. If you try to
 >>> fin = open('bad_file')
 IOError: [Errno 2] No such file or directory: 'bad_file'
 ```
+
 If you don't have permission to access a file:
 
 >>> fout = open('/etc/passwd', 'w') IOError: [Errno 13] Permission denied: '/etc/passwd' And if you try to open a directory for reading, you get
@@ -5683,6 +5984,7 @@ try:
 except:
     print 'Something went wrong.'
 ```
+
 Python starts by executing the try clause. If all goes well, it skips the except clause and proceeds. If an exception occurs, it jumps out of the try clause and executes the except clause.
 
 Handling an exception with a try statement is called **catching** an exception. In this example, the except clause prints an error message that is not very helpful. In general, catching an exception gives you a chance to fix the problem, or try again, or at least end the program gracefully.
@@ -5703,6 +6005,7 @@ Opening a database is similar to opening other files:
 >>> import anydbm
 >>> db = anydbm.open('captions.db', 'c')
 ```
+
 The mode 'c' means that the database should be created if it doesn't already exist. The result is a database object that can be used (for most operations) like a dictionary. If you create a new item, anydbm updates the database file.
 
 >>> db['cleese.png'] = 'Photo of John Cleese.'
@@ -5713,6 +6016,7 @@ When you access one of the items, anydbm reads the file:
 >>> print db['cleese.png']
 Photo of John Cleese.
 ```
+
 If you make another assignment to an existing key, anydbm replaces the old value:
 
 ```
@@ -5720,6 +6024,7 @@ If you make another assignment to an existing key, anydbm replaces the old value
 >>> print db['cleese.png']
 Photo of John Cleese doing a silly walk.
 ```
+
 Many dictionary methods, like keys and items, also work with database objects. So does iteration with a for statement.
 
 for key in db: print key
@@ -5729,6 +6034,7 @@ As with other files, you should close the database when you are done:
 ```
 >>> db.close()
 ```
+
 #### <span id="page-158-1"></span>**14.7 Pickling**
 
 A limitation of anydbm is that the keys and values have to be strings. If you try to use any other type, you get an error.
@@ -5743,6 +6049,7 @@ pickle.dumps takes an object as a parameter and returns a string representation 
 >>> pickle.dumps(t)
 '(lp0\nI1\naI2\naI3\na.'
 ```
+
 The format isn't obvious to human readers; it is meant to be easy for pickle to interpret. pickle.loads ("load string") reconstitutes the object:
 
 ```
@@ -5752,6 +6059,7 @@ The format isn't obvious to human readers; it is meant to be easy for pickle to 
 >>> print t2
 [1, 2, 3]
 ```
+
 Although the new object has the same value as the old, it is not (in general) the same object:
 
 ```
@@ -5760,6 +6068,7 @@ True
 >>> t1 is t2
 False
 ```
+
 In other words, pickling and then unpickling has the same effect as copying the object.
 
 You can use pickle to store non-strings in a database. In fact, this combination is so common that it has been encapsulated in a module called shelve.
@@ -5780,6 +6089,7 @@ For example, the Unix command ls -l normally displays the contents of the curren
 >>> cmd = 'ls -l'
 >>> fp = os.popen(cmd)
 ```
+
 The argument is a string that contains a shell command. The return value is an object that behaves just like an open file. You can read the output from the ls process one line at a time with readline or get the whole thing at once with read:
 
 <span id="page-159-1"></span><sup>1</sup>popen is deprecated now, which means we are supposed to stop using it and start using the subprocess module. But for simple cases, I find subprocess more complicated than necessary. So I am going to keep using popen until they take it away.
@@ -5793,6 +6103,7 @@ When you are done, you close the pipe like a file:
 >>> print stat
 None
 ```
+
 The return value is the final status of the ls process; None means that it ended normally (with no errors).
 
 For example, most Unix systems provide a command called md5sum that reads the contents of a file and computes a "checksum." You can read about MD5 at [http://en.wikipedia.](http://en.wikipedia.org/wiki/Md5) [org/wiki/Md5](http://en.wikipedia.org/wiki/Md5). This command provides an efficient way to check whether two files have the same contents. The probability that different contents yield the same checksum is very small (that is, unlikely to happen before the universe collapses).
@@ -5810,6 +6121,7 @@ You can use a pipe to run md5sum from Python and get the result:
 >>> print stat
 None
 ```
+
 <span id="page-160-0"></span>**Exercise 14.4.** *In a large collection of MP3 files, there may be more than one copy of the same song, stored in different directories or with different file names. The goal of this exercise is to search for duplicates.*
 
 - *1. Write a program that searches a directory and all of its subdirectories, recursively, and returns a list of complete paths for all files with a given suffix (like* .mp3*). Hint:* os.path *provides several useful functions for manipulating file and path names.*
@@ -5829,6 +6141,7 @@ def linecount(filename):
         count += 1
     return count
 ```
+
 print linecount('wc.py')
 
 If you run this program, it reads itself and prints the number of lines in the file, which is 7. You can also import it like this:
@@ -5837,18 +6150,21 @@ If you run this program, it reads itself and prints the number of lines in the f
 >>> import wc
 7
 ```
+
 Now you have a module object wc:
 
 ```
 >>> print wc
 <module 'wc' from 'wc.py'>
 ```
+
 That provides a function called linecount:
 
 ```
 >>> wc.linecount('wc.py')
 7
 ```
+
 So that's how you write modules in Python.
 
 The only problem with this example is that when you import the module it executes the test code at the bottom. Normally when you import a module, it defines new functions but it doesn't execute them.
@@ -5859,9 +6175,10 @@ Programs that will be imported as modules often use the following idiom:
 if __name__ == '__main__':
     print linecount('wc.py')
 ```
-__name__ is a built-in variable that is set when the program starts. If the program is running as a script, __name__ has the value __main__; in that case, the test code is executed. Otherwise, if the module is being imported, the test code is skipped.
 
-**Exercise 14.5.** *Type this example into a file named* wc.py *and run it as a script. Then run the Python interpreter and* import wc*. What is the value of* __name__ *when the module is being imported?*
+**name** is a built-in variable that is set when the program starts. If the program is running as a script, **name** has the value **main**; in that case, the test code is executed. Otherwise, if the module is being imported, the test code is skipped.
+
+**Exercise 14.5.** *Type this example into a file named* wc.py *and run it as a script. Then run the Python interpreter and* import wc*. What is the value of* **name** *when the module is being imported?*
 
 *Warning: If you import a module that has already been imported, Python does nothing. It does not re-read the file, even if it has changed.*
 
@@ -5877,12 +6194,14 @@ When you are reading and writing files, you might run into problems with whitesp
 1 2 3
  4
 ```
+
 The built-in function repr can help. It takes any object as an argument and returns a string representation of the object. For strings, it represents whitespace characters with backslash sequences:
 
 ```
 >>> print repr(s)
 '1 2\t 3\n 4'
 ```
+
 This can be helpful for debugging.
 
 One other problem you might run into is that different systems use different characters to indicate the end of a line. Some systems use a newline, represented \n. Others use a return character, represented \r. Some use both. If you move files between different systems, these inconsistencies might cause problems.
@@ -5916,6 +6235,7 @@ conn = urllib.urlopen('http://thinkpython.com/secret.html')
 for line in conn:
     print line.strip()
 ```
+
 *Run this code and follow the instructions you see there. Solution:* [http: // thinkpython. com/](http://thinkpython.com/code/zip_code.py) [code/ zip_ code. py](http://thinkpython.com/code/zip_code.py) *.*
 
 # <span id="page-164-0"></span>**Chapter 15**
@@ -5944,6 +6264,7 @@ A user-defined type is also called a **class**. A class definition looks like th
 class Point(object):
     """Represents a point in 2-D space."""
 ```
+
 This header indicates that the new class is a Point, which is a kind of object, which is a built-in type.
 
 The body is a docstring that explains what the class is for. You can define variables and functions inside a class definition, but we will get back to that later.
@@ -5958,13 +6279,15 @@ x
 blank
             Point
 ```
+
 <span id="page-165-1"></span>Figure 15.1: Object diagram.
 
 ```
 >>> print Point
 <class '__main__.Point'>
 ```
-Because Point is defined at the top level, its “full name” is __main__.Point.
+
+Because Point is defined at the top level, its “full name” is **main**.Point.
 
 The class object is like a factory for creating objects. To create a Point, you call Point as if it were a function.
 
@@ -5973,6 +6296,7 @@ The class object is like a factory for creating objects. To create a Point, you 
 >>> print blank
 <__main__.Point instance at 0xb7e9d3ac>
 ```
+
 The return value is a reference to a Point object, which we assign to blank. Creating a new object is called **instantiation**, and the object is an **instance** of the class.
 
 When you print an instance, Python tells you what class it belongs to and where it is stored in memory (the prefix 0x means that the following number is in hexadecimal).
@@ -5985,6 +6309,7 @@ You can assign values to an instance using dot notation:
 >>> blank.x = 3.0
 >>> blank.y = 4.0
 ```
+
 This syntax is similar to the syntax for selecting a variable from a module, such as math.pi or string.whitespace. In this case, though, we are assigning values to named elements of an object. These elements are called **attributes**.
 
 As a noun, "AT-trib-ute" is pronounced with emphasis on the first syllable, as opposed to "a-TRIB-ute," which is a verb.
@@ -6002,6 +6327,7 @@ You can read the value of an attribute using the same syntax:
 >>> print x
 3.0
 ```
+
 The expression blank.x means, "Go to the object blank refers to and get the value of x." In this case, we assign that value to a variable named x. There is no conflict between the variable x and the attribute x.
 
 You can use dot notation as part of any expression. For example:
@@ -6013,6 +6339,7 @@ You can use dot notation as part of any expression. For example:
 >>> print distance
 5.0
 ```
+
 You can pass an instance as an argument in the usual way. For example:
 
 def print_point(p): print '(%g, %g)' % (p.x, p.y)
@@ -6042,6 +6369,7 @@ class Rectangle(object):
     attributes: width, height, corner.
     """
 ```
+
 The docstring lists the attributes: width and height are numbers; corner is a Point object that specifies the lower-left corner.
 
 To represent a rectangle, you have to instantiate a Rectangle object and assign values to the attributes:
@@ -6057,6 +6385,7 @@ box.corner = Point()
 box.corner.x = 0.0
 box.corner.y = 0.0
 ```
+
 The expression box.corner.x means, "Go to the object box refers to and select the attribute named corner; then go to that object and select the attribute named x."
 
 Figure [15.2](#page-167-2) shows the state of this object. An object that is an attribute of another object is **embedded**.
@@ -6072,6 +6401,7 @@ def find_center(rect):
     p.y = rect.corner.y + rect.height/2.0
     return p
 ```
+
 Here is an example that passes box as an argument and assigns the resulting Point to center:
 
 ```
@@ -6079,6 +6409,7 @@ Here is an example that passes box as an argument and assigns the resulting Poin
 >>> print_point(center)
 (50.0, 100.0)
 ```
+
 #### <span id="page-167-1"></span>**15.5 Objects are mutable**
 
 You can change the state of an object by making an assignment to one of its attributes. For example, to change the size of a rectangle without changing its position, you can modify the values of width and height:
@@ -6087,6 +6418,7 @@ You can change the state of an object by making an assignment to one of its attr
 box.width = box.width + 50
 box.height = box.width + 100
 ```
+
 You can also write functions that modify objects. For example, grow_rectangle takes a Rectangle object and two numbers, dwidth and dheight, and adds the numbers to the width and height of the rectangle:
 
 ```
@@ -6094,6 +6426,7 @@ def grow_rectangle(rect, dwidth, dheight):
     rect.width += dwidth
     rect.height += dheight
 ```
+
 Here is an example that demonstrates the effect:
 
 ```
@@ -6107,6 +6440,7 @@ Here is an example that demonstrates the effect:
 >>> print box.height
 300.0
 ```
+
 Inside the function, rect is an alias for box, so if the function modifies rect, box changes. **Exercise 15.2.** *Write a function named* move_rectangle *that takes a Rectangle and two numbers named* dx *and* dy*. It should change the location of the rectangle by adding* dx *to the* x *coordinate of* corner *and adding* dy *to the* y *coordinate of* corner*.*
 
 #### <span id="page-168-0"></span>**15.6 Copying**
@@ -6122,6 +6456,7 @@ Copying an object is often an alternative to aliasing. The copy module contains 
 >>> import copy
 >>> p2 = copy.copy(p1)
 ```
+
 p1 and p2 contain the same data, but they are not the same Point.
 
 ```
@@ -6134,6 +6469,7 @@ False
 >>> p1 == p2
 False
 ```
+
 The is operator indicates that p1 and p2 are not the same object, which is what we expected. But you might have expected == to yield True because these points contain the same data. In that case, you will be disappointed to learn that for instances, the default behavior of the == operator is the same as the is operator; it checks object identity, not object equivalence. This behavior can be changed—we'll see how later.
 
 If you use copy.copy to duplicate a Rectangle, you will find that it copies the Rectangle object but not the embedded Point.
@@ -6149,6 +6485,7 @@ False
 >>> box2.corner is box.corner
 True
 ```
+
 Figure [15.3](#page-169-1) shows what the object diagram looks like. This operation is called a **shallow copy** because it copies the object and any references it contains, but not the embedded objects.
 
 For most applications, this is not what you want. In this example, invoking grow_rectangle on one of the Rectangles would not affect the other, but invoking move_rectangle on either would affect both! This behavior is confusing and error-prone.
@@ -6162,6 +6499,7 @@ False
 >>> box3.corner is box.corner
 False
 ```
+
 box3 and box are completely separate objects.
 
 **Exercise 15.3.** *Write a version of* move_rectangle *that creates and returns a new Rectangle instead of modifying the old one.*
@@ -6175,12 +6513,14 @@ When you start working with objects, you are likely to encounter some new except
 >>> print p.z
 AttributeError: Point instance has no attribute 'z'
 ```
+
 If you are not sure what type an object is, you can ask:
 
 ```
 >>> type(p)
 <type '__main__.Point'>
 ```
+
 If you are not sure whether an object has a particular attribute, you can use the built-in function hasattr:
 
 ```
@@ -6189,6 +6529,7 @@ True
 >>> hasattr(p, 'z')
 False
 ```
+
 The first argument can be any object; the second argument is a *string* that contains the name of the attribute.
 
 #### <span id="page-170-0"></span>**15.8 Glossary**
@@ -6225,6 +6566,7 @@ canvas = world.ca(width=500, height=500, background='white')
 bbox = [[-150,-100], [150, 100]]
 canvas.rectangle(bbox, outline='black', width=2, fill='green4')
 ```
+
 *You should see a green rectangle with a black outline. The first line creates a Canvas, which appears in the window as a white square. The Canvas object provides methods like* rectangle *for drawing various shapes.*
 
 bbox *is a list of lists that represents the "bounding box" of the rectangle. The first pair of coordinates is the lower-left corner of the rectangle; the second pair is the upper-right corner.*
@@ -6262,6 +6604,7 @@ class Time(object):
     """Represents the time of day.
     attributes: hour, minute, second
 ```
+
 We can create a new Time object and assign attributes for hours, minutes, and seconds:
 
 ```
@@ -6270,6 +6613,7 @@ time.hour = 11
 time.minute = 59
 time.second = 30
 ```
+
 """
 
 The state diagram for the Time object looks like Figure [16.1.](#page-173-0)
@@ -6296,6 +6640,7 @@ def add_time(t1, t2):
     sum.second = t1.second + t2.second
     return sum
 ```
+
 The function creates a new Time object, initializes its attributes, and returns a reference to the new object. This is called a **pure function** because it does not modify any of the objects passed to it as arguments and it has no effect, like displaying a value or getting user input, other than returning a value.
 
 To test this function, I'll create two Time objects: start contains the start time of a movie, like *Monty Python and the Holy Grail*, and duration contains the run time of the movie, which is one hour 35 minutes.
@@ -6315,6 +6660,7 @@ add_time figures out when the movie will be done.
 >>> print_time(done)
 10:80:00
 ```
+
 The result, 10:80:00 might not be what you were hoping for. The problem is that this function does not deal with cases where the number of seconds or minutes adds up to more than sixty. When that happens, we have to “carry” the extra seconds into the minute column or the extra minutes into the hour column.
 
 Here's an improved version:
@@ -6335,6 +6681,7 @@ if sum.minute >= 60:
     sum.minute -= 60
     sum.hour += 1
 ```
+
 return sum
 
 Although this function is correct, it is starting to get big. We will see a shorter alternative later.
@@ -6355,6 +6702,7 @@ def increment(time, seconds):
         time.minute -= 60
         time.hour += 1
 ```
+
 The first line performs the basic operation; the remainder deals with the special cases we saw before.
 
 Is this function correct? What happens if the parameter seconds is much greater than sixty?
@@ -6389,6 +6737,7 @@ def time_to_int(time):
     seconds = minutes * 60 + time.second
     return seconds
 ```
+
 And here is the function that converts integers to Times (recall that divmod divides the first argument by the second and returns the quotient and remainder as a tuple).
 
 ```
@@ -6398,6 +6747,7 @@ def int_to_time(seconds):
     time.hour, time.minute = divmod(minutes, 60)
     return time
 ```
+
 You might have to think a bit, and run some tests, to convince yourself that these functions are correct. One way to test them is to check that time_to_int(int_to_time(x)) == x for many values of x. This is an example of a consistency check.
 
 Once you are convinced they are correct, you can use them to rewrite add_time:
@@ -6407,6 +6757,7 @@ def add_time(t1, t2):
     seconds = time_to_int(t1) + time_to_int(t2)
     return int_to_time(seconds)
 ```
+
 This version is shorter than the original, and easier to verify. **Exercise 16.5.** *Rewrite* increment *using* time_to_int *and* int_to_time*.*
 
 In some ways, converting from base 60 to base 10 and back is harder than just dealing with times. Base conversion is more abstract; our intuition for dealing with time values is better.
@@ -6433,6 +6784,7 @@ def valid_time(time):
         return False
     return True
 ```
+
 Then at the beginning of each function you could check the arguments to make sure they are valid:
 
 ```
@@ -6442,6 +6794,7 @@ def add_time(t1, t2):
     seconds = time_to_int(t1) + time_to_int(t2)
     return int_to_time(seconds)
 ```
+
 Or you could use an assert statement, which checks a given invariant and raises an exception if it fails:
 
 ```
@@ -6450,6 +6803,7 @@ def add_time(t1, t2):
     seconds = time_to_int(t1) + time_to_int(t2)
     return int_to_time(seconds)
 ```
+
 assert statements are useful because they distinguish code that deals with normal conditions from code that checks for errors.
 
 #### <span id="page-176-1"></span>**16.6 Glossary**
@@ -6520,6 +6874,7 @@ class Time(object):
 def print_time(time):
     print '%.2d:%.2d:%.2d' % (time.hour, time.minute, time.second)
 ```
+
 To call this function, you have to pass a Time object as an argument:
 
 ```
@@ -6530,6 +6885,7 @@ To call this function, you have to pass a Time object as an argument:
 >>> print_time(start)
 09:45:00
 ```
+
 To make print_time a method, all we have to do is move the function definition inside the class definition. Notice the change in indentation.
 
 ```
@@ -6537,12 +6893,14 @@ class Time(object):
     def print_time(time):
         print '%.2d:%.2d:%.2d' % (time.hour, time.minute, time.second)
 ```
+
 Now there are two ways to call print_time. The first (and less common) way is to use function syntax:
 
 ```
 >>> Time.print_time(start)
 09:45:00
 ```
+
 In this use of dot notation, Time is the name of the class, and print_time is the name of the method. start is passed as a parameter.
 
 The second (and more concise) way is to use method syntax:
@@ -6551,6 +6909,7 @@ The second (and more concise) way is to use method syntax:
 >>> start.print_time()
 09:45:00
 ```
+
 In this use of dot notation, print_time is the name of the method (again), and start is the object the method is invoked on, which is called the **subject**. Just as the subject of a sentence is what the sentence is about, the subject of a method invocation is what the method is about.
 
 Inside the method, the subject is assigned to the first parameter, so in this case start is assigned to time.
@@ -6562,6 +6921,7 @@ class Time(object):
     def print_time(self):
         print '%.2d:%.2d:%.2d' % (self.hour, self.minute, self.second)
 ```
+
 The reason for this convention is an implicit metaphor:
 
 - The syntax for a function call, print_time(start), suggests that the function is the active agent. It says something like, "Hey print_time! Here's an object for you to print."
@@ -6584,6 +6944,7 @@ def increment(self, seconds):
     seconds += self.time_to_int()
     return int_to_time(seconds)
 ```
+
 This version assumes that time_to_int is written as a method, as in Exercise [17.1.](#page-180-1) Also, note that it is a pure function, not a modifier.
 
 Here's how you would invoke increment:
@@ -6595,6 +6956,7 @@ Here's how you would invoke increment:
 >>> end.print_time()
 10:07:17
 ```
+
 The subject, start, gets assigned to the first parameter, self. The argument, 1337, gets assigned to the second parameter, seconds.
 
 This mechanism can be confusing, especially if you make an error. For example, if you invoke increment with two arguments, you get:
@@ -6603,6 +6965,7 @@ This mechanism can be confusing, especially if you make an error. For example, i
 >>> end = start.increment(1337, 460)
 TypeError: increment() takes exactly 2 arguments (3 given)
 ```
+
 The error message is initially confusing, because there are only two arguments in parentheses. But the subject is also considered an argument, so all together that's three.
 
 #### <span id="page-181-0"></span>**17.4 A more complicated example**
@@ -6613,6 +6976,7 @@ is_after (from Exercise [16.2)](#page-172-4) is slightly more complicated becaus
 def is_after(self, other):
     return self.time_to_int() > other.time_to_int()
 ```
+
 To use this method, you have to invoke it on one object and pass the other as an argument: >>> end.is_after(start)
 
 True
@@ -6621,9 +6985,9 @@ One nice thing about this syntax is that it almost reads like English: "end is a
 
 ### <span id="page-181-1"></span>**17.5 The init method**
 
-# inside class Time:
+# inside class Time
 
-The init method (short for "initialization") is a special method that gets invoked when an object is instantiated. Its full name is __init__ (two underscore characters, followed by init, and then two more underscores). An init method for the Time class might look like this:
+The init method (short for "initialization") is a special method that gets invoked when an object is instantiated. Its full name is **init** (two underscore characters, followed by init, and then two more underscores). An init method for the Time class might look like this:
 
 ```
 # inside class Time:
@@ -6635,11 +6999,13 @@ def __init__(self, hour=0, minute=0, second=0):
     self.minute = minute
     self.second = second
 ```
-It is common for the parameters of __init__ to have the same names as the attributes. The statement
+
+It is common for the parameters of **init** to have the same names as the attributes. The statement
 
 ```
 self.hour = hour
 ```
+
 stores the value of the parameter hour as an attribute of self.
 
 The parameters are optional, so if you call Time with no arguments, you get the default values.
@@ -6649,6 +7015,7 @@ The parameters are optional, so if you call Time with no arguments, you get the 
 >>> time.print_time()
 00:00:00
 ```
+
 If you provide one argument, it overrides hour:
 
 ```
@@ -6656,6 +7023,7 @@ If you provide one argument, it overrides hour:
 >>> time.print_time()
 09:00:00
 ```
+
 If you provide two arguments, they override hour and minute.
 
 ```
@@ -6663,13 +7031,14 @@ If you provide two arguments, they override hour and minute.
 >>> time.print_time()
 09:45:00
 ```
+
 And if you provide three arguments, they override all three default values.
 
 **Exercise 17.2.** *Write an init method for the* Point *class that takes* x *and* y *as optional parameters and assigns them to the corresponding attributes.*
 
-## <span id="page-182-0"></span>**17.6 The** __str__ **method**
+## <span id="page-182-0"></span>**17.6 The** **str** **method**
 
-__str__ is a special method, like __init__, that is supposed to return a string representation of an object.
+**str** is a special method, like **init**, that is supposed to return a string representation of an object.
 
 For example, here is a str method for Time objects:
 
@@ -6678,6 +7047,7 @@ For example, here is a str method for Time objects:
     def __str__(self):
         return '%.2d:%.2d:%.2d' % (self.hour, self.minute, self.second)
 ```
+
 When you print an object, Python invokes the str method:
 
 ```
@@ -6685,13 +7055,14 @@ When you print an object, Python invokes the str method:
 >>> print time
 09:45:00
 ```
-When I write a new class, I almost always start by writing __init__, which makes it easier to instantiate objects, and __str__, which is useful for debugging.
+
+When I write a new class, I almost always start by writing **init**, which makes it easier to instantiate objects, and **str**, which is useful for debugging.
 
 **Exercise 17.3.** *Write a* str *method for the* Point *class. Create a Point object and print it.*
 
 #### <span id="page-182-1"></span>**17.7 Operator overloading**
 
-By defining other special methods, you can specify the behavior of operators on userdefined types. For example, if you define a method named __add__ for the Time class, you can use the + operator on Time objects.
+By defining other special methods, you can specify the behavior of operators on userdefined types. For example, if you define a method named **add** for the Time class, you can use the + operator on Time objects.
 
 Here is what the definition might look like:
 
@@ -6701,6 +7072,7 @@ Here is what the definition might look like:
         seconds = self.time_to_int() + other.time_to_int()
         return int_to_time(seconds)
 ```
+
 And here is how you could use it:
 
 ```
@@ -6709,15 +7081,16 @@ And here is how you could use it:
 >>> print start + duration
 11:20:00
 ```
-When you apply the + operator to Time objects, Python invokes __add__. When you print the result, Python invokes __str__. So there is quite a lot happening behind the scenes!
 
-Changing the behavior of an operator so that it works with user-defined types is called **operator overloading**. For every operator in Python there is a corresponding special method, like __add__. For more details, see [http://docs.python.org/2/reference/datamodel.](http://docs.python.org/2/reference/datamodel.html#specialnames) [html#specialnames](http://docs.python.org/2/reference/datamodel.html#specialnames).
+When you apply the + operator to Time objects, Python invokes **add**. When you print the result, Python invokes **str**. So there is quite a lot happening behind the scenes!
+
+Changing the behavior of an operator so that it works with user-defined types is called **operator overloading**. For every operator in Python there is a corresponding special method, like **add**. For more details, see [http://docs.python.org/2/reference/datamodel.](http://docs.python.org/2/reference/datamodel.html#specialnames) [html#specialnames](http://docs.python.org/2/reference/datamodel.html#specialnames).
 
 **Exercise 17.4.** *Write an* add *method for the Point class.*
 
 #### <span id="page-183-0"></span>**17.8 Type-based dispatch**
 
-In the previous section we added two Time objects, but you also might want to add an integer to a Time object. The following is a version of __add__ that checks the type of other and invokes either add_time or increment:
+In the previous section we added two Time objects, but you also might want to add an integer to a Time object. The following is a version of **add** that checks the type of other and invokes either add_time or increment:
 
 ```
 # inside class Time:
@@ -6736,9 +7109,10 @@ def increment(self, seconds):
     seconds += self.time_to_int()
     return int_to_time(seconds)
 ```
+
 The built-in function isinstance takes a value and a class object, and returns True if the value is an instance of the class.
 
-If other is a Time object, __add__ invokes add_time. Otherwise it assumes that the parameter is a number and invokes increment. This operation is called a **type-based dispatch** because it dispatches the computation to different methods based on the type of the arguments.
+If other is a Time object, **add** invokes add_time. Otherwise it assumes that the parameter is a number and invokes increment. This operation is called a **type-based dispatch** because it dispatches the computation to different methods based on the type of the arguments.
 
 Here are examples that use the + operator with different types:
 
@@ -6750,12 +7124,14 @@ Here are examples that use the + operator with different types:
 >>> print start + 1337
 10:07:17
 ```
+
 Unfortunately, this implementation of addition is not commutative. If the integer is the first operand, you get
 
 ```
 >>> print 1337 + start
 ```
-The problem is, instead of asking the Time object to add an integer, Python is asking an integer to add a Time object, and it doesn't know how to do that. But there is a clever solution for this problem: the special method __radd__, which stands for "right-side add." This method is invoked when a Time object appears on the right side of the + operator. Here's the definition:
+
+The problem is, instead of asking the Time object to add an integer, Python is asking an integer to add a Time object, and it doesn't know how to do that. But there is a clever solution for this problem: the special method **radd**, which stands for "right-side add." This method is invoked when a Time object appears on the right side of the + operator. Here's the definition:
 
 ```
 # inside class Time:
@@ -6765,6 +7141,7 @@ The problem is, instead of asking the Time object to add an integer, Python is a
 def __radd__(self, other):
     return self.__add__(other)
 ```
+
 And here's how it's used:
 
 ```
@@ -6772,6 +7149,7 @@ And here's how it's used:
 10:07:17
 Exercise 17.5. Write an add method for Points that works with either a Point object or a tuple:
 ```
+
 - *If the second operand is a Point, the method should return a new Point whose x coordinate is the sum of the x coordinates of the operands, and likewise for the y coordinates.*
 - *If the second operand is a tuple, the method should add the first element of the tuple to the x coordinate and the second element to the y coordinate, and return a new Point with the result.*
 
@@ -6791,6 +7169,7 @@ def histogram(s):
              d[c] = d[c]+1
     return d
 ```
+
 This function also works for lists, tuples, and even dictionaries, as long as the elements of s are hashable, so they can be used as keys in d.
 
 ```
@@ -6798,6 +7177,7 @@ This function also works for lists, tuples, and even dictionaries, as long as th
 >>> histogram(t)
 {'bacon': 1, 'egg': 1, 'spam': 4}
 ```
+
 Functions that can work with several types are called **polymorphic**. Polymorphism can facilitate code reuse. For example, the built-in function sum, which adds the elements of a sequence, works as long as the elements of the sequence support addition.
 
 Since Time objects provide an add method, they work with sum:
@@ -6810,6 +7190,7 @@ Since Time objects provide an add method, they work with sum:
 >>> print total
 23:01:00
 ```
+
 In general, if all of the operations inside a function work with a given type, then the function works with that type.
 
 The best kind of polymorphism is the unintentional kind, where you discover that a function you already wrote can be applied to a type you never planned for.
@@ -6820,13 +7201,14 @@ It is legal to add attributes to objects at any point in the execution of a prog
 
 If you are not sure whether an object has a particular attribute, you can use the built-in function hasattr (see Section [15.7)](#page-169-0).
 
-Another way to access the attributes of an object is through the special attribute __dict__, which is a dictionary that maps attribute names (as strings) and values:
+Another way to access the attributes of an object is through the special attribute **dict**, which is a dictionary that maps attribute names (as strings) and values:
 
 ```
 >>> p = Point(3, 4)
 >>> print p.__dict__
 {'y': 4, 'x': 3}
 ```
+
 For purposes of debugging, you might find it useful to keep this function handy:
 
 ```
@@ -6834,6 +7216,7 @@ def print_attributes(obj):
     for attr in obj.__dict__:
         print attr, getattr(obj, attr)
 ```
+
 print_attributes traverses the items in the object's dictionary and prints each attribute name and its corresponding value.
 
 The built-in function getattr takes an object and an attribute name (as a string) and returns the attribute's value.
@@ -6871,9 +7254,9 @@ But if you designed the interface carefully, you can change the implementation w
 
 **Exercise 17.7.** *This exercise is a cautionary tale about one of the most common, and difficult to find, errors in Python. Write a definition for a class named* Kangaroo *with the following methods:*
 
-- *1. An* __init__ *method that initializes an attribute named* pouch_contents *to an empty list.*
+- *1. An* **init** *method that initializes an attribute named* pouch_contents *to an empty list.*
 - *2. A method named* put_in_pouch *that takes an object of any type and adds it to* pouch_contents*.*
-- 3. A __str__ method that returns a string representation of the Kangaroo object and the con*tents of the pouch.*
+- 1. A **str** method that returns a string representation of the Kangaroo object and the con*tents of the pouch.*
 
 *Test your code by creating two* Kangaroo *objects, assigning them to variables named* kanga *and* roo*, and then adding* roo *to the contents of* kanga*'s pouch.*
 
@@ -6905,6 +7288,7 @@ for x in t:
             pos = x, y, z
             sphere(pos=pos, radius=10, color=color)
 ```
+
 - *1. Put this code in a script and make sure it works for you.*
 - *2. Modify the program so that each sphere in the cube has the color that corresponds to its position in RGB space. Notice that the coordinates are in the range 0–255, but the RGB tuples are in the range 0.0–1.0.*
 - *3. Download* [http: // thinkpython. com/ code/ color_ list. py](http://thinkpython.com/code/color_list.py) *and use the function* read_colors *to generate a list of the available colors on your system, their names and RGB values. For each named color draw a sphere in the position that corresponds to its RGB values.*
@@ -6952,6 +7336,7 @@ class Card(object):
         self.suit = suit
         self.rank = rank
 ```
+
 As usual, the init method takes an optional parameter for each attribute. The default card is the 2 of Clubs.
 
 To create a Card, you call Card with the suit and rank of the card you want.
@@ -6959,6 +7344,7 @@ To create a Card, you call Card with the suit and rank of the card you want.
 ```
 queen_of_diamonds = Card(1, 12)
 ```
+
 #### <span id="page-189-0"></span>**18.2 Class attributes**
 
 In order to print Card objects in a way that people can easily read, we need a mapping from the integer codes to the corresponding ranks and suits. A natural way to do that is with lists of strings. We assign these lists to **class attributes**:
@@ -6975,11 +7361,12 @@ def __str__(self):
     return '%s of %s' % (Card.rank_names[self.rank],
                          Card.suit_names[self.suit])
 ```
+
 Variables like suit_names and rank_names, which are defined inside a class but outside of any method, are called class attributes because they are associated with the class object Card.
 
 This term distinguishes them from variables like suit and rank, which are called **instance attributes** because they are associated with a particular instance.
 
-Both kinds of attribute are accessed using dot notation. For example, in __str__, self is a Card object, and self.rank is its rank. Similarly, Card is a class object, and Card.rank_names is a list of strings associated with the class.
+Both kinds of attribute are accessed using dot notation. For example, in **str**, self is a Card object, and self.rank is its rank. Similarly, Card is a class object, and Card.rank_names is a list of strings associated with the class.
 
 Every card has its own suit and rank, but there is only one copy of suit_names and rank_names.
 
@@ -6998,19 +7385,20 @@ With the methods we have so far, we can create and print cards:
 >>> print card1
 Jack of Hearts
 ```
+
 Figure [18.1](#page-190-1) is a diagram of the Card class object and one Card instance. Card is a class object, so it has type type. card1 has type Card. (To save space, I didn't draw the contents of suit_names and rank_names).
 
 #### <span id="page-190-0"></span>**18.3 Comparing cards**
 
-For built-in types, there are relational operators (<, >, ==, etc.) that compare values and determine when one is greater than, less than, or equal to another. For user-defined types, we can override the behavior of the built-in operators by providing a method named __cmp__.
+For built-in types, there are relational operators (<, >, ==, etc.) that compare values and determine when one is greater than, less than, or equal to another. For user-defined types, we can override the behavior of the built-in operators by providing a method named **cmp**.
 
-__cmp__ takes two parameters, self and other, and returns a positive number if the first object is greater, a negative number if the second object is greater, and 0 if they are equal to each other.
+**cmp** takes two parameters, self and other, and returns a positive number if the first object is greater, a negative number if the second object is greater, and 0 if they are equal to each other.
 
 The correct ordering for cards is not obvious. For example, which is better, the 3 of Clubs or the 2 of Diamonds? One has a higher rank, but the other has a higher suit. In order to compare cards, you have to decide whether rank or suit is more important.
 
 The answer might depend on what game you are playing, but to keep things simple, we'll make the arbitrary choice that suit is more important, so all of the Spades outrank all of the Diamonds, and so on.
 
-With that decided, we can write __cmp__:
+With that decided, we can write **cmp**:
 
 ```
 # inside class Card:
@@ -7024,6 +7412,7 @@ With that decided, we can write __cmp__:
         # ranks are the same... it's a tie
         return 0
 ```
+
 You can write this more concisely using tuple comparison:
 
 ```
@@ -7036,11 +7425,12 @@ def __cmp__(self, other):
     t2 = other.suit, other.rank
     return cmp(t1, t2)
 ```
-The built-in function cmp has the same interface as the method __cmp__: it takes two values and returns a positive number if the first is larger, a negative number if the second is larger, and 0 if they are equal.
 
-In Python 3, cmp no longer exists, and the __cmp__ method is not supported. Instead you should provide __lt__, which returns True if self is less than other. You can implement __lt__ using tuples and the < operator.
+The built-in function cmp has the same interface as the method **cmp**: it takes two values and returns a positive number if the first is larger, a negative number if the second is larger, and 0 if they are equal.
 
-**Exercise 18.1.** *Write a* __cmp__ *method for Time objects. Hint: you can use tuple comparison, but you also might consider using integer subtraction.*
+In Python 3, cmp no longer exists, and the **cmp** method is not supported. Instead you should provide **lt**, which returns True if self is less than other. You can implement **lt** using tuples and the < operator.
+
+**Exercise 18.1.** *Write a* **cmp** *method for Time objects. Hint: you can use tuple comparison, but you also might consider using integer subtraction.*
 
 #### <span id="page-191-0"></span>**18.4 Decks**
 
@@ -7056,13 +7446,14 @@ def __init__(self):
             card = Card(suit, rank)
             self.cards.append(card)
 ```
+
 The easiest way to populate the deck is with a nested loop. The outer loop enumerates the suits from 0 to 3. The inner loop enumerates the ranks from 1 to 13. Each iteration creates a new Card with the current suit and rank, and appends it to self.cards.
 
 #### <span id="page-192-0"></span>**18.5 Printing the deck**
 
-Here is a __str__ method for Deck: #inside class Deck: def __str__(self): res = [] for card in self.cards: res.append(str(card)) return '\n'.join(res)
+Here is a **str** method for Deck: #inside class Deck: def **str**(self): res = [] for card in self.cards: res.append(str(card)) return '\n'.join(res)
 
-This method demonstrates an efficient way to accumulate a large string: building a list of strings and then using join. The built-in function str invokes the __str__ method on each card and returns the string representation.
+This method demonstrates an efficient way to accumulate a large string: building a list of strings and then using join. The built-in function str invokes the **str** method on each card and returns the string representation.
 
 Since we invoke join on a newline character, the cards are separated by newlines. Here's what the result looks like:
 
@@ -7078,23 +7469,25 @@ Jack of Spades
 Queen of Spades
 King of Spades
 ```
+
 Even though the result appears on 52 lines, it is one long string that contains newlines.
 
 #### <span id="page-192-1"></span>**18.6 Add, remove, shuffle and sort**
 
 To deal cards, we would like a method that removes a card from the deck and returns it. The list method pop provides a convenient way to do that:
 
-#inside class Deck:
+# inside class Deck
 
 ```
 def pop_card(self):
     return self.cards.pop()
 ```
+
 Since pop removes the *last* card in the list, we are dealing from the bottom of the deck. In real life "bottom dealing" is frowned upon, but in this context it's ok.
 
 To add a card, we can use the list method append:
 
-#inside class Deck: def add_card(self, card): self.cards.append(card)
+# inside class Deck: def add_card(self, card): self.cards.append(card)
 
 A method like this that uses another function without doing much real work is sometimes called a **veneer**. The metaphor comes from woodworking, where it is common to glue a thin layer of good quality wood to the surface of a cheaper piece of wood.
 
@@ -7106,11 +7499,12 @@ As another example, we can write a Deck method named shuffle using the function 
 def shuffle(self):
     random.shuffle(self.cards)
 ```
+
 Don't forget to import random.
 
-# inside class Deck:
+# inside class Deck
 
-**Exercise 18.2.** *Write a Deck method named* sort *that uses the list method* sort *to sort the cards in a* Deck*.* sort *uses the* __cmp__ *method we defined to determine sort order.*
+**Exercise 18.2.** *Write a Deck method named* sort *that uses the list method* sort *to sort the cards in a* Deck*.* sort *uses the* **cmp** *method we defined to determine sort order.*
 
 #### <span id="page-193-0"></span>**18.7 Inheritance**
 
@@ -7129,21 +7523,23 @@ The definition of a child class is like other class definitions, but the name of
 ```
 class Hand(Deck):
 ```
+
 """Represents a hand of playing cards."""
 
 This definition indicates that Hand inherits from Deck; that means we can use methods like pop_card and add_card for Hands as well as Decks.
 
-Hand also inherits __init__ from Deck, but it doesn't really do what we want: instead of populating the hand with 52 new cards, the init method for Hands should initialize cards with an empty list.
+Hand also inherits **init** from Deck, but it doesn't really do what we want: instead of populating the hand with 52 new cards, the init method for Hands should initialize cards with an empty list.
 
 If we provide an init method in the Hand class, it overrides the one in the Deck class:
 
-# inside class Hand:
+# inside class Hand
 
 ```
 def __init__(self, label=''):
     self.cards = []
     self.label = label
 ```
+
 So when you create a Hand, Python invokes this init method:
 
 ```
@@ -7153,6 +7549,7 @@ So when you create a Hand, Python invokes this init method:
 >>> print hand.label
 new hand
 ```
+
 But the other methods are inherited from Deck, so we can use pop_card and add_card to deal a card:
 
 ```
@@ -7162,15 +7559,17 @@ But the other methods are inherited from Deck, so we can use pop_card and add_ca
 >>> print hand
 King of Spades
 ```
+
 A natural next step is to encapsulate this code in a method called move_cards:
 
-#inside class Deck:
+# inside class Deck
 
 ```
 def move_cards(self, hand, num):
     for i in range(num):
         hand.add_card(self.pop_card())
 ```
+
 move_cards takes two arguments, a Hand object and the number of cards to deal. It modifies both self and hand, and returns None.
 
 In some games, cards are moved from one hand to another, or from a hand back to the deck. You can use move_cards for any of these operations: self can be either a Deck or a Hand, and hand, despite the name, can also be a Deck.
@@ -7219,7 +7618,7 @@ Any time you are unsure about the flow of execution through your program, the si
 
 As an alternative, you could use this function, which takes an object and a method name (as a string) and returns the class that provides the definition of the method:
 
-def find_defining_class(obj, meth_name): for ty in type(obj).mro(): if meth_name in ty.__dict__: return ty
+def find_defining_class(obj, meth_name): for ty in type(obj).mro(): if meth_name in ty.**dict**: return ty
 
 Here's an example:
 
@@ -7228,6 +7627,7 @@ Here's an example:
 >>> print find_defining_class(hand, 'shuffle')
 <class 'Card.Deck'>
 ```
+
 So the shuffle method for this Hand is the one in Deck.
 
 find_defining_class uses the mro method to get the list of class objects (types) that will be searched for methods. "MRO" stands for "method resolution order."
@@ -7259,6 +7659,7 @@ def __init__(self):
     self.suffix_map = {}
     self.prefix = ()
 ```
+
 Next, we transform the functions into methods. For example, here's process_word:
 
 ```
@@ -7273,14 +7674,15 @@ def process_word(self, word, order=2):
         self.suffix_map[self.prefix] = [word]
     self.prefix = shift(self.prefix, word)
 ```
+
 Transforming a program like this—changing the design without changing the function—is another example of refactoring (see Section [4.7)](#page-57-0).
 
 This example suggests a development plan for designing objects and methods:
 
 - 1. Start by writing functions that read and write global variables (when necessary).
-- 2. Once you get the program working, look for associations between global variables and the functions that use them.
-- 3. Encapsulate related variables as attributes of an object.
-- 4. Transform the associated functions into methods of the new class.
+- 1. Once you get the program working, look for associations between global variables and the functions that use them.
+- 1. Encapsulate related variables as attributes of an object.
+- 1. Transform the associated functions into methods of the new class.
 
 **Exercise 18.5.** *Download my code from Section [13.8](#page-149-0) (*[http: // thinkpython. com/ code/](http://thinkpython.com/code/markov.py) [markov. py](http://thinkpython.com/code/markov.py) *), and follow the steps described above to encapsulate the global variables as attributes of a new class called* Markov*. Solution:* [http: // thinkpython. com/ code/ Markov. py](http://thinkpython.com/code/Markov.py) *(note the capital M).*
 
@@ -7345,7 +7747,7 @@ Card.py *: A complete version of the* Card*,* Deck *and* Hand *classes in this c
 - *4. Add a* steer *method to* Tagger *to override the one in* Wobbler*. As a starting place, write a version that always points the Turtle toward the origin. Hint: use the math function* atan2 *and the Turtle attributes* x*,* y *and* heading*.*
 - *5. Modify* steer *so that the Turtles stay in bounds. For debugging, you might want to use the* Step *button, which invokes* step *once on each Turtle.*
 - *6. Modify* steer *so that each Turtle points toward its nearest neighbor. Hint: Turtles have an attribute,* world*, that is a reference to the TurtleWorld they live in, and the TurtleWorld has an attribute,* animals*, that is a list of all Turtles in the world.*
-- *7. Modify* steer *so the Turtles play tag. You can add methods to* Tagger *and you can override* steer *and* __init__*, but you may not modify or override* step*,* wobble *or* move*. Also,* steer *is allowed to change the heading of the Turtle but not the position.*
+- *7. Modify* steer *so the Turtles play tag. You can add methods to* Tagger *and you can override* steer *and* **init***, but you may not modify or override* step*,* wobble *or* move*. Also,* steer *is allowed to change the heading of the Turtle but not the position.*
 
 *Adjust the rules and your* steer *method for good quality play; for example, it should be possible for the slow Turtle to tag the faster Turtles eventually.*
 
@@ -7384,6 +7786,7 @@ g = Gui()
 g.title('Gui')
 g.mainloop()
 ```
+
 When you run this code, a window should appear with an empty gray square and the title Gui. mainloop runs the **event loop**, which waits for the user to do something and responds accordingly. It is an infinite loop; it runs until the user closes the window, or presses Control-C, or does something that causes the program to quit.
 
 This Gui doesn't do much because it doesn't have any **widgets**. Widgets are the elements that make up a GUI; they include:
@@ -7426,6 +7829,7 @@ The option that controls the behavior of a button is command. The value of comma
 def make_label():
     g.la(text='Thank you.')
 ```
+
 Now we can create a button with this function as its command:
 
 button2 = g.bu(text='No, press me!', command=make_label)
@@ -7457,6 +7861,7 @@ After you create a widget, you can still change the values of the options with t
 ```
 canvas.config(bg='white')
 ```
+
 The value of bg is a string that names a color. The set of legal color names is different for different implementations of Python, but all implementations provide at least:
 
 white black red green blue cyan yellow magenta
@@ -7483,6 +7888,7 @@ The rectangle method takes a sequence of coordinates that specify opposite corne
 canvas.rectangle([[0, 0], [200, 100]],
                  fill='blue', outline='orange', width=10)
 ```
+
 This way of specifying corners is called a **bounding box** because the two points bound the rectangle.
 
 oval takes a bounding box and draws an oval within the specified rectangle:
@@ -7511,6 +7917,7 @@ The text option allows you to put text into the entry when it is created. The ge
 >>> entry.get()
 'Default text.'
 ```
+
 te creates a Text widget:
 
 text = g.te(width=100, height=5)
@@ -7522,6 +7929,7 @@ insert puts text into the Text widget:
 ```
 text.insert(END, 'A line of text.')
 ```
+
 END is a special index that indicates the last character in the Text widget.
 
 You can also specify a character using a dotted index, like 1.1, which has the line number before the dot and the column number after. The following example adds the letters 'nother' after the first character of the first line.
@@ -7534,6 +7942,7 @@ The get method reads the text in the widget; it takes a start and end index as a
 >>> text.get(0.0, END)
 'Another line of text.\n'
 ```
+
 The delete method removes text from the widget; the following example deletes all but the first two characters:
 
 ```
@@ -7541,6 +7950,7 @@ The delete method removes text from the widget; the following example deletes al
 >>> text.get(0.0, END)
 'An\n'
 ```
+
 <span id="page-204-1"></span>**Exercise 19.3.** *Modify your solution to Exercise [19.2](#page-203-2) by adding an Entry widget and a second button. When the user presses the second button, it should read a color name from the Entry and use it to change the fill color of the circle. Use* config *to modify the existing circle; don't create a new one.*
 
 *Your program should handle the case where the user tries to change the color of a circle that hasn't been created, and the case where the color name is invalid.*
@@ -7563,6 +7973,7 @@ class SimpleTurtleWorld(TurtleWorld):
         self.row()
         ...
 ```
+
 setup is the function that creates and arranges the widgets. Arranging widgets in a GUI is called **packing**.
 
 row creates a row Frame and makes it the "current Frame." Until this Frame is closed or another Frame is created, all subsequent widgets are packed in a row.
@@ -7577,6 +7988,7 @@ Here is the code that creates the Canvas and the column Frame that hold the othe
 self.canvas = self.ca(width=400, height=400, bg='white')
 self.col()
 ```
+
 The first widget in the column is a grid Frame, which contains four buttons arranged twoby-two:
 
 ```
@@ -7587,6 +7999,7 @@ self.bu(text='Make Turtle', command=self.make_turtle)
 self.bu(text='Clear', command=self.clear)
 self.endgr()
 ```
+
 gr creates the grid; the argument is the number of columns. Widgets in the grid are laid out left-to-right, top-to-bottom.
 
 The first button uses self.canvas.dump as a callback; the second uses self.quit. These are **bound methods**, which means they are associated with a particular object. When they are invoked, they are invoked on the object.
@@ -7599,6 +8012,7 @@ self.bu(text='Run file', command=self.run_file)
 self.en_file = self.en(text='snowflake.py', width=5)
 self.endrow()
 ```
+
 The first argument to row is a list of weights that determines how extra space is allocated between widgets. The list [0,1] means that all extra space is allocated to the second widget, which is the Entry. If you run this code and resize the window, you will see that the Entry grows and the Button doesn't.
 
 The option pady "pads" this row in the *y* direction, adding 30 pixels of space above and below.
@@ -7617,6 +8031,7 @@ def run_file(self):
     source = fp.read()
     self.inter.run_code(source, filename)
 ```
+
 The last two widgets are a Text widget and a Button:
 
 ```
@@ -7628,6 +8043,7 @@ self.te_code.insert(END, 'bob = Turtle(world)\n')
 ```
 self.bu(text='Run code', command=self.run_text)
 ```
+
 run_text is similar to run_file except that it takes the code from the Text widget instead of from a file:
 
 ```
@@ -7635,6 +8051,7 @@ def run_text(self):
     source = self.te_code.get(1.0, END)
     self.inter.run_code(source, '<user-provided code>')
 ```
+
 Unfortunately, the details of widget layout are different in other languages, and in different Python modules. Tkinter alone provides three different mechanisms for arranging widgets. These mechanisms are called **geometry managers**. The one I demonstrated in this section is the "grid" geometry manager; the others are called "pack" and "place".
 
 Fortunately, most of the concepts in this section apply to other GUI modules and other languages.
@@ -7651,12 +8068,14 @@ g.la('Select a color:')
 colors = ['red', 'green', 'blue']
 mb = g.mb(text=colors[0])
 ```
+
 mb creates the Menubutton. Initially, the text on the button is the name of the default color. The following loop creates one menu item for each color:
 
 ```
 for color in colors:
     g.mi(mb, text=color, command=Callable(set_color, color))
 ```
+
 The first argument of mi is the Menubutton these items are associated with.
 
 The command option is a Callable object, which is something new. So far we have seen functions and bound methods used as callbacks, which works fine if you don't have to pass any arguments to the function. Otherwise you have to construct a Callable object that contains a function, like set_color, and its arguments, like color.
@@ -7670,6 +8089,7 @@ def set_color(color):
     mb.config(text=color)
     print color
 ```
+
 When the user selects a menu item and set_color is called, it configures the Menubutton to display the newly-selected color. It also print the color; if you try this example, you can confirm that set_color is called when you select an item (and *not* called when you create the Callable object).
 
 #### <span id="page-207-0"></span>**19.8 Binding**
@@ -7683,6 +8103,7 @@ You can use the bind method to override these default bindings or to add new one
 ```
 ca.bind('<ButtonPress-1>', make_circle)
 ```
+
 The first argument is an event string; this event is triggered when the user presses the left mouse button. Other mouse events include ButtonMotion, ButtonRelease and Double-Button.
 
 The second argument is an event handler. An event handler is a function or bound method, like a callback, but an important difference is that an event handler takes an Event object as a parameter. Here is an example:
@@ -7692,6 +8113,7 @@ def make_circle(event):
     pos = ca.canvas_coords([event.x, event.y])
     item = ca.circle(pos, 5, fill='red')
 ```
+
 The Event object contains information about the type of event and details like the coordinates of the mouse pointer. In this example the information we need is the location of the mouse click. These values are in "pixel coordinates," which are defined by the underlying graphical system. The method canvas_coords translates them to "Canvas coordinates," which are compatible with Canvas methods like circle.
 
 For Entry widgets, it is common to bind the <Return> event, which is triggered when the user presses the Return or Enter key. For example, the following code creates a Button and an Entry.
@@ -7701,6 +8123,7 @@ bu = g.bu('Make text item:', make_text)
 en = g.en()
 en.bind('<Return>', make_text)
 ```
+
 make_text is called when the Button is pressed or when the user hits Return while typing in the Entry. To make this work, we need a function that can be called as a command (with no arguments) or as an event handler (with an Event as an argument):
 
 ```
@@ -7708,6 +8131,7 @@ def make_text(event=None):
     text = en.get()
     item = ca.text([0,0], text)
 ```
+
 make_text gets the contents of the Entry and displays it as a Text item in the Canvas.
 
 It is also possible to create bindings for Canvas items. The following is a class definition for Draggable, which is a child class of Item that provides bindings that implement dragand-drop capability.
@@ -7724,6 +8148,7 @@ def __init__(self, item):
     self.bind('<B3-Motion>', self.drag)
     self.bind('<Release-3>', self.drop)
 ```
+
 The init method takes an Item as a parameter. It copies the attributes of the Item and then creates bindings for three events: a button press, button motion, and button release.
 
 The event handler select stores the coordinates of the current event and the original color of the item, then changes the color to yellow:
@@ -7735,6 +8160,7 @@ def select(self, event):
     self.fill = self.cget('fill')
     self.config(fill='yellow')
 ```
+
 cget stands for "get configuration;" it takes the name of an option as a string and returns the current value of that option.
 
 drag computes how far the object has moved relative to the starting place, updates the stored coordinates, and then moves the item.
@@ -7750,6 +8176,7 @@ self.dragx = event.x
 self.dragy = event.y
 self.move(dx, dy)
 ```
+
 This computation is done in pixel coordinates; there is no need to convert to Canvas coordinates.
 
 Finally, drop restores the original color of the item:
@@ -7758,6 +8185,7 @@ Finally, drop restores the original color of the item:
 def drop(self, event):
     self.config(fill=self.fill)
 ```
+
 You can use the Draggable class to add drag-and-drop capability to an existing item. For example, here is a modified version of make_circle that uses circle to create an Item and Draggable to make it draggable:
 
 ```
@@ -7766,6 +8194,7 @@ def make_circle(event):
     item = ca.circle(pos, 5, fill='red')
     item = Draggable(item)
 ```
+
 This example demonstrates one of the benefits of inheritance: you can modify the capabilities of a parent class without modifying its definition. This is particularly useful if you want to change behavior defined in a module you did not write.
 
 #### <span id="page-209-0"></span>**19.9 Debugging**
@@ -7778,6 +8207,7 @@ For example, when you are setting up a callback, it is a common error to call th
 def the_callback():
     print 'Called.'
 ```
+
 g.bu(text='This is wrong!', command=the_callback())
 
 If you run this code, you will see that it calls the_callback immediately, and *then* creates the button. When you press the button, it does nothing because the return value from the_callback is None. Usually you do not want to invoke a callback while you are setting up the GUI; it should only be invoked later in response to a user event.
@@ -7826,12 +8256,14 @@ photo = PhotoImage(file='danger.gif')
 canvas.image([0,0], image=photo)
 g.mainloop()
 ```
+
 PhotoImage *reads a file and returns a* PhotoImage *object that Tkinter can display.* Canvas.image *puts the image on the canvas, centered on the given coordinates. You can also put images on labels, buttons, and some other widgets:*
 
 ```
 g.la(image=photo)
 g.bu(image=photo)
 ```
+
 *PhotoImage can only handle a few image formats, like GIF and PPM, but we can use the Python Imaging Library (PIL) to read other files.*
 
 *The name of the PIL module is* Image*, but Tkinter defines an object with the same name. To avoid the conflict, you can use* import...as *like this:*
@@ -7845,6 +8277,7 @@ image = PIL.open('allen.png')
 photo2 = ImageTk.PhotoImage(image)
 g.la(image=photo2)
 ```
+
 - *1. Download* image_demo.py*,* danger.gif *and* allen.png *from* [http: // thinkpython.](http://thinkpython.com/code) [com/ code](http://thinkpython.com/code) *. Run* image_demo.py*. You might have to install* PIL *and* ImageTk*. They are probably in your software repository, but if not you can get them from* [http: //](http://pythonware.com/products/pil) [pythonware. com/ products/ pil](http://pythonware.com/products/pil) *.*
 - *2. In* image_demo.py *change the name of the second PhotoImage from* photo2 *to* photo *and run the program again. You should see the second PhotoImage but not the first.*
 
@@ -7895,12 +8328,12 @@ If you are copying code from a book, start by comparing your code to the book's 
 Here are some ways to avoid the most common syntax errors:
 
 - 1. Make sure you are not using a Python keyword for a variable name.
-- 2. Check that you have a colon at the end of the header of every compound statement, including for, while, if, and def statements.
-- 3. Make sure that any strings in the code have matching quotation marks.
-- 4. If you have multiline strings with triple quotes (single or double), make sure you have terminated the string properly. An unterminated string may cause an invalid token error at the end of your program, or it may treat the following part of the program as a string until it comes to the next string. In the second case, it might not produce an error message at all!
-- 5. An unclosed opening operator—(, {, or [—makes Python continue with the next line as part of the current statement. Generally, an error occurs almost immediately in the next line.
-- 6. Check for the classic = instead of == inside a conditional.
-- 7. Check the indentation to make sure it lines up the way it is supposed to. Python can handle space and tabs, but if you mix them it can cause problems. The best way to avoid this problem is to use a text editor that knows about Python and generates consistent indentation.
+- 1. Check that you have a colon at the end of the header of every compound statement, including for, while, if, and def statements.
+- 1. Make sure that any strings in the code have matching quotation marks.
+- 1. If you have multiline strings with triple quotes (single or double), make sure you have terminated the string properly. An unterminated string may cause an invalid token error at the end of your program, or it may treat the following part of the program as a string until it comes to the next string. In the second case, it might not produce an error message at all!
+- 1. An unclosed opening operator—(, {, or [—makes Python continue with the next line as part of the current statement. Generally, an error occurs almost immediately in the next line.
+- 1. Check for the classic = instead of == inside a conditional.
+- 1. Check the indentation to make sure it lines up the way it is supposed to. Python can handle space and tabs, but if you mix them it can cause problems. The best way to avoid this problem is to use a text editor that knows about Python and generates consistent indentation.
 
 If nothing works, move on to the next section...
 
@@ -7957,6 +8390,7 @@ while x > 0 and y < 0 :
     print "y: ", y
     print "condition: ", (x > 0 and y < 0)
 ```
+
 Now when you run the program, you will see three lines of output for each time through the loop. The last time through the loop, the condition should be false. If the loop keeps going, you will be able to see the values of x and y, and you might figure out why they are not being updated correctly.
 
 #### **Infinite Recursion**
@@ -8040,6 +8474,7 @@ For example:
 ```
 self.hands[i].addCard(self.hands[self.findNeighbor(i)].popCard())
 ```
+
 This can be rewritten as:
 
 ```
@@ -8047,6 +8482,7 @@ neighbor = self.findNeighbor(i)
 pickedCard = self.hands[neighbor].popCard()
 self.hands[i].addCard(pickedCard)
 ```
+
 The explicit version is easier to read because the variable names provide additional documentation, and it is easier to debug because you can check the types of the intermediate variables and display their values.
 
 Another problem that can occur with big expressions is that the order of evaluation may not be what you expect. For example, if you are translating the expression *x* 2*π* into Python, you might write:
@@ -8071,6 +8507,7 @@ you could write:
 count = self.hands[i].removeMatches()
 return count
 ```
+
 Now you have the opportunity to display the value of count before returning.
 
 #### **A.3.4 I'm really, really stuck and I need help.**
@@ -8172,14 +8609,14 @@ The following table shows some of the orders of growth that appear most commonly
 
 For the logarithmic terms, the base of the logarithm doesn't matter; changing bases is the equivalent of multiplying by a constant, which doesn't change the order of growth. Similarly, all exponential functions belong to the same order of growth regardless of the base of the exponent. Exponential functions grow very quickly, so exponential algorithms are only useful for small problems.
 
-**Exercise B.1.** *Read the Wikipedia page on Big-Oh notation at* [http://en.wikipedia.org/](http://en.wikipedia.org/wiki/Big_O_notation) [wiki/Big_O_notation](http://en.wikipedia.org/wiki/Big_O_notation) *and answer the following questions:* 
+**Exercise B.1.** *Read the Wikipedia page on Big-Oh notation at* [http://en.wikipedia.org/](http://en.wikipedia.org/wiki/Big_O_notation) [wiki/Big_O_notation](http://en.wikipedia.org/wiki/Big_O_notation) *and answer the following questions:*
 
 - *1. What is the order of growth of n^3 + n^2? What about 1000000n^3 + n^2? What about n^3 +* 1000000*n* 2*?*
 - *2. What is the order of growth of* ($n^2$ + $n$) · ($n$ + 1)*? Before you start multiplying, remember that you only need the leading term.*
-- 3. If $f$ is in $O(g)$, for some unspecified function $g$, what can we say about $af + b$?
-- 4. If $f_1$ and $f_2$ are in $O(g)$, what can we say about $f_1 + f_2$?
-- 5. If $f_1$ is in $O(g)$ and $f_2$ is in $O(h)$, what can we say about $f_1 + f_2$?
-- 6. If $f_1$ is in $O(g)$ and $f_2$ is $O(h)$, what can we say about $f_1 
+- 1. If $f$ is in $O(g)$, for some unspecified function $g$, what can we say about $af + b$?
+- 1. If $f_1$ and $f_2$ are in $O(g)$, what can we say about $f_1 + f_2$?
+- 1. If $f_1$ is in $O(g)$ and $f_2$ is in $O(h)$, what can we say about $f_1 + f_2$?
+- 1. If $f_1$ is in $O(g)$ and $f_2$ is $O(h)$, what can we say about $f_1
 
 f_2$?
 
@@ -8200,6 +8637,7 @@ total = 0
 for x in t:
     total += x
 ```
+
 The built-in function sum is also linear because it does the same thing, but it tends to be faster because it is a more efficient implementation; in the language of algorithmic analysis, it has a smaller leading coefficient.
 
 If you use the same loop to "add” a list of strings, the run time is quadratic because string concatenation is linear.
@@ -8236,7 +8674,7 @@ The performance of dictionaries is one of the minor miracles of computer science
 - *4. What is a stable sort and why might it matter in practice?*
 - *5. What is the worst sorting algorithm (that has a name)?*
 - *6. What sort algorithm does the C library use? What sort algorithm does Python use? Are these algorithms stable? You might have to Google around to find these answers.*
-- 7. Many of the non-comparison sorts are linear, so why does Python use an $O(n \log n) $*comparison sort?*
+- 1. Many of the non-comparison sorts are linear, so why does Python use an $O(n \log n) $*comparison sort?*
 
 #### <span id="page-226-0"></span>**B.3 Analysis of search algorithms**
 
@@ -8282,6 +8720,7 @@ def get(self, k):
             return val
     raise KeyError
 ```
+
 add appends a key-value tuple to the list of items, which takes constant time.
 
 get uses a for loop to search the list: if it finds the target key it returns the corresponding value; otherwise it raises a KeyError. So get is linear.
@@ -8308,6 +8747,7 @@ def __init__(self, n=100):
         return m.get(k)
 __init__ makes a list of n LinearMaps.
 ```
+
 find_map is used by add and get to figure out which map to put the new item in, or which map to search.
 
 find_map uses the built-in function hash, which takes almost any Python object and returns an integer. A limitation of this implementation is that it only works with hashable keys. Mutable types like lists and dictionaries are unhashable.
@@ -8341,7 +8781,8 @@ class HashMap(object):
                 new_maps.add(k, v)
         self.maps = new_maps
 ```
-Each HashMap contains a BetterMap; __init__ starts with just 2 LinearMaps and initializes num, which keeps track of the number of items.
+
+Each HashMap contains a BetterMap; **init** starts with just 2 LinearMaps and initializes num, which keeps track of the number of items.
 
 get just dispatches to BetterMap. The real work happens in add, which checks the number of items and the size of the BetterMap: if they are equal, the average number of items per LinearMap is 1, so it calls resize.
 
@@ -8423,6 +8864,7 @@ pi = 3.1415926535897932
 ```
 lumpy.object_diagram()
 ```
+
 The first line imports the Lumpy class from swampy.Lumpy. If you don't have Swampy installed as a package, make sure the Swampy files are in Python's search path and use this import statement instead:
 
 from Lumpy import Lumpy
@@ -8457,6 +8899,7 @@ def countdown(n):
 lumpy = Lumpy()
 lumpy.make_reference()
 ```
+
 countdown(3)
 
 Figure [C.2](#page-233-2) shows the result. Each frame is represented with a box that has the function's name outside and variables inside. Since this function is recursive, there is one frame for each level of recursion.
@@ -8476,6 +8919,7 @@ lumpy = Lumpy()
 lumpy.make_reference()
 cheeses = ['Cheddar', 'Edam', 'Gouda']
 ```
+
 ![](_page_235_Figure_1.jpeg)
 
 <span id="page-235-0"></span>Figure C.4: Object diagram.
@@ -8488,6 +8932,7 @@ empty = []
 ```
 lumpy.object_diagram()
 ```
+
 Figure [C.3](#page-234-1) shows the result. Lists are represented by a box that shows the indices mapping to the elements. This representation is slightly misleading, since indices are not actually part of the list, but I think they make the diagram easier to read. The empty list is represented by an empty box.
 
 And here's an example showing the dictionaries from Section [11.4.](#page-126-0) You can download it from <http://thinkpython.com/code/lumpy_demo4.py>.
@@ -8529,6 +8974,7 @@ box2 = copy.copy(box)
 ```
 lumpy.object_diagram()
 ```
+
 Figure [C.5](#page-236-1) shows the result. copy.copy make a shallow copy, so box and box2 have their own width and height, but they share the same embedded Point object. This kind of sharing is usually fine with immutable objects, but with mutable types, it is highly errorprone.
 
 #### <span id="page-236-0"></span>**C.4 Function and class objects**
@@ -8560,6 +9006,7 @@ def instantiate(constructor):
 ```
 point = instantiate(Point)
 ```
+
 Figure [C.6](#page-236-2) shows the result. Since we invoke object_diagram inside a function, we get a stack diagram with a frame for the module-level variables and for the invocation of instantiate.
 
 At the module level, Point and Rectangle refer to class objects (which have type type); instantiate refers to a function object.
@@ -8581,6 +9028,7 @@ Here's an example that shows a HAS-A relationship. You can download it from [htt
 ```
 from swampy.Lumpy import Lumpy
 ```
+
 lumpy = Lumpy() lumpy.make_reference()
 
 ```
@@ -8595,6 +9043,7 @@ box.corner.y = 0.0
 ```
 lumpy.class_diagram()
 ```
+
 Figure [C.7](#page-237-1) shows the result. Each class is represented with a box that contains the name of the class, any methods the class provides, any class variables, and any instance variables. In this example, Rectangle and Point have instance variables, but no methods or class variables.
 
 The arrow from Rectangle to Point shows that Rectangles contain an embedded Point. In addition, Rectangle and Point both inherit from object, which is represented in the diagram with a triangle-headed arrow.
@@ -8614,6 +9063,7 @@ deck.move_cards(hand, 7)
 ```
 lumpy.class_diagram()
 ```
+
 Figure [C.8](#page-238-0) shows the result. PokerHand inherits from Hand, which inherits from Deck. Both Deck and PokerHand have Cards.
 
 This diagram does not show that Hand also has cards, because in the program there are no instances of Hand. This example demonstrates a limitation of Lumpy; it only knows about the attributes and HAS-A relationships of objects that are instantiated.
