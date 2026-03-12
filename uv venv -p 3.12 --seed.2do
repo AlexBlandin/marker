@@ -1,0 +1,1 @@
+uv venv -p 3.12 --seed

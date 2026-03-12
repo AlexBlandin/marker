@@ -1,0 +1,1 @@
+@call .venv\Scripts\marker_llm_enhance --output_format markdown --output_dir . --llm_service marker.services.lmstudio.LMStudioService --lmstudio_model qwen3.5-4b %* 

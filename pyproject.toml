@@ -72,6 +72,8 @@ marker_chunk_convert = "marker.scripts.chunk_convert:chunk_convert_cli"
 marker_gui = "marker.scripts.run_streamlit_app:streamlit_app_cli"
 marker_extract = "marker.scripts.run_streamlit_app:extraction_app_cli"
 marker_server = "marker.scripts.server:server_cli"
+marker_llm_enhance = "marker.scripts.llm_enhance:llm_enhance_cli"
+marker_single_llm_enhance = "marker.scripts.llm_enhance:llm_enhance_single_cli"
 
 [build-system]
 requires = ["poetry-core"]

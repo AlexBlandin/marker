@@ -1,0 +1,1 @@
+@call .venv\Scripts\marker --output_format markdown --output_dir . --force_ocr --workers 1 --save_document_state %*
